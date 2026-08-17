@@ -19,6 +19,14 @@ body {
 /* 
    2. TOPO (HEADER) E LINHA DIVISÓRIA
     */
+
+    footer{ background-color: #1e3d59;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 header {
     background-color: #1e3d59;
     color: #ffffff;

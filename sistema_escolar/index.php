@@ -80,9 +80,10 @@
 
         </main>
 
+        <hr>
         
     <footer>
-        
+        SISTEMA ESCOLAR
     </footer>
 
             </body>
