@@ -81,3 +81,35 @@ ultimo_acesso DATETIME,
 FOREIGN KEY (id_pessoa) REFERENCES pessoa(id_pessoa)
 );
 
+CREATE TABLE usuario_perfil(
+id_usuario INT,
+id_perfil INT,
+
+primary key (id_usuario, id_perfil),
+
+constraint fk_usuario_perfil_usuario
+FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+
+constraint fk_usuario_perfil_perfil
+FOREIGN KEY (id_perfil) REFERENCES perfil(id_perfil)
+
+);
+
+CREATE TABLE funcionario(
+id_funcionario INT auto_increment PRIMARY KEY,
+id_pessoa INT,
+cargo VARCHAR(100) NOT NULL,
+setor VARCHAR(100) NOT NULL,
+
+FOREIGN KEY (id_pessoa) REFERENCES pessoa(id_pessoa)
+);
+
+create table unidade_escolar(
+id_unidade INT auto_increment PRIMARY KEY,
+id_instituicao INT,
+nome VARCHAR(100)not null,
+ telefone VARCHAR(20) NOT NULL,
+endereco VARCHAR(150) NOT NULL,
+
+FOREIGN KEY (id_instituicao) REFERENCES instituicao(id_instituicao)
+);
