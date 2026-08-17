@@ -1,0 +1,145 @@
+/* ==========================================================================
+   1. CONFIGURAÇÕES GERAIS E RESET
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 
+   2. TOPO (HEADER) E LINHA DIVISÓRIA
+    */
+header {
+    background-color: #1e3d59;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h2 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+hr {
+    border: none;
+    height: 4px;
+    background-color: #ffc107; /* Detalhe em amarelo/ouro escolar */
+}
+
+/*
+   3. ÁREA PRINCIPAL E FORMULÁRIO
+    */
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+form {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+form h3 {
+    margin-bottom: 25px;
+    color: #1e3d59;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #e6e6e6;
+    padding-bottom: 10px;
+}
+
+/* Remove as quebras de linha (<br>) antigas do layout flex */
+form br {
+    display: none;
+}
+
+/* Container flexível para organizar em duas colunas */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Ajustes de campos específicos para ocuparem a linha inteira */
+.full-width {
+    grid-column: span 2;
+}
+
+/* 
+   4. ENTRADAS DE DADOS (INPUTS)
+    */
+input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+}
+
+input:focus {
+    border-color: #1e3d59;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(30, 61, 89, 0.15);
+    outline: none;
+}
+
+/* 
+   5. BOTÃO DE ENVIO
+    */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #1e3d59;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #173047;
+}
+
+button[type="submit"]:active {
+    transform: scale(0.99);
+}
+
+/* 
+   6. RESPONSIVIDADE (CELULARES)
+    */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .full-width {
+        grid-column: span 1;
+    }
+    form {
+        padding: 20px;
+    }
+}
