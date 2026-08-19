@@ -151,3 +151,17 @@ button[type="submit"]:active {
         padding: 20px;
     }
 }
+
+.menu-navegacao ul {
+  list-style-type: none; /* Remove as bolinhas da lista */
+  display: flex;         /* Coloca os itens lado a lado */
+  gap: 20px;             /* Cria espaço entre os links */
+  margin: 0;
+  padding: 0;
+}
+
+.menu-navegacao a {
+  text-decoration: none; /* Remove o sublinhado do link */
+  color: #333;           /* Define a cor do texto */
+  font-weight: bold;    
+}
