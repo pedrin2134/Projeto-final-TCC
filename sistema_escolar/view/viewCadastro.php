@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <link rel="stylesheet" href="css/cadastro.css">
+
 </head>
-<body>
+<body>              
     <header>
         
         <h2>SISTEMA ESCOLAR</h2>
@@ -16,8 +17,7 @@
     <hr>
 
     <main>
-        <form method="post" action="cadastro.php">
-            <h3>Cadastrar Usuário</h3>
+        <form method="post" action="cadastro.php">  
 
             <div>
                 <input type="text" name="nome" placeholder="Nome" required><br><br>
@@ -33,9 +33,9 @@
 
             <button type="submit" name="btn_cadastrar">Cadastrar</button>
 
-            <?php if ($msg !== ''): ?>
-                <p><?= htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') ?></p>
-            <?php endif; ?>
+            <?php if ($msg !== '') { ?>
+                <p><?php echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php } ?>
         </form>
     </main>
 
@@ -44,3 +44,4 @@
     <footer>SISTEMA ESCOLAR</footer>
 </body>
 </html>
+ 

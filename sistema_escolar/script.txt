@@ -1,4 +1,5 @@
-use sistema_escolar1; 
+CREATE DATABASE IF NOT EXISTS sistema_Adm; 
+use sistema_Adm; 
 
 CREATE TABLE pessoa(
 id_pessoa INT AUTO_INCREMENT PRIMARY KEY,
@@ -8,7 +9,7 @@ cpf VARCHAR(14) UNIQUE,
 telefone VARCHAR(20) NOT NULL,
 endereco VARCHAR(150) NOT NULL,
 numero VARCHAR(10) NOT NULL,
-complemento VARCHAR(50) NOT NULL,
+complemento VARCHAR(50) ,
 bairro VARCHAR(100) NOT NULL
 );
 
