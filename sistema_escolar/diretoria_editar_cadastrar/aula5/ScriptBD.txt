@@ -1,0 +1,29 @@
+-- 1. Criar o banco de dados (caso não exista) e selecionar
+CREATE DATABASE IF NOT EXISTS seu_banco;
+USE seu_banco;
+
+-- 2. Criar a tabela 'perfil' (Administrador, Usuário Comum, etc.)
+CREATE TABLE IF NOT EXISTS perfil (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+-- 3. Criar a tabela 'login' (Usuários do sistema)
+CREATE TABLE IF NOT EXISTS login (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    perfil_id INT NOT NULL,
+    FOREIGN KEY (perfil_id) REFERENCES perfil(id)
+);
+
+-- 4. Inserir alguns perfis padrão
+INSERT INTO perfil (nome) VALUES 
+('Administrador'),
+('Cliente');
+
+-- 5. Inserir usuários para teste
+INSERT INTO login (nome, email, senha, perfil_id) VALUES 
+('Administrador do Sistema', 'admin@email.com', '123456', 1),
+('João Silva', 'joao@email.com', '123456', 2);
