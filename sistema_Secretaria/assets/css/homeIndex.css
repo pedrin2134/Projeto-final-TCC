@@ -1,0 +1,376 @@
+/* ==========================================================================
+   1. CONFIGURAÇÕES GERAIS E VARIÁVEIS
+   ========================================================================== */
+@import url('https://googleapis.com');
+
+:root {
+    --primary-color: #0284c7;    /* Azul principal */
+    --primary-hover: #0369a1;    /* Azul escuro para hover */
+    --secondary-color: #f1f5f9;  /* Cinza claro para fundos secundários */
+    --text-color: #334155;       /* Cor do texto principal */
+    --text-dark: #0f172a;        /* Cor dos títulos */
+    --bg-white: #ffffff;
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-white);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Títulos e Tags */
+h1, h2, h3, h4 {
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.tag, .section-tag {
+    display: inline-block;
+    background-color: #e0f2fe;
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Botões */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid #cbd5e1;
+}
+
+.btn-secondary:hover {
+    background-color: #f8fafc;
+    color: var(--text-dark);
+}
+
+.btn-login {
+    background-color: #0f172a;
+    color: var(--bg-white);
+}
+
+.btn-login:hover {
+    background-color: #1e293b;
+}
+
+/* ==========================================================================
+   2. HEADER / NAVBAR
+   ========================================================================== */
+.site-header {
+    background-color: var(--bg-white);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.main-menu a {
+    text-decoration: none;
+    color: var(--text-color);
+    margin: 0 15px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.main-menu a:hover {
+    color: var(--primary-color);
+}
+
+/* Esconde o botão extra do header em telas grandes se necessário, 
+   mas como está no HTML, vamos estilizar para alinhar */
+.site-header .btn-primary {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+}
+
+/* ==========================================================================
+   3. HERO SECTION (INÍCIO)
+   ========================================================================== */
+.hero-section {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    padding: 80px 0;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #475569;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Card Lateral do Hero */
+.hero-card {
+    background: var(--bg-white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.hero-card h3 {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.hero-card ul {
+    list-style: none;
+}
+
+.hero-card ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.95rem;
+}
+
+.hero-card ul li::before {
+    content: "✓";
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* ==========================================================================
+   4. INFO SECTION (SECRETARIA)
+   ========================================================================== */
+.info-section {
+    padding: 80px 0;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.info-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.info-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-box {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid var(--primary-color);
+}
+
+.info-box strong {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   5. COURSES SECTION (CURSOS)
+   ========================================================================== */
+.courses-section {
+    background-color: #f8fafc;
+    padding: 80px 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.course-card {
+    background-color: var(--bg-white);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.course-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.course-card h3 {
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   6. CTA SECTION
+   ========================================================================== */
+.cta-section {
+    padding: 60px 0;
+    background-color: var(--bg-white);
+}
+
+.cta-box {
+    background-color: var(--text-dark);
+    padding: 40px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--bg-white);
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cta-box h2 {
+    color: var(--bg-white);
+    margin-top: 10px;
+    font-size: 1.8rem;
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+.site-footer {
+    background-color: #0f172a;
+    color: #94a3b8;
+    padding: 60px 0;
+    font-size: 0.95rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.site-footer h3 {
+    color: var(--bg-white);
+    margin-bottom: 15px;
+}
+
+.site-footer h4 {
+    color: var(--bg-white);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.site-footer p {
+    margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   8. RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 968px) {
+    .hero-content, .section-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-text {
+        text-align: center;
+    }
+    
+    .hero-actions {
+        justify-content: center;
+    }
+    
+    .cta-box {
+        text-align: center;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-menu {
+        display: none; /* Em um cenário real, você faria um menu hambúrguer aqui */
+    }
+    
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+}
