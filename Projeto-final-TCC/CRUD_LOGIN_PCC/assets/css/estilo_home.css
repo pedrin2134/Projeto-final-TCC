@@ -1,0 +1,63 @@
+/* Container Flexbox para alinhar os cards lado a lado */
+.cards-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.card {
+    flex: 1; /* Distribui a largura igualmente entre os cards */
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.card p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.card .btn-card {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-align: center;
+    background-color: #06b6d4;
+    color: #ffffff;
+    transition: background-color 0.2s;
+}
+
+.card .btn-card:hover {
+    background-color: #0891b2;
+}
+
+/* Estilo do card exclusivo de Admin */
+.card-admin .btn-card {
+    background-color: #4f46e5;
+}
+
+.card-admin .btn-card:hover {
+    background-color: #4338ca;
+}
+
+/* Adaptação para dispositivos móveis */
+@media (max-width: 600px) {
+    .cards-container {
+        flex-direction: column;
+    }
+}
