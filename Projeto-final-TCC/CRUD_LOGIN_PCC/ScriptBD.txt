@@ -87,7 +87,7 @@ INSERT INTO permissoes (
     'Permitir acesso do administrador ao sistema'),
 
 (1, 'GERENCIAR_USUARIOS',
-    'Criar, alterar, bloquear e consultar usuarios'),
+    'Criar, alterar, excluir e consultar usuarios'),
 
 (1, 'GERENCIAR_PERFIS',
     'Gerenciar perfis do sistema'),
