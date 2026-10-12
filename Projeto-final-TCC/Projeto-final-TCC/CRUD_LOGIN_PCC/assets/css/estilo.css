@@ -1,0 +1,2408 @@
+/* assets/css/estilo.css */
+
+/* Reset simples e fontes */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Títulos */
+h1, h2, h3 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* Formulários Padrão (Cadastros / Testes) */
+form {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+input:focus, select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Estilização Base dos Botões */
+button, .btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover, .btn:hover {
+    background-color: #2980b9;
+}
+
+/* Separadores */
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Tabela de listagem */
+table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+table th {
+    background-color: #3498db;
+    color: white;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* ========================================================= */
+/*   AJUSTE E CORREÇÃO DOS BOTÕES E AÇÕES NA TABELA         */
+/* ========================================================= */
+
+/* Reseta formulários individuais dentro da célula de ações */
+table td form,
+.form-excluir {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    width: auto !important;
+    display: inline-block !important;
+}
+
+/* Garante alinhamento em linha e impede quebra de linha com zoom */
+td.acoes-container {
+    white-space: nowrap;
+    text-align: left;
+    width: 1%; /* Ajusta o tamanho da coluna ao conteúdo exato */
+}
+
+/* Estilo unificado para botões de ação na tabela */
+td.acoes-container .btn,
+td.acoes-container button {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+/* Cores das Ações */
+.btn-editar {
+    background-color: #3498db;
+    color: white;
+}
+.btn-editar:hover {
+    background-color: #2980b9;
+}
+
+.btn-desativar {
+    background-color: #3498db;
+    color: white;
+}
+.btn-desativar:hover {
+    background-color: #2980b9;
+}
+
+.btn-ativar {
+    background-color: #198754;
+    color: white;
+}
+.btn-ativar:hover {
+    background-color: #157347;
+}
+
+.btn-excluir {
+    background-color: #3498db;
+    color: white;
+}
+.btn-excluir:hover {
+    background-color: #2980b9;
+}
+
+/* Fluxo de pre-matricula e avaliacao */
+.workflow-page {
+    display: block;
+    min-height: 100vh;
+    padding: 0;
+    color: #32113d;
+    background: #f7f1f8;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    align-items: initial;
+}
+
+.workflow-shell {
+    width: min(760px, calc(100% - 32px));
+    max-width: none !important;
+    padding: 48px 0 60px !important;
+}
+
+.workflow-layout {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    column-gap: 34px;
+    align-items: start;
+}
+
+.workflow-layout .workflow-header {
+    grid-column: 1 / -1;
+}
+
+.workflow-sidebar {
+    display: grid;
+    gap: 22px;
+    margin-top: 10px;
+}
+
+.workflow-sidebar .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a99cac;
+}
+
+.workflow-sidebar .step > span {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    color: #998c9e;
+    background: #ffffff;
+    border: 1px solid #d9ccdd;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.workflow-sidebar .step.active,
+.workflow-sidebar .step.complete {
+    color: #4b0758;
+}
+
+.workflow-sidebar .step.active > span {
+    color: #ffffff;
+    background: #ec168d;
+    border-color: #ec168d;
+    box-shadow: 0 0 0 4px rgba(236, 22, 141, 0.12);
+}
+
+.workflow-sidebar .step.complete > span {
+    color: #ffffff;
+    background: #4b0758;
+    border-color: #4b0758;
+}
+
+.workflow-sidebar .step strong,
+.workflow-sidebar .step small {
+    display: block;
+}
+
+.workflow-sidebar .step strong {
+    font-size: 0.78rem;
+}
+
+.workflow-sidebar .step small {
+    margin-top: 3px;
+    color: #9a8da0;
+    font-size: 0.68rem;
+}
+
+.workflow-content {
+    min-width: 0;
+}
+
+.wide-shell {
+    width: min(1120px, calc(100% - 32px));
+}
+
+.workflow-header {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.workflow-header h1 {
+    margin-bottom: 7px;
+    color: #4b0758;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-weight: 400;
+    text-align: left;
+}
+
+.workflow-header p {
+    color: #756978;
+    font-size: 0.9rem;
+}
+
+.workflow-steps {
+    display: flex;
+    align-items: center;
+    margin: 0 0 28px;
+}
+
+.workflow-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a99cac;
+    font-size: 0.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.workflow-step span {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    color: #998c9e;
+    background: #ffffff;
+    border: 1px solid #d9ccdd;
+    border-radius: 50%;
+    font-size: 0.7rem;
+}
+
+.workflow-step.active,
+.workflow-step.complete {
+    color: #4b0758;
+}
+
+.workflow-step.active span {
+    color: #ffffff;
+    background: #ec168d;
+    border-color: #ec168d;
+    box-shadow: 0 0 0 4px rgba(236, 22, 141, 0.12);
+}
+
+.workflow-step.complete span {
+    color: #ffffff;
+    background: #4b0758;
+    border-color: #4b0758;
+}
+
+.workflow-line {
+    flex: 1;
+    height: 1px;
+    min-width: 25px;
+    margin: 0 10px;
+    background: #d9ccdd;
+}
+
+.workflow-line.complete {
+    background: #ec168d;
+}
+
+.workflow-page .card {
+    width: 100%;
+    margin-bottom: 18px !important;
+    padding: 26px;
+    background: #ffffff;
+    border: 1px solid #eadfea;
+    border-radius: 5px;
+    box-shadow: 0 12px 28px rgba(75, 7, 88, 0.08);
+}
+
+.workflow-page .card h2,
+.workflow-page .card h3 {
+    color: #4b0758;
+    text-align: left;
+}
+
+.workflow-page .card h3 {
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+}
+
+.workflow-page .card p {
+    color: #756978;
+    line-height: 1.55;
+}
+
+.status-card {
+    position: relative;
+    overflow: hidden;
+    border-left: 4px solid #ec168d !important;
+}
+
+.status-card::after {
+    content: 'STATUS';
+    position: absolute;
+    top: 24px;
+    right: 25px;
+    color: #ec168d;
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
+.status-card h2 {
+    margin-bottom: 18px;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.status-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.4rem !important;
+}
+
+.course-card form,
+.documents-card form,
+.review-row form,
+.applicant-card form {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.course-card label,
+.review-row label {
+    display: block;
+    margin-bottom: 7px;
+    color: #4b0758;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.course-card select,
+.review-row select,
+.review-note,
+.review-row textarea {
+    width: 100%;
+    min-height: 43px;
+    padding: 10px 12px;
+    color: #32113d;
+    background: #fcfafd;
+    border: 1px solid #ded2e1;
+    border-radius: 3px;
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    margin-top: 14px;
+    background: #ec168d;
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: #c90d75;
+}
+
+.workflow-course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 4px 0 18px;
+}
+
+.workflow-course-option {
+    position: relative;
+    display: block;
+    margin: 0;
+    cursor: pointer;
+}
+
+.workflow-course-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.workflow-course-content {
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    background: #fcfafd;
+    border: 1px solid #ded2e1;
+    border-radius: 4px;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.workflow-course-content small {
+    color: #ec168d;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+}
+
+.workflow-course-content strong {
+    color: #4b0758;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.workflow-course-content em {
+    color: #9a8da0;
+    font-size: 0.68rem;
+    font-style: normal;
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #fff0f8;
+    border-color: #ec168d;
+    box-shadow: 0 0 0 3px rgba(236, 22, 141, 0.1);
+    transform: translateY(-2px);
+}
+
+.workflow-course-option input:checked + .workflow-course-content em {
+    color: #ec168d;
+    font-weight: 800;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+}
+
+.section-heading h3 {
+    margin: 0 !important;
+}
+
+.section-heading p {
+    font-size: 0.78rem;
+}
+
+.section-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+    background: #4b0758;
+    border-radius: 50%;
+    font-size: 0.73rem;
+    font-weight: 900;
+}
+
+.document-row {
+    padding: 16px 0;
+    border-bottom: 1px solid #eee7ef;
+}
+
+.document-row:last-of-type {
+    border-bottom: 0;
+}
+
+.document-row p {
+    margin-bottom: 7px;
+    font-size: 0.83rem;
+}
+
+.document-row p strong {
+    color: #4b0758;
+}
+
+.document-row .document-help {
+    color: #607387;
+    font-size: 0.76rem;
+}
+
+.document-row input[type="file"] {
+    width: 100%;
+    margin: 5px 0 0;
+    padding: 9px;
+    color: #756978;
+    background: #fcfafd;
+    border: 1px dashed #cbb7d0;
+    border-radius: 3px;
+    font-size: 0.78rem;
+}
+
+.secretary-workflow .applicant-card {
+    padding: 26px 28px;
+}
+
+.applicant-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 20px;
+}
+
+.applicant-heading h3 {
+    margin: 0 !important;
+}
+
+.applicant-heading p {
+    font-size: 0.78rem;
+}
+
+.avatar-badge {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    color: #ffffff;
+    background: #ec168d;
+    border-radius: 50%;
+    font-weight: 900;
+}
+
+.student-photo {
+    width: 52px;
+    height: 64px;
+    flex: 0 0 auto;
+    object-fit: cover;
+    border: 2px solid #ec168d;
+    border-radius: 4px;
+}
+
+.status-pill {
+    display: inline-block;
+    margin-left: auto;
+    padding: 6px 9px;
+    color: #754b00;
+    background: #fff3ce;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.status-aprovado,
+.status-deferido {
+    color: #17643d;
+    background: #dcf6e7;
+}
+
+.status-indeferido {
+    color: #9c2546;
+    background: #ffe2ea;
+}
+
+.status-pendente-de-documentacao,
+.status-pendente {
+    color: #805c00;
+    background: #fff3ce;
+}
+
+.application-summary {
+    display: flex;
+    gap: 35px;
+    padding: 15px 0;
+    border-top: 1px solid #eee7ef;
+    border-bottom: 1px solid #eee7ef;
+}
+
+.personal-data {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 18px;
+    padding: 16px 0;
+    border-top: 1px solid #eee7ef;
+    border-bottom: 1px solid #eee7ef;
+}
+
+.personal-data div {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.personal-data strong {
+    color: #9a8da0;
+    font-size: 0.63rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.personal-data span {
+    overflow: hidden;
+    color: #4b0758;
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.compact-data {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 4px;
+}
+
+.application-summary span {
+    display: grid;
+    gap: 4px;
+    color: #756978;
+    font-size: 0.8rem;
+}
+
+.application-summary strong {
+    color: #9a8da0;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.application-documents {
+    margin: 18px 0;
+    padding: 16px 18px;
+    border: 1px solid #dce6ef;
+    border-radius: 12px;
+    background: #f7faff;
+}
+
+.application-documents h4 {
+    margin: 0;
+    color: #123f68;
+    font-size: 0.95rem;
+}
+
+.review-row {
+    padding: 20px 0;
+    border-top: 1px solid #eee7ef;
+}
+
+.application-documents .review-row:first-of-type {
+    margin-top: 8px;
+}
+
+.application-documents .review-row:last-child {
+    padding-bottom: 0;
+}
+
+.review-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.review-meta strong {
+    color: #4b0758;
+    font-size: 0.88rem;
+}
+
+.file-link {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #9d116f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    color: #ec168d;
+}
+
+.review-row form {
+    display: grid;
+    grid-template-columns: 150px 1fr auto;
+    gap: 9px;
+    align-items: center;
+}
+
+.review-row select,
+.review-note {
+    min-height: 38px;
+}
+
+.review-row .btn {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.missing-file {
+    color: #9c2546 !important;
+    font-size: 0.78rem;
+}
+
+.document-rejection-note {
+    margin: 0 0 10px;
+    color: #9c2546;
+    font-size: 0.78rem;
+}
+
+.workflow-feedback {
+    margin: 0 0 16px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.workflow-feedback-success {
+    color: #17643d;
+    background: #dcf6e7;
+}
+
+.workflow-feedback-error {
+    color: #9c2546;
+    background: #ffe2ea;
+}
+
+.workflow-page > .workflow-shell > p:last-child a,
+.workflow-page .workflow-shell > p a {
+    color: #7a1b8f;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 650px) {
+    .workflow-layout {
+        display: block;
+    }
+
+    .workflow-sidebar {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 5px;
+        margin: 0 0 25px;
+    }
+
+    .workflow-sidebar .step {
+        display: block;
+        text-align: center;
+    }
+
+    .workflow-sidebar .step > span {
+        margin: 0 auto 5px;
+    }
+
+    .workflow-sidebar .step strong {
+        font-size: 0.68rem;
+    }
+
+    .workflow-sidebar .step small {
+        display: none;
+    }
+
+    .workflow-shell {
+        padding-top: 30px !important;
+    }
+
+    .workflow-page .card {
+        padding: 20px;
+    }
+
+    .workflow-step {
+        gap: 5px;
+        font-size: 0.68rem;
+    }
+
+    .workflow-line {
+        min-width: 10px;
+        margin: 0 5px;
+    }
+
+    .applicant-heading {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .applicant-heading .status-pill {
+        margin-left: 56px;
+    }
+
+    .application-summary {
+        display: grid;
+        gap: 12px;
+    }
+
+    .personal-data,
+    .compact-data {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .review-row form {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .review-row .btn {
+        width: 100%;
+    }
+
+    .workflow-course-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tema azul institucional */
+.workflow-page {
+    color: #17324d;
+    background: #f1f6fb;
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: #123d73;
+}
+
+.status-card {
+    border-left-color: #1687d9 !important;
+}
+
+.status-card::after,
+.workflow-course-content small {
+    color: #1687d9;
+}
+
+.section-icon,
+.avatar-badge {
+    background: #123d73;
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #eef8fd;
+    border-color: #1687d9;
+    box-shadow: 0 0 0 3px rgba(22, 135, 217, 0.12);
+}
+
+.workflow-course-option input:checked + .workflow-course-content em,
+.file-link {
+    color: #1687d9;
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    background: #1687d9;
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: #125da0;
+}
+
+.student-photo {
+    border-color: #1687d9;
+}
+
+/* Tema azul-marinho e dourado */
+.workflow-page {
+    color: #1d2d43;
+    background: #f7f5ef;
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: #0b1f3a;
+}
+
+.status-card {
+    border-left-color: #d4a63d !important;
+}
+
+.status-card::after,
+.workflow-course-content small {
+    color: #b8861b;
+}
+
+.section-icon,
+.avatar-badge {
+    background: #0b1f3a;
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #fffaf0;
+    border-color: #d4a63d;
+    box-shadow: 0 0 0 3px rgba(212, 166, 61, 0.16);
+}
+
+.workflow-course-option input:checked + .workflow-course-content em,
+.file-link {
+    color: #b8861b;
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #0b1f3a;
+    background: #d4a63d;
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    color: #ffffff;
+    background: #ae7f19;
+}
+
+.student-photo {
+    border-color: #d4a63d;
+}
+
+/* Tema verde e branco */
+.workflow-page {
+    color: #173c32;
+    background: #f1faf5;
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: #065f46;
+}
+
+.status-card {
+    border-left-color: #10b981 !important;
+}
+
+.status-card::after,
+.workflow-course-content small {
+    color: #059669;
+}
+
+.section-icon,
+.avatar-badge {
+    background: #065f46;
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #effdf6;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+}
+
+.workflow-course-option input:checked + .workflow-course-content em,
+.file-link {
+    color: #059669;
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #063b2d;
+    background: #34d399;
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    color: #ffffff;
+    background: #059669;
+}
+
+.student-photo {
+    border-color: #10b981;
+}
+
+/* Tema azul-petroleo, branco quente e coral */
+.workflow-page {
+    color: #263f43;
+    background: #f7f5ef;
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: #123c46;
+}
+
+.status-card {
+    border-left-color: #e76f51 !important;
+}
+
+.status-card::after,
+.workflow-course-content small {
+    color: #d96047;
+}
+
+.section-icon,
+.avatar-badge {
+    background: #123c46;
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #fff8f4;
+    border-color: #e76f51;
+    box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.14);
+}
+
+.workflow-course-option input:checked + .workflow-course-content em,
+.file-link {
+    color: #d96047;
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #ffffff;
+    background: #e76f51;
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    color: #ffffff;
+    background: #c9553c;
+}
+
+.student-photo {
+    border-color: #e76f51;
+}
+
+.theme-toggle {
+    padding: 8px 11px;
+    color: #17454d;
+    background: #ffffff;
+    border: 1px solid #d6e0e1;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.theme-toggle:hover {
+    color: #ffffff;
+    background: #17454d;
+}
+
+html[data-tema="escuro"] .workflow-page {
+    color: #e6eeee;
+    background: #172326;
+}
+
+html[data-tema="escuro"] .workflow-page .card {
+    background: #223236;
+    border-color: #385055;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+html[data-tema="escuro"] .workflow-header h1,
+html[data-tema="escuro"] .workflow-page .card h2,
+html[data-tema="escuro"] .workflow-page .card h3,
+html[data-tema="escuro"] .course-card label,
+html[data-tema="escuro"] .review-row label,
+html[data-tema="escuro"] .section-heading h3,
+html[data-tema="escuro"] .review-meta strong,
+html[data-tema="escuro"] .personal-data span {
+    color: #eef5f4;
+}
+
+html[data-tema="escuro"] .workflow-header p,
+html[data-tema="escuro"] .workflow-page .card p,
+html[data-tema="escuro"] .personal-data strong,
+html[data-tema="escuro"] .application-summary strong {
+    color: #b5c5c7;
+}
+
+html[data-tema="escuro"] .workflow-course-content,
+html[data-tema="escuro"] .course-card select,
+html[data-tema="escuro"] .review-row select,
+html[data-tema="escuro"] .review-note,
+html[data-tema="escuro"] .document-row input[type="file"] {
+    color: #eef5f4;
+    background: #1b2b2e;
+    border-color: #496166;
+}
+
+html[data-tema="escuro"] .workflow-sidebar .step:not(.active):not(.complete) {
+    color: #7f969a;
+}
+
+html[data-tema="escuro"] .theme-toggle {
+    color: #eef5f4;
+    background: #2a3c40;
+    border-color: #496166;
+}
+
+/* Paleta final: ardósia, verde-petróleo, areia e terracota */
+:root {
+    --slate: #263b43;
+    --petroleo: #286b6b;
+    --petroleo-dark: #1f5558;
+    --terracota: #c96852;
+    --terracota-dark: #a95140;
+    --areia: #f5f2ec;
+    --branco: #ffffff;
+}
+
+.workflow-page {
+    color: var(--slate);
+    background: var(--areia);
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: var(--slate);
+}
+
+.workflow-page .card {
+    border-color: #dfe7e4;
+    box-shadow: 0 10px 24px rgba(38, 59, 67, 0.08);
+}
+
+.status-card {
+    border-left-color: var(--terracota) !important;
+}
+
+.status-card::after,
+.workflow-course-content small,
+.file-link {
+    color: var(--terracota);
+}
+
+.section-icon,
+.avatar-badge {
+    background: var(--petroleo-dark);
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #fdf1ed;
+    border-color: var(--terracota);
+    box-shadow: 0 0 0 3px rgba(201, 104, 82, 0.13);
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: var(--branco);
+    background: var(--terracota);
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: var(--terracota-dark);
+}
+
+.student-photo {
+    border-color: var(--terracota);
+}
+
+/* Tema institucional neutro: grafite, creme e oliva */
+:root {
+    --grafite: #303638;
+    --grafite-soft: #5f6969;
+    --oliva: #65745b;
+    --oliva-dark: #4f5d48;
+    --creme: #f4f3ee;
+}
+
+.workflow-page {
+    color: var(--grafite);
+    background: var(--creme);
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: var(--grafite);
+}
+
+.workflow-page .card {
+    border-color: #dfe1db;
+    box-shadow: 0 8px 20px rgba(48, 54, 56, 0.08);
+}
+
+.status-card {
+    border-left-color: var(--oliva) !important;
+}
+
+.status-card::after,
+.workflow-course-content small,
+.file-link {
+    color: var(--oliva);
+}
+
+.section-icon,
+.avatar-badge {
+    background: var(--grafite);
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #f1f3ed;
+    border-color: var(--oliva);
+    box-shadow: 0 0 0 3px rgba(101, 116, 91, 0.14);
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #ffffff;
+    background: var(--oliva);
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: var(--oliva-dark);
+}
+
+.student-photo {
+    border-color: var(--oliva);
+}
+
+/* Tema neutro de sistema */
+:root {
+    --sistema-fundo: #f4f5f5;
+    --sistema-branco: #ffffff;
+    --sistema-texto: #30383c;
+    --sistema-suave: #687377;
+    --sistema-acento: #426b78;
+    --sistema-acento-dark: #31525d;
+}
+
+.workflow-page {
+    color: var(--sistema-texto);
+    background: var(--sistema-fundo);
+}
+
+.workflow-page .card {
+    background: var(--sistema-branco);
+    border-color: #dfe3e4;
+    box-shadow: 0 4px 14px rgba(48, 56, 60, 0.07);
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: var(--sistema-texto);
+}
+
+.status-card {
+    border-left-color: var(--sistema-acento) !important;
+}
+
+.status-card::after,
+.workflow-course-content small,
+.file-link {
+    color: var(--sistema-acento);
+}
+
+.section-icon,
+.avatar-badge {
+    background: var(--sistema-texto);
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #f3f7f8;
+    border-color: var(--sistema-acento);
+    box-shadow: 0 0 0 3px rgba(66, 107, 120, 0.12);
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #ffffff;
+    background: var(--sistema-acento);
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: var(--sistema-acento-dark);
+}
+
+.student-photo {
+    border-color: var(--sistema-acento);
+}
+
+.workflow-page .course-card input[type="file"] {
+    height: auto;
+    padding: 10px;
+    background: #f5f8fc;
+    border: 1px dashed #a8bfd2;
+}
+
+.course-image-current {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 16px;
+}
+
+.course-image-current img,
+.course-image-thumbnail {
+    width: 90px;
+    height: 64px;
+    object-fit: cover;
+    border: 1px solid #dce7f0;
+    border-radius: 7px;
+}
+
+.course-image-current label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #28465f;
+    font-size: 0.85rem;
+}
+
+.course-image-current input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.course-operation-message {
+    margin: 16px 0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.course-operation-message.success {
+    color: #17643d;
+    background: #e9f7ef;
+    border: 1px solid #b8e3c9;
+}
+
+.course-operation-message.error {
+    color: #8a2635;
+    background: #fff0f1;
+    border: 1px solid #f2c6cc;
+}
+
+.course-image-placeholder {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+html[data-tema="escuro"] .workflow-page .course-card input[type="file"] {
+    color: #edf5fc;
+    background: #102b4b;
+    border-color: #496b8b;
+}
+
+html[data-tema="escuro"] .course-image-current label {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .course-operation-message.success {
+    color: #c7f4d6;
+    background: #123a2b;
+    border-color: #286347;
+}
+
+html[data-tema="escuro"] .course-operation-message.error {
+    color: #ffd4d9;
+    background: #4a202b;
+    border-color: #793846;
+}
+
+/* Fluxo de inscrição: cores da identidade visual da escola */
+:root {
+    --escola-azul-marinho: #073b70;
+    --escola-azul: #0876b9;
+    --escola-azul-escuro: #05568f;
+    --escola-dourado: #946600;
+    --escola-dourado-vivo: #f5b400;
+    --escola-fundo: #f5f8fc;
+}
+
+.workflow-page {
+    color: var(--escola-azul-marinho);
+    background: var(--escola-fundo);
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: var(--escola-azul-marinho);
+}
+
+.workflow-page .card {
+    border-color: #dce7f0;
+    box-shadow: 0 8px 22px rgba(7, 59, 112, 0.08);
+}
+
+.workflow-sidebar .step.active,
+.workflow-sidebar .step.complete {
+    color: var(--escola-azul-marinho);
+}
+
+.workflow-sidebar .step.active > span {
+    background: var(--escola-azul);
+    border-color: var(--escola-azul);
+    box-shadow: 0 0 0 4px rgba(8, 118, 185, 0.14);
+}
+
+.workflow-sidebar .step.complete > span,
+.section-icon,
+.avatar-badge {
+    background: var(--escola-azul-marinho);
+    border-color: var(--escola-azul-marinho);
+}
+
+.status-card {
+    border-left-color: var(--escola-dourado-vivo) !important;
+}
+
+.status-card::after,
+.workflow-course-content small,
+.workflow-course-option input:checked + .workflow-course-content em {
+    color: var(--escola-dourado);
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #eef6fc;
+    border-color: var(--escola-azul);
+    box-shadow: 0 0 0 3px rgba(8, 118, 185, 0.12);
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #ffffff;
+    background: var(--escola-azul);
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: var(--escola-azul-escuro);
+}
+
+.file-link,
+.workflow-page .workflow-shell > p a {
+    color: var(--escola-azul);
+}
+
+.student-photo {
+    border-color: var(--escola-dourado-vivo);
+}
+
+html[data-tema="escuro"] .workflow-page {
+    color: #edf5fc;
+    background: #081d35;
+}
+
+html[data-tema="escuro"] .workflow-page .card {
+    background: #102b4b;
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .workflow-header h1,
+html[data-tema="escuro"] .workflow-page .card h2,
+html[data-tema="escuro"] .workflow-page .card h3,
+html[data-tema="escuro"] .workflow-page p,
+html[data-tema="escuro"] .workflow-page label,
+html[data-tema="escuro"] .workflow-page strong,
+html[data-tema="escuro"] .workflow-page .workflow-shell > p a {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .workflow-page .workflow-course-content,
+html[data-tema="escuro"] .workflow-page select,
+html[data-tema="escuro"] .workflow-page input[type="file"] {
+    color: #edf5fc;
+    background: #0b213b;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .workflow-sidebar .step.active,
+html[data-tema="escuro"] .workflow-sidebar .step.complete {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .workflow-sidebar .step.active > span {
+    background: var(--escola-azul);
+    border-color: var(--escola-azul);
+}
+
+html[data-tema="escuro"] .workflow-sidebar .step.complete > span,
+html[data-tema="escuro"] .section-icon,
+html[data-tema="escuro"] .avatar-badge {
+    background: #1a3a5d;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .workflow-page .workflow-course-content {
+    background: #1a3a5d;
+}
+
+/* Menu lateral das áreas administrativas e da secretaria */
+:root {
+    --admin-sidebar-width: 248px;
+    --admin-azul-marinho: #073b70;
+    --admin-azul: #0876b9;
+    --admin-dourado: #f5b400;
+}
+
+body.manager-body {
+    display: block;
+    min-height: 100vh;
+    padding: 0;
+    background: #f5f8fc;
+}
+
+.manager-body .top-bar {
+    width: calc(100% - var(--admin-sidebar-width));
+    margin-left: var(--admin-sidebar-width);
+    background: #ffffff;
+    border-bottom: 1px solid #dce7f0;
+    box-shadow: 0 2px 10px rgba(7, 59, 112, 0.06);
+}
+
+.manager-body .top-bar-container {
+    padding: 0 28px;
+}
+
+.manager-body .top-bar-brand {
+    display: none;
+}
+
+.manager-body .top-bar-title,
+.manager-body .top-bar-user,
+.manager-body .top-bar-user strong {
+    color: var(--admin-azul-marinho);
+}
+
+.manager-body .conteudo-principal {
+    min-height: calc(100vh - 65px);
+    margin-left: var(--admin-sidebar-width);
+    padding: 28px clamp(18px, 3vw, 42px) 48px;
+}
+
+.manager-body .admin-workspace,
+.manager-body .admin-workspace-content {
+    width: 100%;
+    min-width: 0;
+}
+
+.manager-body .admin-workspace-content > .main-content {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.admin-sidebar {
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--admin-sidebar-width);
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px 16px;
+    overflow-y: auto;
+    color: #eaf4fb;
+    background: var(--admin-azul-marinho);
+    box-shadow: 5px 0 18px rgba(7, 59, 112, 0.12);
+}
+
+.admin-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 58px;
+    padding: 0 10px 17px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 1.18rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.admin-sidebar-brand img {
+    width: 43px;
+    height: 43px;
+    padding: 3px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+.admin-sidebar-brand small,
+.admin-sidebar-user small {
+    display: block;
+    margin-top: 4px;
+    color: #b7cce0;
+    font-size: 0.66rem;
+    font-weight: 500;
+}
+
+.admin-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 17px 3px 23px;
+    padding: 11px 9px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 9px;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.admin-sidebar-user:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.admin-sidebar-user > span:last-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-sidebar-user strong {
+    display: block;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 0.78rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-sidebar-avatar {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    color: var(--admin-azul-marinho);
+    background: var(--admin-dourado);
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: 900;
+}
+
+.admin-sidebar-avatar-image {
+    object-fit: cover;
+    border: 2px solid var(--admin-dourado);
+}
+
+.admin-sidebar-nav {
+    display: grid;
+    gap: 5px;
+}
+
+.admin-sidebar-label {
+    margin: 0 10px 9px;
+    color: #9db8d2;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.admin-sidebar-nav a,
+.admin-sidebar-logout {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+    color: #d7e8f6;
+    border-radius: 8px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.admin-sidebar-nav a > span,
+.admin-sidebar-logout > span {
+    width: 23px;
+    color: #f5c544;
+    font-size: 1.13rem;
+    text-align: center;
+}
+
+.admin-sidebar-nav a:hover,
+.admin-sidebar-logout:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.admin-sidebar-nav a.active {
+    position: relative;
+    color: #ffffff;
+    background: var(--admin-azul);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.14);
+}
+
+.admin-sidebar-nav a.active::before {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 0;
+    width: 3px;
+    background: var(--admin-dourado);
+    border-radius: 0 3px 3px 0;
+    content: '';
+}
+
+.admin-sidebar-logout {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0;
+}
+
+.manager-body .page-header h1,
+.manager-body .workflow-header h1 {
+    color: var(--admin-azul-marinho);
+}
+
+.manager-body .card-admin .btn-card {
+    background-color: var(--admin-azul);
+}
+
+.manager-body .card-admin .btn-card:hover {
+    background-color: var(--admin-azul-marinho);
+}
+
+html[data-tema="escuro"] body.manager-body {
+    color: #edf5fc;
+    background: #081d35;
+}
+
+html[data-tema="escuro"] .manager-body .top-bar {
+    background: #102b4b;
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .manager-body .top-bar-title,
+html[data-tema="escuro"] .manager-body .top-bar-user,
+html[data-tema="escuro"] .manager-body .top-bar-user strong {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .admin-sidebar {
+    background: #06182d;
+    border-right: 1px solid #294969;
+}
+
+html[data-tema="escuro"] .admin-sidebar-nav a.active {
+    background: #0b5e9a;
+}
+
+html[data-tema="escuro"] .manager-body .page-header h1,
+html[data-tema="escuro"] .manager-body .workflow-header h1 {
+    color: #edf5fc;
+}
+
+@media (max-width: 760px) {
+    .manager-body .top-bar {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .manager-body .top-bar-container {
+        padding: 0 14px;
+    }
+
+    .manager-body .conteudo-principal {
+        margin-left: 0;
+        padding: 14px 14px 32px;
+    }
+
+    .admin-sidebar {
+        position: static;
+        width: auto;
+        max-height: none;
+        margin: 0 0 18px;
+        padding: 12px;
+        overflow: visible;
+        border-radius: 10px;
+    }
+
+    .admin-sidebar-brand {
+        min-height: 46px;
+        padding: 0 5px 10px;
+    }
+
+    .admin-sidebar-brand img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .admin-sidebar-user {
+        margin: 10px 0;
+    }
+
+    .admin-sidebar-nav {
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    }
+
+    .admin-sidebar-label {
+        grid-column: 1 / -1;
+    }
+
+    .admin-sidebar-nav a,
+    .admin-sidebar-logout {
+        min-height: 40px;
+        padding: 0 8px;
+        font-size: 0.75rem;
+    }
+
+    .admin-sidebar-logout {
+        margin-top: 10px;
+        padding-top: 8px;
+    }
+
+    .manager-body .admin-workspace-content > .main-content {
+        padding: 0;
+    }
+}
+
+.secretary-management {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.secretary-management-header,
+.secretary-detail-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.secretary-management-header h1,
+.secretary-form-card h1,
+.secretary-detail h2,
+.secretary-list h2 {
+    margin: 0 0 8px;
+    color: var(--admin-azul-marinho);
+    text-align: left;
+}
+
+.secretary-management-header p,
+.secretary-form-card header p {
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.secretary-management .card,
+.secretary-form-card.card {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 20px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #dce7f0;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(7, 59, 112, 0.06);
+}
+
+.secretary-detail-heading {
+    align-items: flex-start;
+}
+
+.secretary-actions,
+.secretary-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.secretary-actions form {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.secretary-management .btn,
+.secretary-management button,
+.secretary-form-card .btn,
+.secretary-form-card button {
+    min-height: 38px;
+    padding: 9px 14px;
+    color: #ffffff;
+    background: var(--admin-azul);
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.secretary-management .btn:hover,
+.secretary-management button:hover,
+.secretary-form-card .btn:hover,
+.secretary-form-card button:hover {
+    background: var(--admin-azul-marinho);
+}
+
+.secretary-management .secretary-secondary-button,
+.secretary-form-card .secretary-secondary-button {
+    color: var(--admin-azul-marinho);
+    background: #eaf2f8;
+}
+
+.secretary-management .secretary-secondary-button:hover,
+.secretary-form-card .secretary-secondary-button:hover {
+    background: #d8e8f4;
+}
+
+.secretary-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 24px;
+}
+
+.secretary-data > div {
+    min-width: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e6edf4;
+}
+
+.secretary-data dt {
+    margin-bottom: 5px;
+    color: #61758a;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.secretary-data dd {
+    overflow-wrap: anywhere;
+    color: #173b5d;
+    font-weight: 600;
+}
+
+.secretary-list h2 {
+    margin-bottom: 20px;
+}
+
+.secretary-search {
+    width: 100%;
+    max-width: none;
+    display: block;
+    margin: 0 0 20px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.secretary-search label,
+.secretary-form label {
+    display: block;
+    margin: 0 0 7px;
+    color: #28465f;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.secretary-search > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.secretary-search input {
+    width: min(100%, 460px);
+    margin: 0;
+}
+
+.secretary-table-wrap {
+    overflow-x: auto;
+}
+
+.secretary-management table {
+    max-width: none;
+    margin-top: 0;
+}
+
+.secretary-management .secretary-actions {
+    min-width: 190px;
+}
+
+.secretary-empty {
+    padding: 16px 0;
+    color: #64748b;
+}
+
+.secretary-alert {
+    margin: 0 0 18px;
+    padding: 12px 15px;
+    border-radius: 8px;
+}
+
+.secretary-alert.success {
+    color: #17643d;
+    background: #e9f7ef;
+}
+
+.secretary-alert.error {
+    color: #8a2635;
+    background: #fff0f1;
+}
+
+.secretary-form-card {
+    width: min(100%, 760px) !important;
+    margin: 0 auto !important;
+}
+
+.secretary-form-card header {
+    margin-bottom: 20px;
+}
+
+.secretary-form {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.secretary-form input {
+    margin: 0 0 16px;
+}
+
+.secretary-role-note {
+    margin: 2px 0 18px;
+    color: #61758a;
+    font-size: 0.88rem;
+}
+
+.secretary-form-actions {
+    padding-top: 8px;
+}
+
+html[data-tema="escuro"] .secretary-management .card,
+html[data-tema="escuro"] .secretary-form-card.card {
+    color: #edf5fc;
+    background: #102b4b;
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .secretary-management-header h1,
+html[data-tema="escuro"] .secretary-form-card h1,
+html[data-tema="escuro"] .secretary-detail h2,
+html[data-tema="escuro"] .secretary-list h2,
+html[data-tema="escuro"] .secretary-data dd,
+html[data-tema="escuro"] .secretary-search label,
+html[data-tema="escuro"] .secretary-form label {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .secretary-management-header p,
+html[data-tema="escuro"] .secretary-form-card header p,
+html[data-tema="escuro"] .secretary-data dt,
+html[data-tema="escuro"] .secretary-role-note,
+html[data-tema="escuro"] .secretary-empty {
+    color: #b7cce0;
+}
+
+html[data-tema="escuro"] .secretary-data > div {
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .secretary-management .secretary-secondary-button,
+html[data-tema="escuro"] .secretary-form-card .secretary-secondary-button {
+    color: #edf5fc;
+    background: #294969;
+}
+
+@media (max-width: 760px) {
+    .secretary-management-header,
+    .secretary-detail-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .secretary-management .card,
+    .secretary-form-card.card {
+        padding: 18px;
+    }
+
+    .secretary-data {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Contraste final do tema escuro */
+html[data-tema="escuro"] .workflow-page {
+    color: #f1f5f6;
+    background: #172326;
+}
+
+html[data-tema="escuro"] .workflow-page .card {
+    background: #223236;
+    border-color: #455b60;
+}
+
+html[data-tema="escuro"] .student-workflow .document-row {
+    border-color: #455b60;
+}
+
+html[data-tema="escuro"] .student-workflow .document-row p,
+html[data-tema="escuro"] .student-workflow .document-row p strong {
+    color: #f1f5f6;
+}
+
+html[data-tema="escuro"] .student-workflow .document-row .document-help {
+    color: #c0ced1;
+}
+
+html[data-tema="escuro"] .student-workflow .document-row input[type="file"] {
+    color: #f1f5f6;
+    background: #18282c;
+    border-color: #536b70;
+}
+
+html[data-tema="escuro"] .workflow-page .application-documents {
+    background: #18282c;
+    border-color: #536b70;
+}
+
+html[data-tema="escuro"] .workflow-page .application-documents h4,
+html[data-tema="escuro"] .workflow-page .application-documents .review-meta strong,
+html[data-tema="escuro"] .workflow-page .application-documents .document-rejection-note {
+    color: #f1f5f6;
+}
+
+html[data-tema="escuro"] .workflow-page .application-documents .review-row {
+    border-color: #455b60;
+}
+
+html[data-tema="escuro"] .workflow-page .status-pill.status-aprovado,
+html[data-tema="escuro"] .workflow-page .status-pill.status-deferido {
+    color: #b9f3ce;
+    background: #20543a;
+}
+
+html[data-tema="escuro"] .workflow-page .status-pill.status-indeferido {
+    color: #ffd0dc;
+    background: #642d3d;
+}
+
+html[data-tema="escuro"] .workflow-page .status-pill.status-pendente,
+html[data-tema="escuro"] .workflow-page .status-pill.status-pendente-de-documentacao {
+    color: #ffe5a3;
+    background: #574817;
+}
+
+html[data-tema="escuro"] .workflow-page h1,
+html[data-tema="escuro"] .workflow-page h2,
+html[data-tema="escuro"] .workflow-page h3,
+html[data-tema="escuro"] .workflow-page p,
+html[data-tema="escuro"] .workflow-page label,
+html[data-tema="escuro"] .workflow-page strong,
+html[data-tema="escuro"] .workflow-page a,
+html[data-tema="escuro"] .workflow-page span {
+    color: #f1f5f6;
+}
+
+html[data-tema="escuro"] .workflow-page small,
+html[data-tema="escuro"] .workflow-page .missing-file {
+    color: #c0ced1 !important;
+}
+
+html[data-tema="escuro"] .workflow-page select,
+html[data-tema="escuro"] .workflow-page textarea,
+html[data-tema="escuro"] .workflow-page input:not([type="file"]),
+html[data-tema="escuro"] .workflow-page input[type="file"] {
+    color: #f1f5f6;
+    background: #18282c;
+    border-color: #536b70;
+}
+
+html[data-tema="escuro"] .workflow-page input::placeholder,
+html[data-tema="escuro"] .workflow-page textarea::placeholder {
+    color: #aabcc0;
+}
+
+html[data-tema="escuro"] .workflow-page .workflow-course-content {
+    color: #f1f5f6;
+    background: #263b40;
+    border-color: #536b70;
+}
+
+html[data-tema="escuro"] .workflow-page .theme-toggle {
+    color: #f1f5f6;
+    background: #30464b;
+    border-color: #5a7075;
+}
+
+html[data-tema="escuro"] .workflow-page .workflow-feedback-success {
+    color: #b9f3ce;
+    background: #20543a;
+}
+
+html[data-tema="escuro"] .workflow-page .workflow-feedback-error {
+    color: #ffd0dc;
+    background: #642d3d;
+}
+
+/* Tema escolar azul e cinza */
+:root {
+    --sistema-fundo: #f2f5f7;
+    --sistema-branco: #ffffff;
+    --sistema-texto: #263746;
+    --sistema-suave: #667681;
+    --sistema-acento: #356b86;
+    --sistema-acento-dark: #274f65;
+}
+
+.workflow-page {
+    color: var(--sistema-texto);
+    background: var(--sistema-fundo);
+}
+
+.workflow-page .card {
+    background: var(--sistema-branco);
+    border-color: #dce3e7;
+    box-shadow: 0 4px 14px rgba(38, 55, 70, 0.07);
+}
+
+.workflow-header h1,
+.workflow-page .card h2,
+.workflow-page .card h3,
+.course-card label,
+.review-row label,
+.section-heading h3,
+.review-meta strong,
+.personal-data span {
+    color: var(--sistema-texto);
+}
+
+.status-card {
+    border-left-color: var(--sistema-acento) !important;
+}
+
+.status-card::after,
+.workflow-course-content small,
+.file-link {
+    color: var(--sistema-acento);
+}
+
+.section-icon,
+.avatar-badge {
+    background: var(--sistema-texto);
+}
+
+.workflow-course-option:hover .workflow-course-content,
+.workflow-course-option input:checked + .workflow-course-content {
+    background: #edf3f6;
+    border-color: var(--sistema-acento);
+    box-shadow: 0 0 0 3px rgba(53, 107, 134, 0.12);
+}
+
+.course-card .btn,
+.documents-card .btn,
+.review-row .btn {
+    color: #ffffff;
+    background: var(--sistema-acento);
+}
+
+.course-card .btn:hover,
+.documents-card .btn:hover,
+.review-row .btn:hover {
+    background: var(--sistema-acento-dark);
+}
+
+.student-photo {
+    border-color: var(--sistema-acento);
+}
