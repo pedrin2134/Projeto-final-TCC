@@ -1125,20 +1125,31 @@ td.acoes-container button {
 }
 
 .theme-toggle {
-    padding: 8px 11px;
+    width: 40px;
+    height: 40px;
+    display: inline-grid;
+    flex: 0 0 40px;
+    place-items: center;
+    padding: 0;
     color: #17454d;
     background: #ffffff;
     border: 1px solid #d6e0e1;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 0.72rem;
-    font-weight: 700;
-    white-space: nowrap;
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .theme-toggle:hover {
     color: #ffffff;
     background: #17454d;
+    transform: rotate(12deg);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid #0876b9;
+    outline-offset: 3px;
 }
 
 html[data-tema="escuro"] .workflow-page {

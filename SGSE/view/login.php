@@ -29,7 +29,6 @@ if (isset($_SESSION['usuario_id'])) {
         </a>
         <nav class="site-nav" aria-label="Navegação principal">
             <a href="login.php">Acesso</a>
-            <a href="cadastrar_usuario.php">Inscrição</a>
             <a href="#suporte">Suporte</a>
             <a class="nav-cta" href="cadastrar_usuario.php">INSCREVA-SE</a>
             <button type="button" class="theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>
@@ -100,11 +99,13 @@ if (isset($_SESSION['usuario_id'])) {
                              src="../<?php echo htmlspecialchars($curso['imagem'], ENT_QUOTES, 'UTF-8'); ?>"
                              alt="Foto do curso <?php echo htmlspecialchars($curso['nome'], ENT_QUOTES, 'UTF-8'); ?>">
                     <?php } else { ?>
-                        <span class="course-photo-placeholder" aria-hidden="true"><?php echo htmlspecialchars($curso['sigla']); ?></span>
+                        <span class="course-photo-placeholder" aria-hidden="true"><?php echo htmlspecialchars($curso['sigla'], ENT_QUOTES, 'UTF-8'); ?></span>
                     <?php } ?>
-                    <span class="course-code"><?php echo htmlspecialchars($curso['sigla']); ?></span>
-                    <strong><?php echo htmlspecialchars($curso['nome']); ?></strong>
-                    <span class="course-action">Começar inscrição <span aria-hidden="true">→</span></span>
+                    <span class="course-code"><?php echo htmlspecialchars($curso['sigla'], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="course-tile-content">
+                        <strong><?php echo htmlspecialchars($curso['nome'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                        <span class="course-action">Começar inscrição <span aria-hidden="true">→</span></span>
+                    </span>
                 </a>
             <?php } ?>
         </div>

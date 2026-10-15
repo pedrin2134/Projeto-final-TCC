@@ -4,7 +4,10 @@
 
     function atualizarBotao(botao) {
         const escuro = document.documentElement.dataset.tema === 'escuro';
-        botao.textContent = escuro ? '☀ Tema claro' : '☾ Tema escuro';
+        const acao = escuro ? 'Ativar tema claro' : 'Ativar tema escuro';
+        botao.textContent = escuro ? '☀' : '☾';
+        botao.setAttribute('aria-label', acao);
+        botao.title = acao;
         botao.setAttribute('aria-pressed', escuro ? 'true' : 'false');
     }
 

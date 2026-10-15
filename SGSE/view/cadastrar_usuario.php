@@ -20,7 +20,7 @@ unset($_SESSION['cadastro_formulario']);
     <header class="site-header cadastro-header">
         <a class="brand" href="login.php">
             <img src="../assets/img/sua_logo.png" alt="Logo da Escola Técnica de Ceilândia">
-            <span>ESCOLA TÉCNICA<br><small>DE CEILÂNDIA</small></span>
+            <span>SGSE<br><small>SISTEMA DE GESTÃO DE SECRETARIA ESCOLAR</small></span>
         </a>
         <a class="back-link" href="login.php">← Voltar para o acesso</a>
         <button type="button" class="theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>

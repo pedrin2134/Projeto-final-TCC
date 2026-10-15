@@ -717,16 +717,12 @@ html[data-tema="escuro"] .admin-status-pill {
 }
 
 .user-home-page .theme-toggle {
-    min-height: 38px;
-    padding: 8px 12px;
+    width: 40px;
+    height: 40px;
     color: #073b70;
     background: #ffffff;
     border: 1px solid #cbd8e2;
-    border-radius: 8px;
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 1.15rem;
 }
 
 .user-home-cards {
@@ -1354,16 +1350,12 @@ html[data-tema="escuro"] body.service-requests-page .theme-toggle {
 }
 
 .profile-header .theme-toggle {
-    min-height: 38px;
-    padding: 8px 12px;
+    width: 40px;
+    height: 40px;
     color: #073b70;
     background: #ffffff;
     border: 1px solid #cbd8e2;
-    border-radius: 8px;
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 1.15rem;
 }
 
 .profile-card {

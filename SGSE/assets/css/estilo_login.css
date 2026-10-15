@@ -1672,20 +1672,31 @@ html[data-tema="escuro"] .cadastro-page .theme-toggle {
 }
 
 .theme-toggle {
-    padding: 8px 11px;
+    width: 40px;
+    height: 40px;
+    display: inline-grid;
+    flex: 0 0 40px;
+    place-items: center;
+    padding: 0;
     color: #17454d;
     background: #eef3f3;
     border: 1px solid #d6e0e1;
-    border-radius: 4px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 0.72rem;
-    font-weight: 700;
-    white-space: nowrap;
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .theme-toggle:hover {
     color: #ffffff;
     background: #17454d;
+    transform: rotate(12deg);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid #0876b9;
+    outline-offset: 3px;
 }
 
 html[data-tema="escuro"] .login-page {
@@ -2370,6 +2381,15 @@ html[data-tema="escuro"] .cadastro-page .theme-toggle {
     min-height: 86px;
 }
 
+.login-page .site-header,
+.cadastro-page .site-header {
+    width: 100%;
+    padding-inline: max(20px, calc((100% - 1120px) / 2));
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
 .login-page .site-nav {
     gap: 25px;
 }
@@ -2484,11 +2504,16 @@ html[data-tema="escuro"] .cadastro-page .theme-toggle {
 
 .login-page .course-tile {
     position: relative;
-    min-height: 250px;
+    min-height: 224px;
     overflow: hidden;
-    padding: 17px;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
     color: #ffffff;
     background: #073b70;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 22px;
+    box-shadow: 0 8px 18px rgba(5, 25, 48, 0.16);
     isolation: isolate;
 }
 
@@ -2496,7 +2521,7 @@ html[data-tema="escuro"] .cadastro-page .theme-toggle {
     position: absolute;
     z-index: 1;
     inset: 0;
-    background: linear-gradient(180deg, rgba(5, 25, 48, 0.08) 15%, rgba(5, 25, 48, 0.9) 100%);
+    background: linear-gradient(180deg, rgba(5, 25, 48, 0.12) 0%, rgba(5, 25, 48, 0.08) 32%, rgba(5, 25, 48, 0.55) 100%);
     content: '';
     pointer-events: none;
 }
@@ -2508,11 +2533,12 @@ html[data-tema="escuro"] .cadastro-page .theme-toggle {
     inset: 0;
     width: 100%;
     height: 100%;
+    border-radius: inherit;
 }
 
 .login-page .course-photo {
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.35s ease;
 }
 
 .login-page .course-tile:hover .course-photo {
@@ -2524,48 +2550,210 @@ html[data-tema="escuro"] .cadastro-page .theme-toggle {
     place-items: center;
     color: rgba(255, 255, 255, 0.14);
     background: linear-gradient(135deg, #073b70, #0876b9);
-    font-size: 4rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 900;
     letter-spacing: 0.08em;
 }
 
 .login-page .course-code,
-.login-page .course-tile strong,
-.login-page .course-action {
+.login-page .course-tile-content {
     position: relative;
     z-index: 2;
 }
 
 .login-page .course-code {
-    color: #f5c544;
+    align-self: flex-start;
+    padding: 6px 10px;
+    color: #ffffff;
+    background: rgba(7, 59, 112, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+}
+
+.login-page .course-tile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+    padding: 13px 14px 11px;
+    background: rgba(15, 35, 54, 0.66);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 17px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .login-page .course-tile strong {
     max-width: 100%;
-    margin-top: auto;
-    padding-top: 65px;
+    margin: 0;
+    padding: 0;
     color: #ffffff;
-    font-size: 1.2rem;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    line-height: 1.2;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
 }
 
 .login-page .course-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 9px;
     color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.26);
+    font-size: 0.66rem;
 }
 
 .login-page .course-action span {
     color: #f5c544;
+    font-size: 1rem;
 }
 
 .login-page .course-tile:hover {
     background: #073b70;
     border-color: #f5b400;
+    box-shadow: 0 12px 24px rgba(5, 25, 48, 0.24);
 }
 
 @media (max-width: 760px) {
     .login-page .course-tile {
-        min-height: 220px;
+        min-height: 210px;
         padding: 14px;
     }
+}
+
+@media (max-width: 430px) {
+    .login-page .course-tile {
+        min-height: 195px;
+        border-radius: 18px;
+    }
+
+    .login-page .course-tile-content {
+        padding: 11px 12px 9px;
+        border-radius: 14px;
+    }
+}
+
+/* Acabamento do tema claro */
+html:not([data-tema="escuro"]) .login-page,
+html:not([data-tema="escuro"]) .cadastro-page {
+    color: #173b5d;
+    background:
+        radial-gradient(ellipse at 8% 18%, rgba(8, 118, 185, 0.08), transparent 30%),
+        radial-gradient(ellipse at 92% 82%, rgba(245, 180, 0, 0.08), transparent 28%),
+        #f3f7fb;
+}
+
+html:not([data-tema="escuro"]) .login-page .site-header,
+html:not([data-tema="escuro"]) .cadastro-page .site-header {
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom-color: #e1eaf2;
+    box-shadow: 0 4px 18px rgba(23, 59, 93, 0.06);
+}
+
+html:not([data-tema="escuro"]) .login-page .brand,
+html:not([data-tema="escuro"]) .cadastro-page .brand {
+    color: #073b70;
+}
+
+html:not([data-tema="escuro"]) .site-nav a:not(.nav-cta),
+html:not([data-tema="escuro"]) .cadastro-page .back-link {
+    color: #526b80;
+}
+
+html:not([data-tema="escuro"]) .site-nav a:not(.nav-cta):hover,
+html:not([data-tema="escuro"]) .cadastro-page .back-link:hover {
+    color: #0876b9;
+}
+
+html:not([data-tema="escuro"]) .login-page .login-visual h1,
+html:not([data-tema="escuro"]) .login-page .login-card h2,
+html:not([data-tema="escuro"]) .login-page .course-heading h2,
+html:not([data-tema="escuro"]) .cadastro-page .register-intro h1,
+html:not([data-tema="escuro"]) .cadastro-page .register-card h2 {
+    color: #123b63;
+}
+
+html:not([data-tema="escuro"]) .login-page .login-visual h1 strong,
+html:not([data-tema="escuro"]) .cadastro-page .register-intro h1 strong {
+    color: #0876b9;
+}
+
+html:not([data-tema="escuro"]) .login-page .eyebrow,
+html:not([data-tema="escuro"]) .login-page .card-kicker,
+html:not([data-tema="escuro"]) .cadastro-page .eyebrow,
+html:not([data-tema="escuro"]) .cadastro-page .card-kicker {
+    color: #9b6c00;
+}
+
+html:not([data-tema="escuro"]) .login-page .login-card,
+html:not([data-tema="escuro"]) .cadastro-page .register-card {
+    background: #ffffff;
+    border: 1px solid #e0e9f1;
+    border-radius: 16px;
+    box-shadow: 0 18px 44px rgba(23, 59, 93, 0.1);
+}
+
+html:not([data-tema="escuro"]) .login-page .input-group input,
+html:not([data-tema="escuro"]) .cadastro-page .register-form input:not([type="checkbox"]),
+html:not([data-tema="escuro"]) .cadastro-page .register-form select,
+html:not([data-tema="escuro"]) .cadastro-page .register-form textarea {
+    color: #263f55;
+    background: #f8fbfe;
+    border-color: #d5e1eb;
+    border-radius: 8px;
+}
+
+html:not([data-tema="escuro"]) .login-page .input-group input:focus,
+html:not([data-tema="escuro"]) .cadastro-page .register-form input:not([type="checkbox"]):focus,
+html:not([data-tema="escuro"]) .cadastro-page .register-form select:focus,
+html:not([data-tema="escuro"]) .cadastro-page .register-form textarea:focus {
+    background: #ffffff;
+    border-color: #1684c2;
+    box-shadow: 0 0 0 3px rgba(8, 118, 185, 0.13);
+}
+
+html:not([data-tema="escuro"]) .login-page .btn-primary,
+html:not([data-tema="escuro"]) .cadastro-page .register-actions .btn-primary,
+html:not([data-tema="escuro"]) .login-page .site-nav .nav-cta {
+    background: linear-gradient(135deg, #0876b9, #075b95);
+    border-radius: 8px;
+    box-shadow: 0 5px 12px rgba(8, 118, 185, 0.18);
+}
+
+html:not([data-tema="escuro"]) .login-page .btn-primary:hover,
+html:not([data-tema="escuro"]) .cadastro-page .register-actions .btn-primary:hover,
+html:not([data-tema="escuro"]) .login-page .site-nav .nav-cta:hover {
+    background: #064f82;
+    box-shadow: 0 7px 16px rgba(8, 118, 185, 0.24);
+}
+
+html:not([data-tema="escuro"]) .login-page .course-section {
+    background: #ffffff;
+    border: 1px solid #e3ebf2;
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(23, 59, 93, 0.06);
+}
+
+html:not([data-tema="escuro"]) .login-page .login-footer,
+html:not([data-tema="escuro"]) .cadastro-page .login-footer {
+    color: #71869a;
+    background: transparent;
+    border-color: #e1eaf2;
+}
+
+html:not([data-tema="escuro"]) .cadastro-page .step {
+    color: #71869a;
+}
+
+html:not([data-tema="escuro"]) .cadastro-page .step.active,
+html:not([data-tema="escuro"]) .cadastro-page .step.complete {
+    color: #173b5d;
+}
+
+html:not([data-tema="escuro"]) .cadastro-page .step.active > span {
+    background: #0876b9;
+    border-color: #0876b9;
+    box-shadow: 0 0 0 5px rgba(8, 118, 185, 0.13);
 }
