@@ -7,11 +7,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../model/dto/UsuarioDTO.php';
 require_once __DIR__ . '/../model/dao/UsuarioDAO.php';
+require_once __DIR__ . '/Autorizacao.php';
 
 class UsuarioController {
 
     public function podeGerenciarUsuarios(): bool {
-        return (int)($_SESSION['perfil_id'] ?? 0) === 1;
+        return (int)($_SESSION['perfil_id'] ?? 0) === 1
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_USUARIOS');
     }
 
     public function listarSecretarias(string $busca = ''): array {
@@ -117,6 +119,14 @@ class UsuarioController {
     }
 
     public function cadastrar($nome, $cpf, $telefone, $dataNascimento, $email, $senha, $perfil_id) {
+        if ((int)$perfil_id === 3
+            && !Autorizacao::perfilTemPermissao(3, 'CADASTRAR_ALUNO')) {
+            return false;
+        }
+        if ((int)$perfil_id === 2 && !$this->podeGerenciarUsuarios()) {
+            return false;
+        }
+
         $usuario = new UsuarioDTO();
         $usuario->setNome($nome);
         $usuario->setCpf($cpf);
@@ -150,6 +160,14 @@ class UsuarioController {
 
     public function buscarPerfilProprio(int $idUsuario): ?array {
         if ($idUsuario <= 0 || (int)($_SESSION['usuario_id'] ?? 0) !== $idUsuario) {
+            return null;
+        }
+        return (new UsuarioDAO())->buscarPerfilProprio($idUsuario);
+    }
+
+    public function buscarDadosPessoaisInscricao(int $idUsuario): ?array {
+        $idSessao = (int)($_SESSION['usuario_id'] ?? $_SESSION['inscricao_usuario_id'] ?? 0);
+        if ($idUsuario <= 0 || $idSessao !== $idUsuario) {
             return null;
         }
         return (new UsuarioDAO())->buscarPerfilProprio($idUsuario);
@@ -289,6 +307,9 @@ class UsuarioController {
             if (isset($usuario['status']) && strtoupper($usuario['status']) === 'INATIVO') {
                 return 'INATIVO';
             }
+            if (!Autorizacao::usuarioTemPermissao('REALIZAR_LOGIN', (int)$usuario['id'])) {
+                return 'INVALIDO';
+            }
 
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
@@ -422,7 +443,33 @@ class UsuarioController {
     }
 
     public function podeGerenciarCursos(): bool {
-        return in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true);
+        return in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true)
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_CURSOS');
+    }
+
+    public function podeAnalisarPreMatriculas(): bool {
+        return (int)($_SESSION['perfil_id'] ?? 0) === 2
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_PRE_MATRICULAS');
+    }
+
+    public function podeAvaliarDocumentos(): bool {
+        return (int)($_SESSION['perfil_id'] ?? 0) === 2
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_DOCUMENTOS');
+    }
+
+    public function podeGerenciarSolicitacoes(): bool {
+        return in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true)
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_SOLICITACOES');
+    }
+
+    public function podeSolicitarDocumentos(): bool {
+        return (int)($_SESSION['perfil_id'] ?? 0) === 3
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_SOLICITACOES');
+    }
+
+    public function podeGerenciarPerfil(): bool {
+        return in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2, 3], true)
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_PERFIL');
     }
 
     public function criarPreMatricula(int $idUsuario, int $idCurso) {
@@ -700,7 +747,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['btn_atualizar_perfil'])) {
         $idUsuario = (int)($_SESSION['usuario_id'] ?? 0);
-        if ($idUsuario <= 0 || !in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2, 3], true)) {
+        if ($idUsuario <= 0 || !$controller->podeGerenciarPerfil()) {
             http_response_code(403);
             exit('Acesso não autorizado.');
         }
@@ -753,7 +800,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $idTipo = filter_var($_POST['id_tipo_solicitacao'] ?? null, FILTER_VALIDATE_INT);
         $descricao = is_string($_POST['descricao'] ?? null) ? trim($_POST['descricao']) : '';
 
-        if ((int)($_SESSION['perfil_id'] ?? 0) !== 3 || $idUsuario <= 0) {
+        if ($idUsuario <= 0 || !$controller->podeSolicitarDocumentos()) {
             http_response_code(403);
             exit('Acesso não autorizado.');
         }
@@ -772,8 +819,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['btn_atualizar_solicitacao'])) {
-        $perfil = (int)($_SESSION['perfil_id'] ?? 0);
-        if (!in_array($perfil, [1, 2], true)) {
+        if (!$controller->podeGerenciarSolicitacoes()) {
             http_response_code(403);
             exit('Acesso não autorizado.');
         }
@@ -1019,7 +1065,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $perfilAluno = (int)($_SESSION['perfil_id'] ?? 0) === 3
             || isset($_SESSION['inscricao_usuario_id']);
 
-        if ($perfilAluno && $idUsuario > 0 && $idCurso > 0) {
+        if ($perfilAluno && $idUsuario > 0 && $idCurso > 0
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_PRE_MATRICULAS', $idUsuario)) {
             if ($controller->criarPreMatricula($idUsuario, $idCurso)) {
                 header('Location: ../view/usuario/pre_matricula.php?etapa=status');
                 exit();
@@ -1037,7 +1084,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = $_POST['status'] ?? '';
         $observacao = trim($_POST['observacao'] ?? '');
 
-        if ((int)($_SESSION['perfil_id'] ?? 0) === 2 && in_array($status, $statusPermitidos, true)) {
+        if ($controller->podeAnalisarPreMatriculas() && in_array($status, $statusPermitidos, true)) {
             $resultadoAnalise = $controller->analisarPreMatricula(
                 (int)$_POST['id_pre_matricula'],
                 $idSecretaria,
@@ -1061,6 +1108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $perfilAluno = (int)($_SESSION['perfil_id'] ?? 0) === 3
             || isset($_SESSION['inscricao_usuario_id']);
         $resultado = $perfilAluno && $idUsuario > 0
+            && Autorizacao::usuarioTemPermissao('GERENCIAR_DOCUMENTOS', $idUsuario)
             ? $controller->enviarTodosDocumentos($idUsuario, $_FILES['documentos'] ?? [])
             : 'erro';
         $preMatricula = $idUsuario > 0 ? $controller->buscarPreMatricula($idUsuario) : null;
@@ -1076,7 +1124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status = $_POST['status'] ?? '';
         $sucesso = false;
 
-        if ((int)($_SESSION['perfil_id'] ?? 0) === 2 && in_array($status, $statusPermitidos, true)) {
+        if ($controller->podeAvaliarDocumentos() && in_array($status, $statusPermitidos, true)) {
             $sucesso = $controller->avaliarDocumento(
                 (int)$_POST['id_documento'],
                 (int)$_SESSION['usuario_id'],
@@ -1162,6 +1210,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Ação de Atualizar
     if (isset($_POST['btn_atualizar'])) {
+        if (!$controller->podeGerenciarUsuarios()) {
+            http_response_code(403);
+            exit('Acesso não autorizado.');
+        }
         $controller->atualizar($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['perfil_id']);
         header('Location: ../view/admin/gerenciar_usuarios.php');
         exit();
@@ -1169,6 +1221,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Ação de Excluir
     if (isset($_POST['btn_excluir'])) {
+        if (!$controller->podeGerenciarUsuarios()) {
+            http_response_code(403);
+            exit('Acesso não autorizado.');
+        }
         $controller->excluir((int)$_POST['id']);
         header('Location: ../view/admin/gerenciar_usuarios.php');
         exit();
@@ -1182,9 +1238,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['acao'])) {
     if ($_GET['acao'] === 'baixar_arquivo_solicitacao') {
         $idSolicitacao = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
         $perfil = (int)($_SESSION['perfil_id'] ?? 0);
+        $temPermissaoArquivo = $perfil === 3
+            ? $controller->podeSolicitarDocumentos()
+            : $controller->podeGerenciarSolicitacoes();
         if (!$idSolicitacao || $idSolicitacao < 1
             || empty($_SESSION['usuario_id'])
-            || !in_array($perfil, [1, 2, 3], true)) {
+            || !in_array($perfil, [1, 2, 3], true)
+            || !$temPermissaoArquivo) {
             http_response_code(403);
             exit('Acesso não autorizado.');
         }
@@ -1238,10 +1298,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['acao'])) {
         $id = (int)$_GET['id'];
 
         if ($_GET['acao'] === 'desativar') {
+            if (!$controller->podeGerenciarUsuarios()) {
+                http_response_code(403);
+                exit('Acesso não autorizado.');
+            }
             $controller->desativar($id);
         } elseif ($_GET['acao'] === 'ativar') {
+            if (!$controller->podeGerenciarUsuarios()) {
+                http_response_code(403);
+                exit('Acesso não autorizado.');
+            }
             $controller->ativar($id);
         } elseif ($_GET['acao'] === 'excluir') {
+            if (!$controller->podeGerenciarUsuarios()) {
+                http_response_code(403);
+                exit('Acesso não autorizado.');
+            }
             $controller->excluir($id);
         }
 

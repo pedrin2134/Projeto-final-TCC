@@ -3,7 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['usuario_id']) || (int)($_SESSION['perfil_id'] ?? 0) !== 3) {
+require_once __DIR__ . '/../../controller/Autorizacao.php';
+
+if (!isset($_SESSION['usuario_id']) || (int)($_SESSION['perfil_id'] ?? 0) !== 3
+    || !Autorizacao::usuarioTemPermissao('GERENCIAR_SOLICITACOES')) {
     header('Location: ../login.php');
     exit();
 }

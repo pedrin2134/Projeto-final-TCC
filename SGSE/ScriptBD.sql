@@ -80,6 +80,9 @@ INSERT INTO permissoes (id_perfil, nome, descricao) VALUES
 (1, 'GERENCIAR_DOCUMENTOS',
     'Consultar e analisar documentos dos alunos'),
 
+(1, 'GERENCIAR_SOLICITACOES',
+    'Analisar e acompanhar solicitacoes dos alunos'),
+
 (1, 'GERENCIAR_MATRICULAS',
     'Realizar e efetivar matriculas');
 
@@ -90,6 +93,9 @@ INSERT INTO permissoes (id_perfil, nome, descricao) VALUES
 INSERT INTO permissoes (id_perfil, nome, descricao) VALUES
 (2, 'REALIZAR_LOGIN',
     'Permitir acesso da secretaria ao sistema'),
+
+(2, 'GERENCIAR_PERFIL',
+    'Consultar e atualizar os proprios dados'),
 
 (2, 'GERENCIAR_ALUNOS',
     'Consultar, alterar e excluir alunos'),

@@ -12,17 +12,18 @@ unset($_SESSION['cadastro_formulario']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Usuário</title>
     <link rel="stylesheet" href="../assets/css/estilo_login.css?v=<?php echo filemtime('../assets/css/estilo_login.css'); ?>">
+    <link rel="stylesheet" href="../assets/css/estilo_fluxo_inscricao.css?v=<?php echo filemtime(__DIR__ . '/../assets/css/estilo_fluxo_inscricao.css'); ?>">
     <!-- Importação do JS externo -->
     <script src="../assets/js/usuario.js?v=<?php echo filemtime('../assets/js/usuario.js'); ?>" defer></script>
     <script src="../assets/js/tema.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/tema.js'); ?>" defer></script>
 </head>
-<body class="cadastro-page">
+<body class="cadastro-page signup-flow-page">
     <header class="site-header cadastro-header">
         <a class="brand" href="login.php">
             <img src="../assets/img/sua_logo.png" alt="Logo da Escola Técnica de Ceilândia">
-            <span>SGSE<br><small>SISTEMA DE GESTÃO DE SECRETARIA ESCOLAR</small></span>
+            <span>SGSE<br><small>SISTEMA ESCOLAR</small></span>
         </a>
-        <a class="back-link" href="login.php">← Voltar para o acesso</a>
+        <a class="back-link" href="login.php" aria-label="Voltar para o acesso"><span class="back-link-full">← Voltar para o acesso</span><span class="back-link-short" aria-hidden="true">← Voltar</span></a>
         <button type="button" class="theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>
     </header>
 
@@ -56,7 +57,7 @@ unset($_SESSION['cadastro_formulario']);
         $erroCadastro = $mensagensErro[$_GET['erro'] ?? ''] ?? null;
         ?>
         <?php if ($erroCadastro): ?>
-            <div role="alert" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+            <div class="signup-error" role="alert">
                 <?= htmlspecialchars($erroCadastro) ?>
             </div>
         <?php endif; ?>
@@ -100,16 +101,14 @@ unset($_SESSION['cadastro_formulario']);
             <!-- Termos da LGPD -->
             <div class="input-group privacy-box">
                 <label>Termos de Privacidade (LGPD)</label>
-                <textarea readonly style="width: 100%; height: 70px; padding: 8px; font-size: 0.8rem; border-radius: 6px; border: 1px solid #ccc; resize: none; background: #f9f9f9;">
-Termos de Consentimento - LGPD:
-Ao se cadastrar, você autoriza o tratamento de seus dados pessoais e dos documentos enviados exclusivamente para cadastro, identificação, análise da pré-matrícula, controle de acesso e comunicação institucional, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
-                </textarea>
+                <textarea readonly>Termos de Consentimento - LGPD:
+Ao se cadastrar, você autoriza o tratamento de seus dados pessoais e dos documentos enviados exclusivamente para cadastro, identificação, análise da pré-matrícula, controle de acesso e comunicação institucional, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).</textarea>
             </div>
 
             <!-- Checkbox de Aceitação -->
             <div class="input-group consent-box">
-                <input type="checkbox" id="aceite_lgpd" name="aceite_lgpd" value="1" required style="width: auto; cursor: pointer;">
-                <label for="aceite_lgpd" style="margin-bottom: 0; font-size: 0.85rem; cursor: pointer;">
+                <input type="checkbox" id="aceite_lgpd" name="aceite_lgpd" value="1" required>
+                <label for="aceite_lgpd">
                     Li e concordo com os termos da LGPD
                 </label>
             </div>

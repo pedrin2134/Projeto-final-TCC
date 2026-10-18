@@ -6,7 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Trava de Segurança
-if (!isset($_SESSION['usuario_id'])) {
+require_once __DIR__ . '/../controller/Autorizacao.php';
+
+if (!isset($_SESSION['usuario_id']) || (int)($_SESSION['perfil_id'] ?? 0) !== 1
+    || !Autorizacao::usuarioTemPermissao('GERENCIAR_USUARIOS')) {
     header("Location: login.php");
     exit();
 }

@@ -9,6 +9,13 @@ if (!isset($_SESSION['usuario_id'])) {
     exit();
 }
 
+require_once __DIR__ . '/../../controller/Autorizacao.php';
+if ((int)($_SESSION['perfil_id'] ?? 0) === 3
+    && !Autorizacao::usuarioTemPermissao('GERENCIAR_PERFIL')) {
+    http_response_code(403);
+    exit('Acesso não autorizado.');
+}
+
 if ((int)($_SESSION['perfil_id'] ?? 0) === 3) {
     require_once __DIR__ . '/../../model/dao/Conexao.php';
     require_once __DIR__ . '/../../model/dao/UsuarioDAO.php';
@@ -43,7 +50,7 @@ include_once __DIR__ . '/../includes/topo.php';
                         <h3>Meu Perfil</h3>
                         <p>Visualize e atualize suas informações de cadastro e senha de acesso.</p>
                     </div>
-                    <a href="../editar_usuario.php?id=<?php echo $_SESSION['usuario_id']; ?>" class="btn-card">Editar Perfil</a>
+                    <a href="../perfil.php" class="btn-card">Editar Perfil</a>
                 </div>
 
                 <div class="card user-home-card">

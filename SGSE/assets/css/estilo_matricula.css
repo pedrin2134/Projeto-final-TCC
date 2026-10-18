@@ -1,0 +1,494 @@
+/* Pré-matrículas da secretaria e acompanhamento no painel administrativo */
+.secretary-workflow .workflow-shell {
+    width: min(1240px, calc(100% - 48px));
+    padding: 36px 0 56px !important;
+}
+
+.secretary-workflow .workflow-header {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 23px 26px;
+    background: linear-gradient(115deg, #ffffff 0%, #f2f8fd 100%);
+    border: 1px solid #d9e6ef;
+    border-left: 5px solid #f5b400;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(7, 59, 112, 0.06);
+}
+
+.secretary-workflow .workflow-header h1 {
+    margin: 0 0 7px;
+    color: #073b70;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+    font-weight: 750;
+}
+
+.secretary-workflow .workflow-header p {
+    margin: 0;
+    color: #60758a;
+    line-height: 1.55;
+}
+
+.secretary-workflow .workflow-theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.secretary-workflow .applicant-card {
+    margin: 0 0 18px !important;
+    padding: 23px;
+    background: #ffffff;
+    border: 1px solid #dbe5ed;
+    border-top: 3px solid #0876b9;
+    border-radius: 12px;
+    box-shadow: 0 7px 20px rgba(7, 59, 112, 0.07);
+    transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.secretary-workflow .applicant-card:hover {
+    box-shadow: 0 12px 28px rgba(7, 59, 112, 0.11);
+    transform: translateY(-2px);
+}
+
+.secretary-workflow .applicant-heading {
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.secretary-workflow .student-photo,
+.secretary-workflow .avatar-badge {
+    width: 54px;
+    height: 54px;
+    border: 2px solid #d8e9f5;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(7, 59, 112, 0.1);
+}
+
+.secretary-workflow .applicant-heading h3 {
+    margin: 0 0 4px !important;
+    color: #173b5d;
+    font-size: 1.02rem;
+}
+
+.secretary-workflow .applicant-heading p {
+    margin: 0;
+    color: #718397;
+    font-size: 0.8rem;
+}
+
+.secretary-workflow .status-pill {
+    padding: 7px 11px;
+    color: #765600;
+    background: #fff4cf;
+    border: 1px solid #f3df9d;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    letter-spacing: 0.01em;
+}
+
+.secretary-workflow .status-pill.status-aprovado,
+.secretary-workflow .status-pill.status-deferido {
+    color: #17643d;
+    background: #e5f6eb;
+    border-color: #bce4cb;
+}
+
+.secretary-workflow .status-pill.status-indeferido {
+    color: #9c3542;
+    background: #fff0f0;
+    border-color: #f0c7cb;
+}
+
+.secretary-workflow .status-pill.status-em-analise {
+    color: #075d91;
+    background: #e8f4fc;
+    border-color: #c5e2f4;
+}
+
+.secretary-workflow .personal-data {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+    padding: 0 0 17px;
+    border: 0;
+}
+
+.secretary-workflow .personal-data div {
+    min-height: 62px;
+    align-content: center;
+    gap: 5px;
+    padding: 10px 12px;
+    background: #f6f9fc;
+    border: 1px solid #e6edf3;
+    border-radius: 8px;
+}
+
+.secretary-workflow .personal-data strong,
+.secretary-workflow .application-summary strong {
+    color: #75879a;
+    font-size: 0.61rem;
+    letter-spacing: 0.06em;
+}
+
+.secretary-workflow .personal-data span {
+    color: #263f56;
+    font-size: 0.78rem;
+}
+
+.secretary-workflow .application-summary {
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid #e8edf2;
+    border-bottom: 1px solid #e8edf2;
+}
+
+.secretary-workflow .application-summary span {
+    min-width: 180px;
+    padding: 10px 13px;
+    color: #263f56;
+    background: #f6f9fc;
+    border-radius: 8px;
+    font-weight: 650;
+}
+
+.secretary-workflow .application-documents {
+    margin: 17px 0;
+    padding: 17px;
+    background: #f7faff;
+    border: 1px solid #dce7f0;
+    border-radius: 10px;
+}
+
+.secretary-workflow .application-documents h4 {
+    margin: 0 0 4px;
+    color: #123f68;
+    font-size: 0.92rem;
+}
+
+.secretary-workflow .review-row {
+    padding: 15px 0;
+    border-color: #e3eaf0;
+}
+
+.secretary-workflow .review-meta {
+    margin-bottom: 8px;
+}
+
+.secretary-workflow .review-meta strong {
+    color: #173b5d;
+    font-size: 0.82rem;
+}
+
+.secretary-workflow .file-link {
+    padding: 7px 10px;
+    color: #075f99;
+    background: #e8f4fc;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.secretary-workflow .file-link:hover {
+    color: #ffffff;
+    background: #0876b9;
+}
+
+.secretary-workflow .review-row form {
+    grid-template-columns: minmax(125px, 0.55fr) minmax(180px, 1fr) auto;
+    gap: 8px;
+}
+
+.secretary-workflow .review-row select,
+.secretary-workflow .review-note,
+.secretary-workflow .applicant-card > form select,
+.secretary-workflow .applicant-card > form textarea {
+    min-height: 40px;
+    margin: 0;
+    color: #263746;
+    background: #ffffff;
+    border: 1px solid #cbd8e2;
+    border-radius: 7px;
+    font: inherit;
+    font-size: 0.8rem;
+}
+
+.secretary-workflow .review-row .btn,
+.secretary-workflow .applicant-card > form .btn {
+    min-height: 40px;
+    margin: 0;
+    padding: 9px 14px;
+    color: #ffffff;
+    background: #0876b9;
+    border-radius: 7px;
+    font-weight: 700;
+}
+
+.secretary-workflow .review-row .btn:hover,
+.secretary-workflow .applicant-card > form .btn:hover {
+    background: #05568f;
+}
+
+.secretary-workflow .applicant-card > form {
+    display: grid;
+    gap: 8px;
+    margin-top: 17px;
+    padding: 17px;
+    background: #f7faff;
+    border: 1px solid #dce7f0;
+    border-radius: 10px;
+}
+
+.secretary-workflow .applicant-card > form label {
+    margin: 3px 0 0;
+    color: #173b5d;
+    font-size: 0.76rem;
+    font-weight: 750;
+}
+
+.secretary-workflow .applicant-card > form textarea {
+    min-height: 76px;
+    resize: vertical;
+}
+
+.secretary-workflow .applicant-card > form .btn {
+    justify-self: start;
+}
+
+.secretary-workflow .workflow-feedback {
+    border: 1px solid transparent;
+}
+
+.secretary-workflow .workflow-feedback-success {
+    border-color: #b8e3c9;
+}
+
+.secretary-workflow .workflow-feedback-error {
+    border-color: #f2c6cc;
+}
+
+/* Resumo de pré-matrículas no painel do administrador */
+.admin-dashboard-page .admin-recent-panel,
+.admin-dashboard-page .admin-status-panel {
+    padding: 20px;
+    border-color: #d8e4ed;
+    border-radius: 12px;
+    box-shadow: 0 7px 20px rgba(7, 59, 112, 0.06);
+}
+
+.admin-dashboard-page .admin-panel-heading {
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e6edf3;
+}
+
+.admin-dashboard-page .admin-panel-heading h2 {
+    color: #173b5d;
+    font-size: 1rem;
+}
+
+.admin-dashboard-page .admin-recent-list li {
+    min-height: 58px;
+    gap: 11px;
+    padding: 9px 7px;
+    border-top: 1px solid #edf1f5;
+    border-radius: 7px;
+    transition: background 150ms ease;
+}
+
+.admin-dashboard-page .admin-recent-list li:hover {
+    background: #f5f9fc;
+}
+
+.admin-dashboard-page .admin-recent-icon {
+    width: 35px;
+    height: 35px;
+    color: #075d91;
+    background: #e8f3fc;
+    border-radius: 10px;
+}
+
+.admin-dashboard-page .admin-recent-info strong {
+    color: #173b5d;
+    font-size: 0.76rem;
+}
+
+.admin-dashboard-page .admin-recent-info small,
+.admin-dashboard-page .admin-recent-list time {
+    font-size: 0.68rem;
+}
+
+.admin-dashboard-page .admin-status-content {
+    min-height: 190px;
+}
+
+.admin-dashboard-page .admin-status-donut {
+    width: 145px;
+    height: 145px;
+    background: #e7eef4;
+    box-shadow: 0 4px 14px rgba(7, 59, 112, 0.08);
+}
+
+.admin-dashboard-page .admin-status-donut > div {
+    width: 94px;
+    height: 94px;
+    border: 5px solid #ffffff;
+    box-shadow: 0 1px 8px rgba(7, 59, 112, 0.08);
+}
+
+.admin-dashboard-page .admin-status-donut strong {
+    color: #073b70;
+    font-size: 1.35rem;
+}
+
+.admin-dashboard-page .admin-status-legend li {
+    padding: 7px 0;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.admin-dashboard-page .admin-status-legend strong {
+    color: #173b5d;
+}
+
+html[data-tema="escuro"] .secretary-workflow .workflow-header {
+    background: linear-gradient(115deg, #102b4b, #163958);
+    border-color: #294969;
+    border-left-color: #f5b400;
+}
+
+html[data-tema="escuro"] .secretary-workflow .workflow-header h1,
+html[data-tema="escuro"] .secretary-workflow .applicant-heading h3,
+html[data-tema="escuro"] .secretary-workflow .personal-data span,
+html[data-tema="escuro"] .secretary-workflow .review-meta strong,
+html[data-tema="escuro"] .secretary-workflow .application-documents h4,
+html[data-tema="escuro"] .secretary-workflow .applicant-card > form label {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .secretary-workflow .workflow-header p,
+html[data-tema="escuro"] .secretary-workflow .applicant-heading p {
+    color: #b7cce0;
+}
+
+html[data-tema="escuro"] .secretary-workflow .personal-data div,
+html[data-tema="escuro"] .secretary-workflow .application-summary span,
+html[data-tema="escuro"] .secretary-workflow .application-documents,
+html[data-tema="escuro"] .secretary-workflow .applicant-card > form {
+    background: #0b213b;
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .secretary-workflow .application-summary,
+html[data-tema="escuro"] .secretary-workflow .review-row {
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .secretary-workflow .review-row select,
+html[data-tema="escuro"] .secretary-workflow .review-note,
+html[data-tema="escuro"] .secretary-workflow .applicant-card > form select,
+html[data-tema="escuro"] .secretary-workflow .applicant-card > form textarea {
+    color: #edf5fc;
+    background: #102b4b;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .secretary-workflow .file-link {
+    color: #a9dcfa;
+    background: #173c60;
+}
+
+html[data-tema="escuro"] .admin-dashboard-page .admin-panel-heading {
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .admin-dashboard-page .admin-recent-list li:hover {
+    background: #173c60;
+}
+
+html[data-tema="escuro"] .admin-dashboard-page .admin-status-donut {
+    background: #173c60;
+}
+
+html[data-tema="escuro"] .admin-dashboard-page .admin-status-donut > div {
+    background: #102b4b;
+    border-color: #102b4b;
+}
+
+html[data-tema="escuro"] .admin-dashboard-page .admin-status-legend li {
+    border-color: #294969;
+}
+
+@media (max-width: 760px) {
+    .secretary-workflow .workflow-shell {
+        width: min(calc(100% - 28px), 620px);
+        padding-top: 22px !important;
+    }
+
+    .secretary-workflow .workflow-header {
+        padding: 20px 18px;
+    }
+
+    .secretary-workflow .workflow-theme-toggle {
+        top: 13px;
+        right: 13px;
+    }
+
+    .secretary-workflow .workflow-header h1 {
+        max-width: calc(100% - 48px);
+    }
+
+    .secretary-workflow .applicant-card {
+        padding: 17px;
+    }
+
+    .secretary-workflow .personal-data {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .secretary-workflow .application-summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .secretary-workflow .application-summary span {
+        min-width: 0;
+    }
+
+    .secretary-workflow .review-row form {
+        grid-template-columns: 1fr;
+    }
+
+    .secretary-workflow .review-row .btn,
+    .secretary-workflow .applicant-card > form .btn {
+        width: 100%;
+    }
+
+    .secretary-workflow .applicant-card > form .btn {
+        justify-self: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .secretary-workflow .applicant-heading {
+        gap: 10px;
+    }
+
+    .secretary-workflow .applicant-heading .status-pill {
+        margin-left: 0;
+    }
+
+    .secretary-workflow .personal-data,
+    .secretary-workflow .application-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-dashboard-page .admin-recent-panel,
+    .admin-dashboard-page .admin-status-panel {
+        padding: 15px;
+    }
+
+    .admin-dashboard-page .admin-status-content {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

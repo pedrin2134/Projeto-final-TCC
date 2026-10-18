@@ -3,7 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['usuario_id']) || (int)($_SESSION['perfil_id'] ?? 0) !== 2) {
+require_once __DIR__ . '/../../controller/Autorizacao.php';
+
+if (!isset($_SESSION['usuario_id']) || (int)($_SESSION['perfil_id'] ?? 0) !== 2
+    || !Autorizacao::usuarioTemPermissao('GERENCIAR_PRE_MATRICULAS')) {
     header('Location: ../login.php');
     exit();
 }
@@ -31,7 +34,7 @@ include __DIR__ . '/../includes/topo.php';
         </header>
 
         <?php if (($_GET['erro'] ?? '') === 'documentos'): ?>
-            <p style="color: red;">A pré-matrícula só pode ser aprovada depois que todos os documentos obrigatórios forem deferidos.</p>
+            <p class="workflow-feedback workflow-feedback-error" role="alert">A pré-matrícula só pode ser aprovada depois que todos os documentos obrigatórios forem deferidos.</p>
         <?php endif; ?>
         <?php if (($_GET['resultado'] ?? '') === 'ok'): ?>
             <p class="workflow-feedback workflow-feedback-success" role="status">Avaliação do documento registrada com sucesso.</p>
@@ -41,7 +44,7 @@ include __DIR__ . '/../includes/topo.php';
 
         <?php if ($preMatriculas): ?>
             <?php foreach ($preMatriculas as $preMatricula): ?>
-                <div class="card applicant-card" style="margin-bottom: 20px;">
+                <div class="card applicant-card">
                     <div class="applicant-heading">
                         <?php if (!empty($preMatricula['aluno_foto'])): ?><img class="student-photo" src="../../<?= htmlspecialchars($preMatricula['aluno_foto']) ?>" alt="Foto de <?= htmlspecialchars($preMatricula['aluno_nome']) ?>"><?php else: ?><span class="avatar-badge"><?= strtoupper(substr($preMatricula['aluno_nome'], 0, 1)) ?></span><?php endif; ?>
                         <div><h3><?= htmlspecialchars($preMatricula['aluno_nome']) ?></h3><p><?= htmlspecialchars($preMatricula['aluno_email']) ?></p></div><span class="status-pill status-<?= strtolower(str_replace(' ', '-', $preMatricula['status'])) ?>"><?= htmlspecialchars($preMatricula['status']) ?></span>

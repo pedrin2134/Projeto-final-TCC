@@ -3,7 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION['usuario_id']) || !in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true)) {
+require_once __DIR__ . '/../controller/Autorizacao.php';
+
+if (!isset($_SESSION['usuario_id']) || !in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true)
+    || !Autorizacao::usuarioTemPermissao('GERENCIAR_CURSOS')) {
     header('Location: login.php');
     exit();
 }

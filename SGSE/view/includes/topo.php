@@ -10,6 +10,10 @@ $carregarEstilosHome = (bool)array_intersect(
     ['admin-dashboard-page', 'user-home-page', 'service-requests-page', 'profile-page'],
     $classesCorpo ?: []
 );
+$carregarEstilosPreMatricula = (bool)array_intersect(
+    ['admin-dashboard-page', 'secretary-workflow'],
+    $classesCorpo ?: []
+);
 
 $baseDir = $posicaoView !== false
     ? substr($caminhoScript, 0, $posicaoView + 1)
@@ -27,6 +31,9 @@ $baseDir = $posicaoView !== false
     <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_topo.css?v=<?= time(); ?>">
     <?php if ($carregarEstilosHome): ?>
         <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_home.css?v=<?= time() ?>">
+    <?php endif; ?>
+    <?php if ($carregarEstilosPreMatricula): ?>
+        <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_matricula.css?v=<?= time() ?>">
     <?php endif; ?>
 </head>
 <body class="<?= !empty($exibeMenuAdministrativo) ? 'manager-body ' : '' ?><?= htmlspecialchars($classeCorpo ?? '', ENT_QUOTES, 'UTF-8') ?>">
