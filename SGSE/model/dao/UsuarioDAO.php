@@ -129,7 +129,7 @@ class UsuarioDAO {
     public function listarSecretarias(string $busca = ''): array {
         try {
             $sql = "SELECT u.id_usuario AS id, p.nome, p.cpf, p.telefone,
-                           p.data_nascimento, u.email, u.status
+                               p.data_nascimento, u.email, u.foto_perfil, u.status
                     FROM usuarios u
                     INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
                     WHERE u.id_perfil = 2";
@@ -153,7 +153,7 @@ class UsuarioDAO {
         try {
             $stmt = Conexao::getConexao()->prepare(
                 "SELECT u.id_usuario AS id, p.nome, p.cpf, p.telefone,
-                        p.data_nascimento, u.email, u.status
+                        p.data_nascimento, u.email, u.foto_perfil, u.status
                  FROM usuarios u
                  INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
                  WHERE u.id_usuario = ? AND u.id_perfil = 2"
@@ -257,7 +257,7 @@ class UsuarioDAO {
 
     public function listar() {
         try {
-            $sql = "SELECT u.id_usuario AS id, p.nome, u.email,
+            $sql = "SELECT u.id_usuario AS id, p.nome, u.email, u.foto_perfil,
                            u.id_perfil AS perfil_id, u.status
                     FROM usuarios u
                     INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
@@ -307,6 +307,65 @@ class UsuarioDAO {
         } catch (PDOException $e) {
             error_log('Erro ao carregar o painel do administrador: ' . $e->getMessage());
             throw new RuntimeException('Não foi possível carregar os dados do painel.', 0, $e);
+        }
+    }
+
+    public function listarNotificacoesAdministrador(): array {
+        try {
+            $stmt = Conexao::getConexao()->query(
+                "SELECT notificacoes.id, notificacoes.tipo, notificacoes.titulo,
+                        notificacoes.descricao, notificacoes.criado_em
+                 FROM (
+                    SELECT CONCAT('solicitacao-', s.id_solicitacao) AS id,
+                           'solicitacao' AS tipo,
+                           CONCAT('Solicitação #', s.numero_protocolo) AS titulo,
+                           CONCAT(ts.nome, ' solicitada por ', p.nome, '.') AS descricao,
+                           s.data_abertura AS criado_em
+                    FROM solicitacoes s
+                    INNER JOIN tipos_solicitacao ts
+                      ON ts.id_tipo_solicitacao = s.id_tipo_solicitacao
+                    INNER JOIN usuarios u ON u.id_usuario = s.id_aluno
+                    INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
+
+                    UNION ALL
+
+                    SELECT CONCAT('pre-matricula-', pm.id_pre_matricula) AS id,
+                           'pre_matricula' AS tipo,
+                           'Nova pré-matrícula' AS titulo,
+                           CONCAT(p.nome, ' fez pré-matrícula no curso de ', c.sigla, '.') AS descricao,
+                           pm.data_inscricao AS criado_em
+                    FROM pre_matricula pm
+                    INNER JOIN usuarios u ON u.id_usuario = pm.id_usuario
+                    INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
+                    INNER JOIN cursos c ON c.id_curso = pm.id_curso
+                 ) AS notificacoes
+                 ORDER BY notificacoes.criado_em DESC
+                 LIMIT 10"
+            );
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Erro ao carregar notificações administrativas: ' . $e->getMessage());
+            throw new RuntimeException('Não foi possível carregar as notificações.', 0, $e);
+        }
+    }
+
+    public function obterContadoresMenuAdministrador(): array {
+        try {
+            $stmt = Conexao::getConexao()->query(
+                "SELECT
+                    (SELECT COUNT(*) FROM usuarios) AS usuarios,
+                    (SELECT COUNT(*) FROM cursos WHERE status = 'Ativo') AS cursos,
+                    (SELECT COUNT(*) FROM solicitacoes
+                     WHERE status IN ('Aberta', 'Em Atendimento')) AS solicitacoes"
+            );
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: [
+                'usuarios' => 0,
+                'cursos' => 0,
+                'solicitacoes' => 0
+            ];
+        } catch (PDOException $e) {
+            error_log('Erro ao carregar contadores do menu administrativo: ' . $e->getMessage());
+            throw new RuntimeException('Não foi possível carregar os contadores do menu.', 0, $e);
         }
     }
 
@@ -534,24 +593,13 @@ class UsuarioDAO {
         }
     }
 
-    public function listarCursosGerenciamento(string $busca = ''): array {
+    public function listarCursosGerenciamento(): array {
         try {
-            $sql = "SELECT c.id_curso, c.nome, c.sigla, c.imagem, c.status,
-                           COUNT(pm.id_pre_matricula) AS total_pre_matriculas
-                    FROM cursos c
-                    LEFT JOIN pre_matricula pm ON pm.id_curso = c.id_curso";
-            $params = [];
-
-            if ($busca !== '') {
-                $sql .= " WHERE c.nome LIKE ? OR c.sigla LIKE ?";
-                $termo = '%' . $busca . '%';
-                $params = [$termo, $termo];
-            }
-
-            $sql .= " GROUP BY c.id_curso, c.nome, c.sigla, c.imagem, c.status
-                      ORDER BY c.nome";
-            $stmt = Conexao::getConexao()->prepare($sql);
-            $stmt->execute($params);
+            $stmt = Conexao::getConexao()->query(
+                "SELECT id_curso, nome, sigla, imagem, status
+                 FROM cursos
+                 ORDER BY nome"
+            );
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log('Erro ao listar cursos para gerenciamento: ' . $e->getMessage());

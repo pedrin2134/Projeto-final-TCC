@@ -29,8 +29,6 @@ $exibeMenuAdministrativo = true;
 $classeCorpo = 'workflow-page service-requests-page';
 include __DIR__ . '/../includes/topo.php';
 ?>
-<script src="../../assets/js/tema.js?v=<?= filemtime(__DIR__ . '/../../assets/js/tema.js') ?>" defer></script>
-
 <div class="admin-workspace">
     <?php include __DIR__ . '/../includes/menu_administrativo.php'; ?>
     <div class="admin-workspace-content">
@@ -40,7 +38,6 @@ include __DIR__ . '/../includes/topo.php';
                     <h1>Solicitações de documentos</h1>
                     <p>Consulte os pedidos dos alunos, atualize o andamento e registre a resposta.</p>
                 </div>
-                <button type="button" class="theme-toggle workflow-theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>
             </header>
 
             <?php if ($erroCarregamento): ?>
@@ -64,8 +61,11 @@ include __DIR__ . '/../includes/topo.php';
                             </div>
                             <span class="service-request-status status-<?= strtolower(str_replace(' ', '-', $solicitacao['status'])) ?>"><?= htmlspecialchars(str_replace('Concluida', 'Concluída', $solicitacao['status']), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
-                        <p><?= nl2br(htmlspecialchars($solicitacao['descricao'], ENT_QUOTES, 'UTF-8')) ?></p>
-                        <small>Recebida em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($solicitacao['data_abertura'])), ENT_QUOTES, 'UTF-8') ?></small>
+                        <div class="service-request-message">
+                            <strong>Mensagem do aluno:</strong>
+                            <p><?= nl2br(htmlspecialchars($solicitacao['descricao'], ENT_QUOTES, 'UTF-8')) ?></p>
+                            <small>Recebida em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($solicitacao['data_abertura'])), ENT_QUOTES, 'UTF-8') ?></small>
+                        </div>
                         <?php if (!empty($solicitacao['arquivo_resposta'])): ?>
                             <p class="service-request-file"><a href="../../controller/UsuarioController.php?acao=baixar_arquivo_solicitacao&amp;id=<?= (int)$solicitacao['id_solicitacao'] ?>">Baixar documento enviado ao aluno</a></p>
                         <?php endif; ?>
@@ -73,17 +73,25 @@ include __DIR__ . '/../includes/topo.php';
                         <?php if (in_array($solicitacao['status'], ['Aberta', 'Em Atendimento'], true)): ?>
                             <form class="service-request-form service-staff-form" action="../../controller/UsuarioController.php" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="id_solicitacao" value="<?= (int)$solicitacao['id_solicitacao'] ?>">
-                                <label for="status_<?= (int)$solicitacao['id_solicitacao'] ?>">Andamento</label>
-                                <select id="status_<?= (int)$solicitacao['id_solicitacao'] ?>" name="status" required>
-                                    <option value="Em Atendimento" <?= $solicitacao['status'] === 'Em Atendimento' ? 'selected' : '' ?>>Em atendimento</option>
-                                    <option value="Concluida">Concluída</option>
-                                    <option value="Cancelada">Cancelar solicitação</option>
-                                </select>
-                                <label for="resposta_<?= (int)$solicitacao['id_solicitacao'] ?>">Resposta ao aluno</label>
-                                <textarea id="resposta_<?= (int)$solicitacao['id_solicitacao'] ?>" name="resposta" rows="3" maxlength="2000" placeholder="Informe a orientação ou o resultado do atendimento"><?= htmlspecialchars($solicitacao['resposta'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
-                                <label for="arquivo_resposta_<?= (int)$solicitacao['id_solicitacao'] ?>">Anexar documento para o aluno (opcional)</label>
-                                <input id="arquivo_resposta_<?= (int)$solicitacao['id_solicitacao'] ?>" type="file" name="arquivo_resposta" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
-                                <small class="service-request-file-help">PDF, JPG ou PNG · até 10 MB<?= !empty($solicitacao['arquivo_resposta']) ? ' · um arquivo já foi enviado; selecionar outro irá substituí-lo' : '' ?></small>
+                                <div class="service-request-form-grid">
+                                    <div class="service-request-form-field">
+                                        <label for="status_<?= (int)$solicitacao['id_solicitacao'] ?>">Andamento</label>
+                                        <select id="status_<?= (int)$solicitacao['id_solicitacao'] ?>" name="status" required>
+                                            <option value="Em Atendimento" <?= $solicitacao['status'] === 'Em Atendimento' ? 'selected' : '' ?>>Em atendimento</option>
+                                            <option value="Concluida">Concluída</option>
+                                            <option value="Cancelada">Cancelar solicitação</option>
+                                        </select>
+                                    </div>
+                                    <div class="service-request-form-field">
+                                        <label for="arquivo_resposta_<?= (int)$solicitacao['id_solicitacao'] ?>">Anexar documento para o aluno (opcional)</label>
+                                        <input id="arquivo_resposta_<?= (int)$solicitacao['id_solicitacao'] ?>" type="file" name="arquivo_resposta" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                                        <small class="service-request-file-help">PDF, JPG ou PNG · até 10 MB<?= !empty($solicitacao['arquivo_resposta']) ? ' · um arquivo já foi enviado; selecionar outro irá substituí-lo' : '' ?></small>
+                                    </div>
+                                </div>
+                                <div class="service-request-form-field">
+                                    <label for="resposta_<?= (int)$solicitacao['id_solicitacao'] ?>">Resposta ao aluno</label>
+                                    <textarea id="resposta_<?= (int)$solicitacao['id_solicitacao'] ?>" name="resposta" rows="3" maxlength="2000" placeholder="Informe a orientação ou o resultado do atendimento"><?= htmlspecialchars($solicitacao['resposta'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
+                                </div>
                                 <button type="submit" name="btn_atualizar_solicitacao" class="btn btn-primary">Salvar atendimento</button>
                             </form>
                         <?php elseif (!empty($solicitacao['resposta'])): ?>

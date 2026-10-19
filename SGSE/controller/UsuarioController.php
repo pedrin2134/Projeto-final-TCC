@@ -346,8 +346,8 @@ class UsuarioController {
         return $dao->listarCursosAtivos();
     }
 
-    public function listarCursosGerenciamento(string $busca = ''): array {
-        return (new UsuarioDAO())->listarCursosGerenciamento($busca);
+    public function listarCursosGerenciamento(): array {
+        return (new UsuarioDAO())->listarCursosGerenciamento();
     }
 
     public function cadastrarCurso(string $nome, string $sigla, ?string $imagem = null): string {

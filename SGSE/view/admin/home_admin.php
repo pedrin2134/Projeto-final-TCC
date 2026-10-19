@@ -66,18 +66,8 @@ include_once __DIR__ . '/../includes/topo.php';
 <div class="admin-workspace">
     <?php include __DIR__ . '/../includes/menu_administrativo.php'; ?>
     <div class="admin-workspace-content">
-        <div class="admin-dashboard">
-            <div class="admin-dashboard-topline">
-                <div class="admin-dashboard-breadcrumb">
-                    <span aria-hidden="true">⌂</span>
-                    <span>Escola de Ceilândia</span>
-                    <span aria-hidden="true">/</span>
-                    <strong>SGSE</strong>
-                </div>
-                <span class="admin-dashboard-role">Área administrativa</span>
-            </div>
-
-            <?php if ($dashboardErro): ?>
+    <div class="admin-dashboard">
+        <?php if ($dashboardErro): ?>
                 <p class="admin-dashboard-alert" role="alert">Não foi possível carregar todos os dados do painel. Atualize a página para tentar novamente.</p>
             <?php endif; ?>
 
@@ -85,11 +75,7 @@ include_once __DIR__ . '/../includes/topo.php';
                 <div>
                     <span class="admin-welcome-eyebrow">PAINEL DO ADMINISTRADOR</span>
                     <h1 id="admin-welcome-title">Olá, <?= htmlspecialchars($primeiroNome, ENT_QUOTES, 'UTF-8') ?>!</h1>
-                    <p>Gerencie usuários, secretárias e cursos da Escola Técnica de Ceilândia.</p>
-                </div>
-                <div class="admin-welcome-mark" aria-hidden="true">
-                    <span>SGSE</span>
-                    <span class="admin-welcome-mark-icon">⌂</span>
+                    <p>Gerencie usuários, secretárias, solicitações e cursos da Escola Técnica de Ceilândia.</p>
                 </div>
                 <div class="admin-date-card">
                     <span class="admin-date-icon" aria-hidden="true">▣</span>
@@ -139,7 +125,7 @@ include_once __DIR__ . '/../includes/topo.php';
             </section>
 
             <section class="admin-dashboard-bottom">
-                <article class="admin-panel admin-recent-panel">
+                <article class="admin-panel admin-recent-panel" id="pre-matriculas">
                     <div class="admin-panel-heading">
                         <div><span class="admin-panel-eyebrow">ACOMPANHAMENTO</span><h2>Pré-matrículas recentes</h2></div>
                         <span class="admin-panel-count">Últimas <?= count($recentes) ?></span>

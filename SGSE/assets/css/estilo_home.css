@@ -63,7 +63,7 @@
 }
 
 .admin-dashboard-page .conteudo-principal {
-    padding-top: 0;
+    padding-top: 82px;
 }
 
 .admin-dashboard {
@@ -645,7 +645,7 @@ html[data-tema="escuro"] .admin-status-pill {
 
 @media (max-width: 760px) {
     .admin-dashboard-page .conteudo-principal {
-        padding-top: 14px;
+        padding-top: calc(65px + 35vh + 14px);
     }
 
     .admin-dashboard-topline {
@@ -1595,5 +1595,163 @@ html[data-tema="escuro"] .profile-message-error {
 
     .profile-header {
         align-items: flex-start;
+    }
+}
+
+.service-requests-page .workflow-shell {
+    padding-top: 6px !important;
+}
+
+.service-requests-page .service-requests-content {
+    max-width: 1000px;
+}
+
+.service-requests-page .service-requests-header {
+    align-items: center;
+    border: 0;
+}
+
+.service-requests-page .service-requests-header h1 {
+    color: #173b5d;
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+}
+
+.service-requests-page .service-requests-header p {
+    color: #687b8e;
+}
+
+.service-requests-page .service-request-card {
+    padding: 19px 20px;
+    border-color: #e1e8ef;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(16, 43, 67, 0.04);
+}
+
+.service-requests-page .service-request-heading {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.service-requests-page .service-request-heading h3 {
+    margin: 4px 0;
+    color: #173b5d;
+}
+
+.service-requests-page .service-request-message {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: #f6f9fc;
+    border: 1px solid #e8eef4;
+    border-radius: 9px;
+}
+
+.service-requests-page .service-request-message strong {
+    color: #36516a;
+    font-size: 0.76rem;
+}
+
+.service-requests-page .service-request-message p {
+    margin: 5px 0;
+    color: #5b7084;
+    font-size: 0.78rem;
+}
+
+.service-requests-page .service-request-message small {
+    color: #8a9aab;
+    font-size: 0.68rem;
+}
+
+.service-requests-page .service-staff-form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 13px;
+    padding-top: 13px;
+    border-color: #edf1f5;
+}
+
+.service-requests-page .service-request-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.service-requests-page .service-request-form-field {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+}
+
+.service-requests-page .service-request-form-field label {
+    color: #405a72;
+    font-size: 0.74rem;
+}
+
+.service-requests-page .service-request-form-field select,
+.service-requests-page .service-request-form-field textarea,
+.service-requests-page .service-request-form-field input[type="file"] {
+    min-height: 39px;
+    margin: 0;
+    padding: 8px 10px;
+    color: #273f56;
+    background: #ffffff;
+    border: 1px solid #dce5ed;
+    border-radius: 8px;
+    font-size: 0.76rem;
+}
+
+.service-requests-page .service-request-form-field textarea {
+    min-height: 66px;
+}
+
+.service-requests-page .service-request-form-field input[type="file"] {
+    height: auto;
+    padding: 5px;
+}
+
+.service-requests-page .service-request-file-help {
+    color: #8291a2;
+    font-size: 0.66rem;
+}
+
+.service-requests-page .service-request-form .btn {
+    min-height: 36px;
+    margin: 0;
+    padding: 8px 13px;
+    background: #0876b9;
+    border-radius: 7px;
+    font-size: 0.75rem;
+}
+
+.service-requests-page .service-request-form .btn:hover {
+    background: #065f96;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-requests-header h1,
+html[data-tema="escuro"] .service-requests-page .service-request-heading h3 {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-requests-header p {
+    color: #b7cce0;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-message,
+html[data-tema="escuro"] .service-requests-page .service-request-form-field select,
+html[data-tema="escuro"] .service-requests-page .service-request-form-field textarea,
+html[data-tema="escuro"] .service-requests-page .service-request-form-field input[type="file"] {
+    color: #edf5fc;
+    background: #0b213b;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-message strong,
+html[data-tema="escuro"] .service-requests-page .service-request-message p,
+html[data-tema="escuro"] .service-requests-page .service-request-form-field label {
+    color: #d6e5f5;
+}
+
+@media (max-width: 760px) {
+    .service-requests-page .service-request-form-grid {
+        grid-template-columns: 1fr;
     }
 }

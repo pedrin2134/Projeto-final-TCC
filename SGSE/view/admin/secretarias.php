@@ -45,6 +45,7 @@ $mensagens = [
 ];
 $resultado = is_string($_GET['resultado'] ?? null) ? $_GET['resultado'] : '';
 $exibeMenuAdministrativo = true;
+$classeCorpo = 'admin-secretaries-page';
 include __DIR__ . '/../includes/topo.php';
 ?>
 <div class="admin-workspace">
@@ -56,7 +57,7 @@ include __DIR__ . '/../includes/topo.php';
                     <h1>Gerenciar secretárias</h1>
                     <p>Cadastre, consulte, altere e exclua as contas da secretaria escolar.</p>
                 </div>
-                <a class="btn" href="cadastrar_secretaria.php">+ Cadastrar secretária</a>
+                <a class="btn admin-primary-button" href="cadastrar_secretaria.php">+ Cadastrar secretária</a>
             </header>
 
             <?php if (isset($mensagens[$resultado])): ?>
@@ -85,6 +86,20 @@ include __DIR__ . '/../includes/topo.php';
                             </div>
                         </div>
                         <dl class="secretary-data">
+                            <div>
+                                <dt>Foto do perfil</dt>
+                                <dd>
+                                    <?php if (is_string($secretariaConsulta['foto_perfil'] ?? null) && preg_match('#^uploads/perfis/[a-f0-9]{32}\.(jpg|png|webp)$#', $secretariaConsulta['foto_perfil']) && is_file(__DIR__ . '/../../' . $secretariaConsulta['foto_perfil'])): ?>
+                                        <img class="secretary-person-avatar secretary-person-avatar-image"
+                                             src="../../<?= htmlspecialchars($secretariaConsulta['foto_perfil'], ENT_QUOTES, 'UTF-8') ?>"
+                                             alt="Foto de <?= htmlspecialchars($secretariaConsulta['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <?php else: ?>
+                                        <span class="secretary-person-avatar" aria-label="Sem foto de perfil">
+                                            <?= htmlspecialchars(mb_strtoupper(mb_substr($secretariaConsulta['nome'], 0, 1, 'UTF-8'), 'UTF-8'), ENT_QUOTES, 'UTF-8') ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </dd>
+                            </div>
                             <div><dt>Nome</dt><dd><?= htmlspecialchars($secretariaConsulta['nome'], ENT_QUOTES, 'UTF-8') ?></dd></div>
                             <div><dt>CPF</dt><dd><?= htmlspecialchars($secretariaConsulta['cpf'], ENT_QUOTES, 'UTF-8') ?></dd></div>
                             <div><dt>Telefone</dt><dd><?= htmlspecialchars($secretariaConsulta['telefone'] ?? '', ENT_QUOTES, 'UTF-8') ?></dd></div>
@@ -100,7 +115,10 @@ include __DIR__ . '/../includes/topo.php';
             <?php endif; ?>
 
             <section class="secretary-list card">
-                <h2>Secretárias cadastradas</h2>
+                <div class="secretary-list-heading">
+                    <h2>Secretárias cadastradas</h2>
+                    <span><?= count($secretarias) ?> <?= count($secretarias) === 1 ? 'secretária' : 'secretárias' ?></span>
+                </div>
                 <form class="secretary-search" action="secretarias.php" method="GET" role="search">
                     <label for="busca-secretaria">Buscar por nome ou e-mail</label>
                     <div>
@@ -116,25 +134,45 @@ include __DIR__ . '/../includes/topo.php';
                 <?php if ($erroListagem): ?>
                     <p class="secretary-alert error" role="alert">Não foi possível carregar a lista de secretárias. Atualize a página e tente novamente.</p>
                 <?php elseif ($secretarias): ?>
-                    <div class="secretary-table-wrap">
-                        <table>
-                            <thead>
-                                <tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Ações</th></tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($secretarias as $secretaria): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($secretaria['nome'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td><?= htmlspecialchars($secretaria['email'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td><?= htmlspecialchars($secretaria['status'], ENT_QUOTES, 'UTF-8') ?></td>
-                                        <td class="secretary-actions">
-                                            <a class="btn" href="secretarias.php?ver=<?= (int)$secretaria['id'] ?>">Consultar</a>
-                                            <a class="btn" href="editar_secretaria.php?id=<?= (int)$secretaria['id'] ?>">Alterar</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                    <div class="secretary-card-grid">
+                        <?php foreach ($secretarias as $secretaria): ?>
+                            <?php
+                            $nomeSecretaria = (string)$secretaria['nome'];
+                            $iniciaisSecretaria = mb_strtoupper(mb_substr($nomeSecretaria, 0, 2, 'UTF-8'), 'UTF-8');
+                            $statusSecretariaAtivo = strtoupper((string)$secretaria['status']) !== 'INATIVO';
+                            $fotoPerfilSecretaria = is_string($secretaria['foto_perfil'] ?? null)
+                                && preg_match('#^uploads/perfis/[a-f0-9]{32}\.(jpg|png|webp)$#', $secretaria['foto_perfil'])
+                                && is_file(__DIR__ . '/../../' . $secretaria['foto_perfil'])
+                                ? $secretaria['foto_perfil']
+                                : null;
+                            ?>
+                            <article class="secretary-person-card">
+                                <div class="secretary-person-heading">
+                                    <?php if ($fotoPerfilSecretaria !== null): ?>
+                                        <img class="secretary-person-avatar secretary-person-avatar-image"
+                                             src="../../<?= htmlspecialchars($fotoPerfilSecretaria, ENT_QUOTES, 'UTF-8') ?>"
+                                             alt="Foto de <?= htmlspecialchars($nomeSecretaria, ENT_QUOTES, 'UTF-8') ?>">
+                                    <?php else: ?>
+                                        <span class="secretary-person-avatar" aria-label="Sem foto de perfil"><?= htmlspecialchars($iniciaisSecretaria, ENT_QUOTES, 'UTF-8') ?></span>
+                                    <?php endif; ?>
+                                    <div>
+                                        <h3><?= htmlspecialchars($nomeSecretaria, ENT_QUOTES, 'UTF-8') ?></h3>
+                                        <p>ID Perfil: 2 (Secretaria)</p>
+                                    </div>
+                                    <span class="admin-status-badge <?= $statusSecretariaAtivo ? 'is-active' : 'is-inactive' ?>"><?= htmlspecialchars($secretaria['status'], ENT_QUOTES, 'UTF-8') ?></span>
+                                </div>
+                                <div class="secretary-person-details">
+                                    <span><?= htmlspecialchars($secretaria['email'], ENT_QUOTES, 'UTF-8') ?></span>
+                                    <?php if (!empty($secretaria['telefone'])): ?>
+                                        <span><?= htmlspecialchars($secretaria['telefone'], ENT_QUOTES, 'UTF-8') ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="secretary-actions">
+                                    <a class="btn secretary-secondary-button" href="secretarias.php?ver=<?= (int)$secretaria['id'] ?>">Consultar</a>
+                                    <a class="btn" href="editar_secretaria.php?id=<?= (int)$secretaria['id'] ?>">Editar</a>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
                     </div>
                 <?php else: ?>
                     <p class="secretary-empty">

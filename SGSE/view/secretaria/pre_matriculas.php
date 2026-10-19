@@ -22,7 +22,6 @@ $exibeMenuAdministrativo = true;
 $classeCorpo = 'workflow-page secretary-workflow';
 include __DIR__ . '/../includes/topo.php';
 ?>
-<script src="../../assets/js/tema.js?v=<?php echo filemtime(__DIR__ . '/../../assets/js/tema.js'); ?>" defer></script>
 <div class="admin-workspace">
     <?php include __DIR__ . '/../includes/menu_administrativo.php'; ?>
     <div class="admin-workspace-content">

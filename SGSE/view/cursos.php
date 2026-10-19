@@ -17,12 +17,25 @@ require_once __DIR__ . '/../controller/UsuarioController.php';
 
 $controller = new UsuarioController();
 $busca = is_string($_GET['busca'] ?? null) ? trim($_GET['busca']) : '';
-$cursos = $controller->listarCursosGerenciamento($busca);
+$statusFiltro = is_string($_GET['status'] ?? null) ? $_GET['status'] : '';
+$statusFiltro = in_array($statusFiltro, ['Ativo', 'Inativo'], true) ? $statusFiltro : '';
+$todosCursos = $controller->listarCursosGerenciamento();
+$totalCursos = count($todosCursos);
+$totalCursosAtivos = count(array_filter($todosCursos, static function (array $curso): bool {
+    return ($curso['status'] ?? '') === 'Ativo';
+}));
+$cursos = array_values(array_filter($todosCursos, static function (array $curso) use ($busca, $statusFiltro): bool {
+    $correspondeBusca = $busca === ''
+        || mb_stripos((string)($curso['nome'] ?? ''), $busca, 0, 'UTF-8') !== false
+        || mb_stripos((string)($curso['sigla'] ?? ''), $busca, 0, 'UTF-8') !== false;
+    $correspondeStatus = $statusFiltro === '' || ($curso['status'] ?? '') === $statusFiltro;
+    return $correspondeBusca && $correspondeStatus;
+}));
 $cursoEdicao = null;
 $idEdicao = filter_var($_GET['editar'] ?? null, FILTER_VALIDATE_INT);
 
 if ($idEdicao && $idEdicao > 0) {
-    foreach ($cursos as $curso) {
+    foreach ($todosCursos as $curso) {
         if ((int)$curso['id_curso'] === $idEdicao) {
             $cursoEdicao = $curso;
             break;
@@ -44,18 +57,70 @@ $mensagens = [
 ];
 $resultado = is_string($_GET['resultado'] ?? null) ? $_GET['resultado'] : '';
 $exibeMenuAdministrativo = true;
-$classeCorpo = 'workflow-page';
+$classeCorpo = 'workflow-page admin-courses-page';
 include __DIR__ . '/includes/topo.php';
 ?>
-<script src="../assets/js/tema.js?v=<?= filemtime(__DIR__ . '/../assets/js/tema.js') ?>" defer></script>
 <div class="admin-workspace">
     <?php include __DIR__ . '/includes/menu_administrativo.php'; ?>
     <div class="admin-workspace-content">
     <div class="main-content wide-shell">
-        <header class="workflow-header">
-            <h1>Gerenciar cursos</h1>
-            <p>Cadastre, consulte, altere e exclua cursos disponíveis para pré-matrícula.</p>
-            <button type="button" class="theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>
+        <header class="workflow-header admin-page-header">
+            <div>
+                <h1><span aria-hidden="true">▣</span> Gestão de Cursos Técnicos</h1>
+                <p>Gerencie a oferta de cursos técnicos da instituição.</p>
+            </div>
+            <details class="course-editor" <?= $cursoEdicao ? 'open' : '' ?>>
+                <summary class="btn admin-primary-button"><?= $cursoEdicao ? 'Editar curso' : '+ Novo Curso' ?></summary>
+                <section class="course-editor-panel">
+                    <h2><?= $cursoEdicao ? 'Alterar curso' : 'Cadastrar curso' ?></h2>
+                    <form action="../controller/UsuarioController.php" method="POST" enctype="multipart/form-data">
+                        <?php if ($cursoEdicao): ?>
+                            <input type="hidden" name="id_curso" value="<?= (int)$cursoEdicao['id_curso'] ?>">
+                        <?php endif; ?>
+                        <div class="course-form-grid">
+                            <div class="course-form-field">
+                                <label for="nome">Nome do curso *</label>
+                                <input type="text" id="nome" name="nome" maxlength="100" required
+                                       value="<?= htmlspecialchars($cursoEdicao['nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                            </div>
+                            <div class="course-form-field">
+                                <label for="sigla">Sigla *</label>
+                                <input type="text" id="sigla" name="sigla" maxlength="10" pattern="[A-Za-z0-9]{2,10}" required
+                                       value="<?= htmlspecialchars($cursoEdicao['sigla'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                            </div>
+                            <div class="course-form-field course-form-field-wide">
+                                <label for="imagem">Foto do curso (JPG, PNG ou WebP; até 5 MB)</label>
+                                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp">
+                            </div>
+                            <?php if ($cursoEdicao): ?>
+                                <div class="course-form-field">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status" required>
+                                        <option value="Ativo" <?= $cursoEdicao['status'] === 'Ativo' ? 'selected' : '' ?>>Ativo</option>
+                                        <option value="Inativo" <?= $cursoEdicao['status'] === 'Inativo' ? 'selected' : '' ?>>Inativo</option>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($cursoEdicao && is_string($cursoEdicao['imagem'] ?? null) && preg_match('#^uploads/cursos/[a-f0-9]{32}\.(jpg|png|webp)$#', $cursoEdicao['imagem']) && is_file(__DIR__ . '/../' . $cursoEdicao['imagem'])): ?>
+                            <div class="course-image-current">
+                                <img src="../<?= htmlspecialchars($cursoEdicao['imagem'], ENT_QUOTES, 'UTF-8') ?>"
+                                     alt="Foto atual de <?= htmlspecialchars($cursoEdicao['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                                <label>
+                                    <input type="checkbox" name="remover_imagem" value="1">
+                                    Remover a foto atual
+                                </label>
+                            </div>
+                        <?php endif; ?>
+                        <div class="course-editor-actions">
+                            <button type="submit" name="<?= $cursoEdicao ? 'btn_atualizar_curso' : 'btn_cadastrar_curso' ?>" class="btn">
+                                <?= $cursoEdicao ? 'Salvar alterações' : 'Cadastrar curso' ?>
+                            </button>
+                            <a class="btn course-cancel-button" href="cursos.php">Cancelar</a>
+                        </div>
+                    </form>
+                </section>
+            </details>
         </header>
 
         <?php if (isset($mensagens[$resultado])): ?>
@@ -66,94 +131,83 @@ include __DIR__ . '/includes/topo.php';
             </p>
         <?php endif; ?>
 
-        <section class="card course-card">
-            <h2><?= $cursoEdicao ? 'Alterar curso' : 'Cadastrar curso' ?></h2>
-            <form action="../controller/UsuarioController.php" method="POST" enctype="multipart/form-data">
-                <?php if ($cursoEdicao): ?>
-                    <input type="hidden" name="id_curso" value="<?= (int)$cursoEdicao['id_curso'] ?>">
-                <?php endif; ?>
-                <label for="nome">Nome do curso</label>
-                <input type="text" id="nome" name="nome" maxlength="100" required
-                       value="<?= htmlspecialchars($cursoEdicao['nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                <label for="sigla">Sigla (2 a 10 letras ou números)</label>
-                <input type="text" id="sigla" name="sigla" maxlength="10" pattern="[A-Za-z0-9]{2,10}" required
-                       value="<?= htmlspecialchars($cursoEdicao['sigla'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                <label for="imagem">Foto do curso (JPG, PNG ou WebP; até 5 MB)</label>
-                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp">
-                <?php if ($cursoEdicao && !empty($cursoEdicao['imagem'])): ?>
-                    <div class="course-image-current">
-                        <img src="../<?= htmlspecialchars($cursoEdicao['imagem'], ENT_QUOTES, 'UTF-8') ?>"
-                             alt="Foto atual de <?= htmlspecialchars($cursoEdicao['nome'], ENT_QUOTES, 'UTF-8') ?>">
-                        <label>
-                            <input type="checkbox" name="remover_imagem" value="1">
-                            Remover a foto atual
-                        </label>
-                    </div>
-                <?php endif; ?>
-                <?php if ($cursoEdicao): ?>
-                    <label for="status">Status</label>
-                    <select id="status" name="status" required>
-                        <option value="Ativo" <?= $cursoEdicao['status'] === 'Ativo' ? 'selected' : '' ?>>Ativo</option>
-                        <option value="Inativo" <?= $cursoEdicao['status'] === 'Inativo' ? 'selected' : '' ?>>Inativo</option>
-                    </select>
-                    <button type="submit" name="btn_atualizar_curso" class="btn">Salvar alterações</button>
-                    <a class="btn" href="cursos.php">Cancelar</a>
-                <?php else: ?>
-                    <button type="submit" name="btn_cadastrar_curso" class="btn">Cadastrar curso</button>
-                <?php endif; ?>
-            </form>
+        <section class="course-admin-summary" aria-label="Resumo dos cursos">
+            <article><span>Total de cursos</span><strong><?= number_format($totalCursos, 0, ',', '.') ?></strong></article>
+            <article><span>Cursos ativos</span><strong><?= number_format($totalCursosAtivos, 0, ',', '.') ?></strong></article>
         </section>
 
-        <section class="card">
-            <h2>Cursos cadastrados</h2>
-            <form action="cursos.php" method="GET" role="search">
-                <label for="busca">Buscar por nome ou sigla</label>
-                <input type="search" id="busca" name="busca" value="<?= htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') ?>">
-                <button type="submit" class="btn">Buscar</button>
-                <?php if ($busca !== ''): ?>
-                    <a class="btn" href="cursos.php">Limpar busca</a>
-                <?php endif; ?>
-            </form>
+        <section class="course-admin-list" aria-labelledby="course-list-title">
+            <div class="course-admin-toolbar">
+                <h2 id="course-list-title">Cursos cadastrados</h2>
+                <form action="cursos.php" method="GET" role="search">
+                    <label class="visually-hidden" for="busca">Filtrar curso por nome ou sigla</label>
+                    <input type="search" id="busca" name="busca" placeholder="Filtrar curso por nome..." value="<?= htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') ?>">
+                    <label class="visually-hidden" for="status-filtro">Filtrar por status</label>
+                    <select id="status-filtro" name="status">
+                        <option value="">Todos os status</option>
+                        <option value="Ativo" <?= $statusFiltro === 'Ativo' ? 'selected' : '' ?>>Ativos</option>
+                        <option value="Inativo" <?= $statusFiltro === 'Inativo' ? 'selected' : '' ?>>Inativos</option>
+                    </select>
+                    <button type="submit" class="btn">Filtrar</button>
+                    <?php if ($busca !== '' || $statusFiltro !== ''): ?>
+                        <a class="btn course-cancel-button" href="cursos.php">Limpar</a>
+                    <?php endif; ?>
+                </form>
+            </div>
 
             <?php if ($cursos): ?>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr><th>Foto</th><th>Nome</th><th>Sigla</th><th>Status</th><th>Pré-matrículas</th><th>Ações</th></tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($cursos as $curso): ?>
-                                <tr>
-                                    <td>
-                                        <?php if (!empty($curso['imagem'])): ?>
-                                            <img class="course-image-thumbnail"
-                                                 src="../<?= htmlspecialchars($curso['imagem'], ENT_QUOTES, 'UTF-8') ?>"
-                                                 alt="Foto de <?= htmlspecialchars($curso['nome'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <?php else: ?>
-                                            <span class="course-image-placeholder">Sem foto</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($curso['nome']) ?></td>
-                                    <td><?= htmlspecialchars($curso['sigla']) ?></td>
-                                    <td><?= htmlspecialchars($curso['status']) ?></td>
-                                    <td><?= (int)$curso['total_pre_matriculas'] ?></td>
-                                    <td class="acoes-container">
-                                        <a class="btn" href="cursos.php?editar=<?= (int)$curso['id_curso'] ?><?= $busca !== '' ? '&amp;busca=' . rawurlencode($busca) : '' ?>">Alterar</a>
-                                        <form action="../controller/UsuarioController.php" method="POST" style="display: inline;">
-                                            <input type="hidden" name="id_curso" value="<?= (int)$curso['id_curso'] ?>">
-                                            <button type="submit" name="btn_excluir_curso" class="btn"
-                                                    onclick="return confirm('Confirma a exclusão deste curso? Cursos com pré-matrículas vinculadas não podem ser excluídos.');">
-                                                Excluir
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                <div class="course-admin-grid">
+                    <?php foreach ($cursos as $curso): ?>
+                        <?php
+                        $nomeCurso = (string)$curso['nome'];
+                        $imagemCurso = is_string($curso['imagem'] ?? null)
+                            && preg_match('#^uploads/cursos/[a-f0-9]{32}\.(jpg|png|webp)$#', $curso['imagem'])
+                            && is_file(__DIR__ . '/../' . $curso['imagem'])
+                            ? $curso['imagem']
+                            : null;
+                        $parametrosFiltroCurso = http_build_query(array_filter([
+                            'busca' => $busca,
+                            'status' => $statusFiltro
+                        ], static function (string $valor): bool {
+                            return $valor !== '';
+                        }));
+                        $urlEditarCurso = 'cursos.php?editar=' . (int)$curso['id_curso']
+                            . ($parametrosFiltroCurso !== '' ? '&' . $parametrosFiltroCurso : '');
+                        ?>
+                        <article class="course-admin-card">
+                            <div class="course-admin-photo">
+                                <?php if ($imagemCurso !== null): ?>
+                                    <img src="../<?= htmlspecialchars($imagemCurso, ENT_QUOTES, 'UTF-8') ?>"
+                                         alt="Foto do curso <?= htmlspecialchars($nomeCurso, ENT_QUOTES, 'UTF-8') ?>">
+                                <?php else: ?>
+                                    <span class="course-admin-photo-placeholder" aria-label="Foto não cadastrada">
+                                        <span aria-hidden="true">▣</span>
+                                        <span>Foto não cadastrada</span>
+                                    </span>
+                                <?php endif; ?>
+                                <span class="course-admin-code"><?= htmlspecialchars((string)$curso['sigla'], ENT_QUOTES, 'UTF-8') ?></span>
+                                <span class="admin-status-badge <?= $curso['status'] === 'Inativo' ? 'is-inactive' : 'is-active' ?>">
+                                    <?= htmlspecialchars((string)$curso['status'], ENT_QUOTES, 'UTF-8') ?>
+                                </span>
+                            </div>
+                            <div class="course-admin-card-content">
+                                <h3><?= htmlspecialchars($nomeCurso, ENT_QUOTES, 'UTF-8') ?></h3>
+                                <div class="course-admin-card-actions">
+                                    <a class="btn" href="<?= htmlspecialchars($urlEditarCurso, ENT_QUOTES, 'UTF-8') ?>">Editar</a>
+                                    <form action="../controller/UsuarioController.php" method="POST">
+                                        <input type="hidden" name="id_curso" value="<?= (int)$curso['id_curso'] ?>">
+                                        <button type="submit" name="btn_excluir_curso" class="btn course-delete-button"
+                                                onclick="return confirm('Confirma a exclusão deste curso? Cursos com pré-matrículas vinculadas não podem ser excluídos.');">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <p><?= $busca !== '' ? 'Nenhum curso encontrado. Faça outra busca ou limpe o filtro.' : 'Nenhum curso cadastrado.' ?></p>
+                <p class="course-admin-empty"><?= $busca !== '' || $statusFiltro !== '' ? 'Nenhum curso corresponde aos filtros selecionados.' : 'Nenhum curso cadastrado.' ?></p>
             <?php endif; ?>
         </section>
     </div>
