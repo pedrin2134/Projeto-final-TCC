@@ -198,61 +198,7 @@ class UsuarioDAO {
     }
 
     public function excluirSecretaria(int $id): string {
-        $conexao = Conexao::getConexao();
-        try {
-            $conexao->beginTransaction();
-
-            $stmtSecretaria = $conexao->prepare(
-                "SELECT id_pessoa FROM usuarios
-                 WHERE id_usuario = ? AND id_perfil = 2
-                 FOR UPDATE"
-            );
-            $stmtSecretaria->execute([$id]);
-            $idPessoa = $stmtSecretaria->fetchColumn();
-            if ($idPessoa === false) {
-                $conexao->rollBack();
-                return 'nao_encontrado';
-            }
-
-            $stmtVinculos = $conexao->prepare(
-                "SELECT
-                    (SELECT COUNT(*) FROM documentos_enviados WHERE id_usuario_aluno = ? OR avaliado_por = ?) +
-                    (SELECT COUNT(*) FROM pre_matricula WHERE id_usuario = ? OR analisado_por = ?) +
-                    (SELECT COUNT(*) FROM matriculas WHERE id_usuario = ?) +
-                    (SELECT COUNT(*) FROM pendencias
-                     WHERE id_usuario_aluno = ? OR id_usuario_secretaria = ? OR resolvido_por = ?) +
-                    (SELECT COUNT(*) FROM solicitacoes WHERE id_aluno = ? OR atendido_por = ?) +
-                    (SELECT COUNT(*) FROM declaracoes_emitidas WHERE emitido_por = ?)"
-            );
-            $stmtVinculos->execute(array_fill(0, 11, $id));
-            if ((int)$stmtVinculos->fetchColumn() > 0) {
-                $conexao->rollBack();
-                return 'vinculado';
-            }
-
-            $stmtUsuario = $conexao->prepare(
-                "DELETE FROM usuarios WHERE id_usuario = ? AND id_perfil = 2"
-            );
-            $stmtUsuario->execute([$id]);
-            if ($stmtUsuario->rowCount() === 0) {
-                $conexao->rollBack();
-                return 'nao_encontrado';
-            }
-
-            $stmtPessoa = $conexao->prepare("DELETE FROM pessoas WHERE id_pessoa = ?");
-            $stmtPessoa->execute([$idPessoa]);
-            $conexao->commit();
-            return 'ok';
-        } catch (PDOException $e) {
-            if ($conexao->inTransaction()) {
-                $conexao->rollBack();
-            }
-            if ($e->getCode() === '23000') {
-                return 'vinculado';
-            }
-            error_log('Erro ao excluir secretaria: ' . $e->getMessage());
-            return 'erro';
-        }
+        return $this->excluir($id, 2);
     }
 
     public function listar() {
@@ -502,39 +448,170 @@ class UsuarioDAO {
         }
     }
 
-    public function excluir(int $id) {
+    public function excluir(int $id, ?int $perfilEsperado = null): string {
         $conexao = Conexao::getConexao();
+        $arquivosParaRemover = [];
 
         try {
             $conexao->beginTransaction();
 
-            $stmtPessoa = $conexao->prepare(
-                "SELECT id_pessoa FROM usuarios WHERE id_usuario = ?"
-            );
-            $stmtPessoa->execute([$id]);
-            $idPessoa = $stmtPessoa->fetchColumn();
-
+            $sqlUsuario = "SELECT id_pessoa, foto_perfil
+                           FROM usuarios
+                           WHERE id_usuario = ?";
+            $parametrosUsuario = [$id];
+            if ($perfilEsperado !== null) {
+                $sqlUsuario .= " AND id_perfil = ?";
+                $parametrosUsuario[] = $perfilEsperado;
+            }
             $stmtUsuario = $conexao->prepare(
-                "DELETE FROM usuarios WHERE id_usuario = ?"
+                $sqlUsuario . " FOR UPDATE"
             );
-            $stmtUsuario->execute([$id]);
-
-            if ($idPessoa !== false) {
-                $stmtPessoa = $conexao->prepare(
-                    "DELETE FROM pessoas WHERE id_pessoa = ?"
-                );
-                $stmtPessoa->execute([$idPessoa]);
+            $stmtUsuario->execute($parametrosUsuario);
+            $usuario = $stmtUsuario->fetch(PDO::FETCH_ASSOC);
+            if (!$usuario) {
+                $conexao->rollBack();
+                return 'nao_encontrado';
             }
 
+            $idPessoa = (int)$usuario['id_pessoa'];
+            $arquivosParaRemover[] = $usuario['foto_perfil'];
+
+            $stmtDocumentos = $conexao->prepare(
+                "SELECT caminho_arquivo
+                 FROM documentos_enviados
+                 WHERE id_usuario_aluno = ?
+                 FOR UPDATE"
+            );
+            $stmtDocumentos->execute([$id]);
+            $arquivosParaRemover = array_merge(
+                $arquivosParaRemover,
+                $stmtDocumentos->fetchAll(PDO::FETCH_COLUMN)
+            );
+
+            $stmtSolicitacoes = $conexao->prepare(
+                "SELECT resposta
+                 FROM solicitacoes
+                 WHERE id_aluno = ?
+                 FOR UPDATE"
+            );
+            $stmtSolicitacoes->execute([$id]);
+            foreach ($stmtSolicitacoes->fetchAll(PDO::FETCH_COLUMN) as $resposta) {
+                $dadosResposta = $this->decodificarRespostaSolicitacao($resposta);
+                $arquivosParaRemover[] = $dadosResposta['arquivo_resposta'];
+            }
+
+            $stmtDeclaracoes = $conexao->prepare(
+                "DELETE FROM declaracoes_emitidas
+                 WHERE emitido_por = ?
+                    OR id_matricula IN (
+                        SELECT id_matricula
+                        FROM matriculas
+                        WHERE id_usuario = ?
+                    )
+                    OR id_solicitacao IN (
+                        SELECT id_solicitacao
+                        FROM solicitacoes
+                        WHERE id_aluno = ?
+                    )
+                    OR id_matricula IN (
+                        SELECT m.id_matricula
+                        FROM matriculas m
+                        INNER JOIN pre_matricula pm
+                            ON pm.id_pre_matricula = m.id_pre_matricula
+                        WHERE pm.id_usuario = ?
+                    )"
+            );
+            $stmtDeclaracoes->execute([$id, $id, $id, $id]);
+
+            $stmtPendencias = $conexao->prepare(
+                "DELETE FROM pendencias WHERE id_usuario_secretaria = ?"
+            );
+            $stmtPendencias->execute([$id]);
+
+            $stmtExcluirDocumentos = $conexao->prepare(
+                "DELETE FROM documentos_enviados WHERE id_usuario_aluno = ?"
+            );
+            $stmtExcluirDocumentos->execute([$id]);
+
+            $stmtExcluirMatriculas = $conexao->prepare(
+                "DELETE FROM matriculas WHERE id_usuario = ?"
+            );
+            $stmtExcluirMatriculas->execute([$id]);
+
+            $stmtExcluirSolicitacoes = $conexao->prepare(
+                "DELETE FROM solicitacoes WHERE id_aluno = ?"
+            );
+            $stmtExcluirSolicitacoes->execute([$id]);
+
+            $stmtExcluirPreMatriculas = $conexao->prepare(
+                "DELETE FROM pre_matricula WHERE id_usuario = ?"
+            );
+            $stmtExcluirPreMatriculas->execute([$id]);
+
+            $stmtExcluirUsuario = $conexao->prepare(
+                "DELETE FROM usuarios WHERE id_usuario = ?"
+            );
+            $stmtExcluirUsuario->execute([$id]);
+            if ($stmtExcluirUsuario->rowCount() === 0) {
+                $conexao->rollBack();
+                return 'nao_encontrado';
+            }
+
+            $stmtExcluirPessoa = $conexao->prepare(
+                "DELETE FROM pessoas WHERE id_pessoa = ?"
+            );
+            $stmtExcluirPessoa->execute([$idPessoa]);
+
             $conexao->commit();
-            return true;
         } catch (PDOException $e) {
             if ($conexao->inTransaction()) {
                 $conexao->rollBack();
             }
-            echo "Erro ao excluir: " . $e->getMessage();
-            return false;
+            if ($e->getCode() === '23000') {
+                return 'vinculado';
+            }
+            error_log('Erro ao excluir usuário: ' . $e->getMessage());
+            return 'erro';
         }
+
+        return $this->removerArquivosExcluidos($arquivosParaRemover)
+            ? 'ok'
+            : 'ok_arquivos_pendentes';
+    }
+
+    private function removerArquivosExcluidos(array $caminhos): bool {
+        $padroesPermitidos = [
+            '#^uploads/perfis/[a-f0-9]{32}\.(jpg|png|webp)$#',
+            '#^uploads/documentos/[a-f0-9]{32}\.(pdf|jpg|png)$#',
+            '#^uploads/solicitacoes/[a-f0-9]{32}\.(pdf|jpg|png)$#'
+        ];
+        $sucesso = true;
+
+        foreach (array_unique($caminhos) as $caminho) {
+            if (!is_string($caminho)) {
+                continue;
+            }
+
+            $caminhoValido = false;
+            foreach ($padroesPermitidos as $padrao) {
+                if (preg_match($padrao, $caminho)) {
+                    $caminhoValido = true;
+                    break;
+                }
+            }
+            if (!$caminhoValido) {
+                continue;
+            }
+
+            $arquivo = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR
+                . str_replace('/', DIRECTORY_SEPARATOR, $caminho);
+            if (is_file($arquivo) && !unlink($arquivo)) {
+                error_log('Não foi possível remover arquivo de usuário excluído: ' . $caminho);
+                $sucesso = false;
+            }
+        }
+
+        return $sucesso;
     }
 
     public function desativar(int $id) {
@@ -986,13 +1063,44 @@ class UsuarioDAO {
             $stmt = Conexao::getConexao()->query(
                 "SELECT s.id_solicitacao, s.numero_protocolo, s.descricao, s.status,
                         s.data_abertura, s.data_conclusao, s.resposta,
-                        ts.nome AS tipo_nome, p.nome AS aluno_nome, u.email AS aluno_email
+                        ts.id_tipo_solicitacao, ts.nome AS tipo_nome,
+                        p.nome AS aluno_nome, p.cpf AS aluno_cpf, u.email AS aluno_email,
+                        u.status AS aluno_status,
+                        pa.nome AS atendente_nome,
+                        (SELECT m.codigo_matricula
+                         FROM matriculas m
+                         WHERE m.id_usuario = s.id_aluno
+                         ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                         LIMIT 1) AS codigo_matricula,
+                        (SELECT m.status
+                         FROM matriculas m
+                         WHERE m.id_usuario = s.id_aluno
+                         ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                         LIMIT 1) AS matricula_status,
+                        COALESCE(
+                            (SELECT c.nome
+                             FROM matriculas m
+                             INNER JOIN pre_matricula pm
+                               ON pm.id_pre_matricula = m.id_pre_matricula
+                             INNER JOIN cursos c ON c.id_curso = pm.id_curso
+                             WHERE m.id_usuario = s.id_aluno
+                             ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                             LIMIT 1),
+                            (SELECT c.nome
+                             FROM pre_matricula pm
+                             INNER JOIN cursos c ON c.id_curso = pm.id_curso
+                             WHERE pm.id_usuario = s.id_aluno
+                             ORDER BY pm.data_inscricao DESC, pm.id_pre_matricula DESC
+                             LIMIT 1)
+                        ) AS curso_nome
                  FROM solicitacoes s
                  INNER JOIN tipos_solicitacao ts
                    ON ts.id_tipo_solicitacao = s.id_tipo_solicitacao
                  INNER JOIN usuarios u ON u.id_usuario = s.id_aluno
                  INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
-                 ORDER BY FIELD(s.status, 'Aberta', 'Em Atendimento', 'Concluida', 'Cancelada'),
+                 LEFT JOIN usuarios ua ON ua.id_usuario = s.atendido_por
+                 LEFT JOIN pessoas pa ON pa.id_pessoa = ua.id_pessoa
+                 ORDER BY FIELD(s.status, 'Aberta', 'Em Atendimento', 'Concluida', 'Indeferida', 'Cancelada'),
                           s.data_abertura ASC, s.id_solicitacao ASC"
             );
             return $this->decodificarRespostasSolicitacoes($stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -1037,7 +1145,7 @@ class UsuarioDAO {
                 "UPDATE solicitacoes
                  SET status = ?, resposta = ?, atendido_por = ?,
                      data_conclusao = CASE
-                         WHEN ? IN ('Concluida', 'Cancelada') THEN NOW()
+                         WHEN ? IN ('Concluida', 'Indeferida', 'Cancelada') THEN NOW()
                          ELSE NULL
                      END
                  WHERE id_solicitacao = ?

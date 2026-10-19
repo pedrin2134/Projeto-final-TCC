@@ -279,7 +279,7 @@ class UsuarioController {
         return $dao->atualizar($usuario);
     }
 
-    public function excluir(int $id) {
+    public function excluir(int $id): string {
         $dao = new UsuarioDAO();
         return $dao->excluir($id);
     }
@@ -566,12 +566,12 @@ class UsuarioController {
         string $resposta,
         ?string $arquivoResposta = null
     ): bool {
-        $statusPermitidos = ['Em Atendimento', 'Concluida', 'Cancelada'];
+        $statusPermitidos = ['Em Atendimento', 'Concluida', 'Indeferida', 'Cancelada'];
         $resposta = trim($resposta);
         if ($idSolicitacao <= 0 || $idAtendente <= 0
             || !in_array($status, $statusPermitidos, true)
             || mb_strlen($resposta, 'UTF-8') > 2000
-            || ($status === 'Concluida' && $resposta === '')) {
+            || (in_array($status, ['Concluida', 'Indeferida'], true) && $resposta === '')) {
             return false;
         }
         return (new UsuarioDAO())->atualizarSolicitacao(
@@ -825,10 +825,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $idSolicitacao = filter_var($_POST['id_solicitacao'] ?? null, FILTER_VALIDATE_INT);
-        $status = is_string($_POST['status'] ?? null) ? $_POST['status'] : '';
+        $acaoSolicitacao = is_string($_POST['btn_atualizar_solicitacao'] ?? null)
+            ? $_POST['btn_atualizar_solicitacao']
+            : '';
+        $status = [
+            'concluir' => 'Concluida',
+            'indeferir' => 'Indeferida'
+        ][$acaoSolicitacao] ?? '';
         $resposta = is_string($_POST['resposta'] ?? null) ? $_POST['resposta'] : '';
         if (!$idSolicitacao || $idSolicitacao < 1) {
             header('Location: ../view/secretaria/solicitacoes.php?resultado=erro');
+            exit();
+        }
+        if ($status === 'Concluida'
+            && ($_FILES['arquivo_resposta']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+            header('Location: ../view/secretaria/solicitacoes.php?resultado=arquivo_obrigatorio');
             exit();
         }
 
@@ -1225,8 +1236,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(403);
             exit('Acesso não autorizado.');
         }
-        $controller->excluir((int)$_POST['id']);
-        header('Location: ../view/admin/gerenciar_usuarios.php');
+        $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
+        $resultado = $id && $id > 0
+            ? $controller->excluir($id)
+            : 'dados_invalidos';
+        header('Location: ../view/admin/gerenciar_usuarios.php?resultado=' . $resultado);
         exit();
     }
 }
@@ -1310,11 +1324,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['acao'])) {
             }
             $controller->ativar($id);
         } elseif ($_GET['acao'] === 'excluir') {
-            if (!$controller->podeGerenciarUsuarios()) {
-                http_response_code(403);
-                exit('Acesso não autorizado.');
-            }
-            $controller->excluir($id);
+            http_response_code(405);
+            exit('A exclusão deve ser solicitada pelo formulário.');
         }
 
         header('Location: ../view/admin/gerenciar_usuarios.php');

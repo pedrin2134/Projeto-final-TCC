@@ -1755,3 +1755,749 @@ html[data-tema="escuro"] .service-requests-page .service-request-form-field labe
         grid-template-columns: 1fr;
     }
 }
+
+.service-requests-page .service-requests-content {
+    max-width: 1180px;
+    padding-top: 12px;
+}
+
+.service-requests-page .service-requests-header {
+    margin-bottom: 22px;
+}
+
+.service-requests-page .service-requests-header h1 {
+    color: #172033;
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+}
+
+.service-requests-page .service-requests-header p {
+    color: #687b8e;
+}
+
+.service-requests-page .service-requests-panel {
+    overflow: visible;
+}
+
+.service-requests-page .service-requests-filters {
+    min-height: 65px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e7edf2;
+    border-radius: 12px 12px 0 0;
+}
+
+.service-requests-page .service-requests-filters .admin-search-field {
+    flex: 1 1 300px;
+    width: auto;
+}
+
+.service-requests-page .service-requests-filters select {
+    min-width: 150px;
+    max-width: 230px;
+}
+
+.service-requests-page .service-requests-table-wrap {
+    overflow: visible;
+    padding: 12px;
+}
+
+.service-requests-page .service-requests-table {
+    table-layout: fixed;
+}
+
+.service-requests-page .service-requests-table th {
+    padding: 12px 11px;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.service-requests-page .service-requests-table th:nth-child(1) {
+    width: 17%;
+}
+
+.service-requests-page .service-requests-table th:nth-child(2) {
+    width: 27%;
+}
+
+.service-requests-page .service-requests-table th:nth-child(3) {
+    width: 19%;
+}
+
+.service-requests-page .service-requests-table th:nth-child(4) {
+    width: 16%;
+}
+
+.service-requests-page .service-requests-table th:nth-child(5) {
+    width: 12%;
+}
+
+.service-requests-page .service-requests-table th:nth-child(6) {
+    width: 9%;
+}
+
+.service-requests-page .service-requests-table td {
+    position: relative;
+    padding: 12px 11px;
+    vertical-align: middle;
+}
+
+.service-requests-page .service-requests-table td:nth-child(3) {
+    color: #4f657a;
+    font-weight: 400;
+}
+
+.service-requests-page .service-request-table-protocol {
+    color: #24364b;
+    font-size: 0.73rem;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.service-requests-page .service-request-table-student {
+    display: block;
+    color: #27364b;
+    font-size: 0.77rem;
+}
+
+.service-requests-page .service-request-table-meta {
+    display: block;
+    margin-top: 4px;
+    color: #718096;
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+.service-requests-page .service-request-status {
+    display: inline-block;
+    padding: 4px 8px;
+    color: #9a6700;
+    background: #fff4d6;
+    border-radius: 20px;
+    font-size: 0.67rem;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.service-requests-page .service-request-status.status-em-atendimento {
+    color: #08689a;
+    background: #e3f5fc;
+}
+
+.service-requests-page .service-request-status.status-concluida {
+    color: #16804a;
+    background: #e7f7ee;
+}
+
+.service-requests-page .service-request-status.status-cancelada {
+    color: #9b3445;
+    background: #fdecef;
+}
+
+.service-requests-page .service-request-status.status-indeferida {
+    color: #9b3445;
+    background: #fdecef;
+}
+
+.service-requests-page .service-request-table-actions {
+    text-align: right;
+}
+
+.service-requests-page .service-request-open-button {
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    color: #ffffff;
+    background: #2864ed;
+    border: 1px solid #2864ed;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.service-requests-page .service-request-open-button:hover {
+    background: #194fc8;
+}
+
+.service-requests-page .service-request-open-button.is-secondary {
+    color: #273f56;
+    background: #ffffff;
+    border-color: #cbd8e2;
+}
+
+.service-requests-page .service-request-open-button.is-secondary:hover {
+    background: #f1f5f9;
+}
+
+.service-requests-page .service-request-dialog {
+    width: min(470px, calc(100vw - 32px));
+    max-width: none;
+    max-height: min(88vh, 760px);
+    overflow: hidden;
+    padding: 0;
+    color: #253146;
+    background: #ffffff;
+    border: 1px solid #dce5ed;
+    border-radius: 12px;
+    box-shadow: 0 22px 60px rgba(14, 26, 43, 0.3);
+}
+
+.service-requests-page .service-request-dialog[open] {
+    position: fixed;
+    inset: 50% auto auto 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+}
+
+.service-requests-page .service-request-dialog::backdrop {
+    background: rgba(13, 18, 28, 0.68);
+    backdrop-filter: blur(4px);
+}
+
+.service-requests-page .service-request-dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 18px 12px;
+    border-bottom: 1px solid #dce5ed;
+}
+
+.service-requests-page .service-request-dialog-header h2 {
+    margin: 0 0 3px;
+    color: #1d293b;
+    font-size: 0.94rem;
+    font-weight: 750;
+}
+
+.service-requests-page .service-request-dialog-header p {
+    margin: 0;
+    color: #728196;
+    font-size: 0.68rem;
+}
+
+.service-requests-page .service-request-dialog-close {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    place-items: center;
+    color: #8592a3;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.service-requests-page .service-request-dialog-close:hover {
+    color: #27364b;
+    background: #eef2f7;
+}
+
+.service-requests-page .service-request-dialog-body {
+    max-height: calc(min(88vh, 760px) - 112px);
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.service-requests-page .service-request-dialog-student {
+    display: grid;
+    gap: 3px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-size: 0.7rem;
+}
+
+.service-requests-page .service-request-dialog-student strong {
+    color: #253146;
+    font-size: 0.76rem;
+}
+
+.service-requests-page .service-request-dialog-student span {
+    color: #728196;
+    overflow-wrap: anywhere;
+}
+
+.service-requests-page .service-request-dialog-body .service-request-message {
+    margin: 0 0 11px;
+    padding: 10px 12px;
+}
+
+.service-requests-page .service-request-dialog-body .service-request-file {
+    margin: 0 0 10px;
+}
+
+.service-requests-page .service-request-dialog-form {
+    display: grid;
+    gap: 10px;
+}
+
+.service-requests-page .service-request-quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.service-requests-page .service-request-quick-replies legend {
+    margin-bottom: 5px;
+    color: #40516a;
+    font-size: 0.69rem;
+    font-weight: 750;
+}
+
+.service-requests-page .service-request-quick-replies button {
+    min-height: 27px;
+    padding: 5px 9px;
+    color: #36465d;
+    background: #f5f7fa;
+    border: 1px solid #cbd6e2;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.62rem;
+    font-weight: 650;
+}
+
+.service-requests-page .service-request-quick-replies button:hover {
+    background: #e9eef5;
+}
+
+.service-requests-page .service-request-dialog-field {
+    display: grid;
+    gap: 5px;
+}
+
+.service-requests-page .service-request-dialog-field label {
+    color: #35445a;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.service-requests-page .service-request-dialog-field textarea,
+.service-requests-page .service-request-dialog-field input[type="file"] {
+    width: 100%;
+    min-height: 35px;
+    margin: 0;
+    padding: 8px 9px;
+    color: #273f56;
+    background: #ffffff;
+    border: 1px solid #cbd6e2;
+    border-radius: 7px;
+    font: inherit;
+    font-size: 0.7rem;
+}
+
+.service-requests-page .service-request-dialog-field textarea {
+    min-height: 56px;
+    resize: vertical;
+}
+
+.service-requests-page .service-request-dialog-field small {
+    color: #718096;
+    font-size: 0.62rem;
+}
+
+.service-requests-page .service-request-preview {
+    display: grid;
+    gap: 5px;
+    padding: 10px;
+    border: 1px solid #d7e0e9;
+    border-radius: 8px;
+}
+
+.service-requests-page .service-request-preview strong {
+    color: #35445a;
+    font-size: 0.67rem;
+}
+
+.service-requests-page .service-request-preview p {
+    margin: 0;
+    color: #718096;
+    font-size: 0.63rem;
+    overflow-wrap: anywhere;
+}
+
+.service-requests-page .service-request-preview img,
+.service-requests-page .service-request-preview iframe {
+    width: 100%;
+    height: 112px;
+    border: 0;
+    object-fit: contain;
+    background: #f5f7fa;
+}
+
+.service-requests-page .service-request-preview [hidden] {
+    display: none;
+}
+
+.service-requests-page .service-request-dialog-actions {
+    position: sticky;
+    bottom: -12px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+    margin: 2px -12px -12px;
+    padding: 10px 12px;
+    background: #f1f5f9;
+    border-top: 1px solid #dce5ed;
+}
+
+.service-requests-page .service-request-dialog-actions button {
+    min-height: 30px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.service-requests-page .service-request-dialog-actions .service-request-cancel {
+    color: #344256;
+    background: #ffffff;
+    border: 1px solid #d1dbe5;
+}
+
+.service-requests-page .service-request-dialog-actions .service-request-reject {
+    color: #ffffff;
+    background: #e5484d;
+}
+
+.service-requests-page .service-request-dialog-actions .service-request-complete {
+    color: #ffffff;
+    background: #10a879;
+}
+
+.service-requests-page .service-request-dossier {
+    display: grid;
+    gap: 12px;
+}
+
+.service-requests-page .service-request-dossier-section h3 {
+    margin: 0 0 7px;
+    color: #637792;
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.service-requests-page .service-request-dossier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.service-requests-page .service-request-dossier-field {
+    min-height: 58px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 9px;
+    background: #f1f5f9;
+    border: 1px solid #cad7e5;
+    border-radius: 8px;
+}
+
+.service-requests-page .service-request-dossier-field > span {
+    color: #687d98;
+    font-size: 0.56rem;
+    font-weight: 750;
+    text-transform: uppercase;
+}
+
+.service-requests-page .service-request-dossier-field > strong {
+    color: #27364b;
+    font-size: 0.68rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.service-requests-page .service-request-dossier-status {
+    align-self: flex-start;
+    padding: 3px 7px;
+    background: #e5f7ee;
+    border-radius: 16px;
+}
+
+.service-requests-page .service-request-dossier-status.status-aberta,
+.service-requests-page .service-request-dossier-status.status-em-atendimento {
+    background: #fff4d6;
+}
+
+.service-requests-page .service-request-dossier-status.status-indeferida,
+.service-requests-page .service-request-dossier-status.status-cancelada {
+    background: #fdecef;
+}
+
+.service-requests-page .service-request-dossier-description {
+    margin-top: 8px;
+    padding: 9px;
+    background: #f7f9fc;
+    border-radius: 7px;
+}
+
+.service-requests-page .service-request-dossier-description strong {
+    color: #52657d;
+    font-size: 0.63rem;
+}
+
+.service-requests-page .service-request-dossier-description p {
+    margin: 4px 0 0;
+    color: #334155;
+    font-size: 0.67rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.service-requests-page .service-request-audit-history {
+    display: grid;
+    gap: 5px;
+    margin: 0;
+    padding: 9px 10px 9px 25px;
+    color: #3d4c61;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-size: 0.63rem;
+    line-height: 1.4;
+}
+
+.service-requests-page .service-request-audit-history li::marker {
+    content: "✓  ";
+}
+
+.service-requests-page .service-request-dialog-actions button:hover {
+    filter: brightness(0.94);
+}
+
+.service-requests-page .service-request-dialog-actions .service-request-print,
+.service-requests-page .service-request-dialog-actions .service-request-download {
+    min-height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    color: #344256;
+    background: #ffffff;
+    border: 1px solid #d1dbe5;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.service-requests-page .service-request-dialog-actions .service-request-download {
+    color: #ffffff;
+    background: #2864ed;
+    border-color: #2864ed;
+}
+
+.service-requests-page .service-empty {
+    margin: 12px;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-requests-header h1,
+html[data-tema="escuro"] .service-requests-page .service-request-table-protocol,
+html[data-tema="escuro"] .service-requests-page .service-request-table-student {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-requests-header p,
+html[data-tema="escuro"] .service-requests-page .service-request-table-meta,
+html[data-tema="escuro"] .service-requests-page .service-request-details-student {
+    color: #b7cce0;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-requests-filters {
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog {
+    color: #edf5fc;
+    background: #102b4b;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-header {
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-header h2,
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-student strong,
+html[data-tema="escuro"] .service-requests-page .service-request-quick-replies legend,
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-field label,
+html[data-tema="escuro"] .service-requests-page .service-request-preview strong {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-header p,
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-student span,
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-field small,
+html[data-tema="escuro"] .service-requests-page .service-request-preview p {
+    color: #b7cce0;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-student,
+html[data-tema="escuro"] .service-requests-page .service-request-preview {
+    background: #173c60;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-field textarea,
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-field input[type="file"] {
+    color: #edf5fc;
+    background: #0b213b;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-actions {
+    background: #0b213b;
+    border-color: #294969;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dialog-actions .service-request-cancel {
+    color: #edf5fc;
+    background: #173c60;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-section h3,
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-field > span,
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-description strong {
+    color: #b7cce0;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-field,
+html[data-tema="escuro"] .service-requests-page .service-request-audit-history,
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-description {
+    background: #173c60;
+    border-color: #3d5c7b;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-field > strong,
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-description p,
+html[data-tema="escuro"] .service-requests-page .service-request-audit-history {
+    color: #edf5fc;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-status {
+    color: #b9f3ce;
+    background: #20543a;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-status.status-aberta,
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-status.status-em-atendimento {
+    color: #ffe5a3;
+    background: #574817;
+}
+
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-status.status-indeferida,
+html[data-tema="escuro"] .service-requests-page .service-request-dossier-status.status-cancelada {
+    color: #ffd0dc;
+    background: #642d3d;
+}
+
+@media (max-width: 1000px) {
+    .service-requests-page .service-requests-table-wrap {
+        overflow-x: auto;
+    }
+
+    .service-requests-page .service-requests-table {
+        min-width: 850px;
+    }
+
+}
+
+@media print {
+    body.service-requests-page {
+        background: #ffffff !important;
+    }
+
+    body.service-requests-page * {
+        visibility: hidden !important;
+    }
+
+    body.service-requests-page .service-request-dialog[open],
+    body.service-requests-page .service-request-dialog[open] * {
+        visibility: visible !important;
+    }
+
+    body.service-requests-page .service-request-dialog[open] {
+        position: absolute !important;
+        inset: 0 auto auto 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    body.service-requests-page .service-request-dialog[open]::backdrop {
+        background: transparent !important;
+    }
+
+    body.service-requests-page .service-request-dialog-header {
+        border-bottom: 1px solid #cbd5e1 !important;
+    }
+
+    body.service-requests-page .service-request-dialog-body {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    body.service-requests-page .service-request-dialog-close,
+    body.service-requests-page .service-request-dialog-actions {
+        display: none !important;
+    }
+
+    body.service-requests-page .service-request-dossier-field,
+    body.service-requests-page .service-request-dossier-description,
+    body.service-requests-page .service-request-audit-history {
+        color: #172033 !important;
+        background: #f1f5f9 !important;
+        border-color: #cad7e5 !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+@media (max-width: 600px) {
+    .service-requests-page .service-requests-content {
+        padding-top: 8px;
+    }
+
+    .service-requests-page .service-requests-filters .admin-search-field,
+    .service-requests-page .service-requests-filters label,
+    .service-requests-page .service-requests-filters select,
+    .service-requests-page .service-requests-filters .admin-primary-button {
+        width: 100%;
+        max-width: none;
+    }
+
+    .service-requests-page .service-requests-filters .admin-list-count {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .service-requests-page .service-request-dossier-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .service-requests-page .service-request-dossier-actions {
+        flex-wrap: wrap;
+    }
+}

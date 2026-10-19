@@ -36,10 +36,11 @@ if ($idConsulta && $idConsulta > 0) {
 }
 $mensagens = [
     'ok' => ['success', 'Operação realizada com sucesso.'],
+    'ok_arquivos_pendentes' => ['error', 'A secretária e os registros vinculados foram excluídos, mas alguns arquivos não puderam ser removidos. Consulte o log do servidor.'],
     'dados_invalidos' => ['error', 'Confira os campos obrigatórios e os dados informados.'],
     'cpf_invalido' => ['error', 'Informe um CPF válido.'],
     'duplicado' => ['error', 'Já existe uma conta cadastrada com esse CPF ou e-mail.'],
-    'vinculado' => ['error', 'Esta secretária possui registros vinculados e não pode ser excluída.'],
+    'vinculado' => ['error', 'A exclusão foi cancelada porque ainda há um vínculo no banco de dados. Nenhum dado foi apagado; consulte o log do servidor.'],
     'nao_encontrado' => ['error', 'A secretária não foi encontrada. Atualize a lista e tente novamente.'],
     'erro' => ['error', 'Não foi possível concluir a operação. Tente novamente.']
 ];
@@ -78,7 +79,7 @@ include __DIR__ . '/../includes/topo.php';
                                 <form action="../../controller/UsuarioController.php" method="POST">
                                     <input type="hidden" name="id" value="<?= (int)$secretariaConsulta['id'] ?>">
                                     <button type="submit" name="btn_excluir_secretaria"
-                                            onclick="return confirm('Confirma a exclusão desta secretária? A operação só será possível se não houver registros vinculados.');">
+                                            onclick="return confirm('ATENÇÃO: Esta ação apagará permanentemente a secretária e os registros vinculados, incluindo documentos, matrículas, solicitações e declarações. Não pode ser desfeita. Deseja continuar?');">
                                         Excluir
                                     </button>
                                 </form>

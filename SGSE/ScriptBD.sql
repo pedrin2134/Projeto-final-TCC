@@ -485,6 +485,7 @@ CREATE TABLE solicitacoes (
         'Aberta',
         'Em Atendimento',
         'Concluida',
+        'Indeferida',
         'Cancelada'
     ) DEFAULT 'Aberta',
     data_abertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

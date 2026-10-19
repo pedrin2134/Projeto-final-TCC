@@ -82,7 +82,8 @@ include __DIR__ . '/../includes/topo.php';
                                     <span class="service-request-protocol">Protocolo <?= htmlspecialchars($solicitacao['numero_protocolo'], ENT_QUOTES, 'UTF-8') ?></span>
                                     <h3><?= htmlspecialchars($solicitacao['tipo_nome'], ENT_QUOTES, 'UTF-8') ?></h3>
                                 </div>
-                                <span class="service-request-status status-<?= strtolower(str_replace(' ', '-', $solicitacao['status'])) ?>"><?= htmlspecialchars(str_replace('Concluida', 'Concluída', $solicitacao['status']), ENT_QUOTES, 'UTF-8') ?></span>
+                                <?php $statusSolicitacao = ['Concluida' => 'Concluída', 'Indeferida' => 'Indeferida (Pendência)'][$solicitacao['status']] ?? $solicitacao['status']; ?>
+                                <span class="service-request-status status-<?= strtolower(str_replace(' ', '-', $solicitacao['status'])) ?>"><?= htmlspecialchars($statusSolicitacao, ENT_QUOTES, 'UTF-8') ?></span>
                             </div>
                             <p><?= nl2br(htmlspecialchars($solicitacao['descricao'], ENT_QUOTES, 'UTF-8')) ?></p>
                             <small>Solicitada em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($solicitacao['data_abertura'])), ENT_QUOTES, 'UTF-8') ?></small>

@@ -66,6 +66,9 @@ if (!empty($exibeMenuAdministrativo) && (int)($_SESSION['perfil_id'] ?? 0) === 1
     <?php if ($carregarEstilosHome): ?>
         <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_home.css?v=<?= time() ?>">
     <?php endif; ?>
+    <?php if (in_array('service-requests-page', $classesCorpo ?: [], true)): ?>
+        <script src="<?= $baseDir ?>assets/js/solicitacoes.js?v=<?= time() ?>" defer></script>
+    <?php endif; ?>
     <?php if ($carregarEstilosPreMatricula): ?>
         <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_matricula.css?v=<?= time() ?>">
     <?php endif; ?>

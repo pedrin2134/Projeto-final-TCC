@@ -258,6 +258,29 @@ body.manager-body .conteudo-principal .service-request-status.status-em-atendime
     background-color: #dff2ff;
 }
 
+body.manager-body .conteudo-principal .service-request-status.status-indeferida {
+    color: #9c2546;
+    background-color: #ffe2ea;
+}
+
+body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-reject {
+    color: #ffffff;
+    background-color: #e5484d;
+}
+
+body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-complete {
+    color: #ffffff;
+    background-color: #10a879;
+}
+
+body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-reject:hover {
+    background-color: #c9363b;
+}
+
+body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-complete:hover {
+    background-color: #0c8d66;
+}
+
 html[data-tema="escuro"] body.manager-body .conteudo-principal :is(.admin-status-badge.is-active, .status-pill.status-aprovado, .status-pill.status-deferido, .service-request-status.status-concluida) {
     color: #b9f3ce;
     background-color: #20543a;
@@ -276,6 +299,21 @@ html[data-tema="escuro"] body.manager-body .conteudo-principal :is(.status-pill.
 html[data-tema="escuro"] body.manager-body .conteudo-principal .service-request-status.status-em-atendimento {
     color: #c6eaff;
     background-color: #17466a;
+}
+
+html[data-tema="escuro"] body.manager-body .conteudo-principal .service-request-status.status-indeferida {
+    color: #ffd0dc;
+    background-color: #642d3d;
+}
+
+html[data-tema="escuro"] body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-reject {
+    color: #ffffff;
+    background-color: #bd343b;
+}
+
+html[data-tema="escuro"] body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-complete {
+    color: #ffffff;
+    background-color: #087e5c;
 }
 
 body.manager-body .admin-sidebar {

@@ -40,7 +40,7 @@ O `ScriptBD.sql` executa `DROP DATABASE IF EXISTS secretaria_db` antes de criar 
 
 O script cria as tabelas usadas pelo sistema, incluindo usuários, perfis, permissões, cursos, documentos, pré-matrículas, matrículas e solicitações. Para usar uma base já existente, ajuste a configuração de conexão e aplique as alterações de estrutura de forma controlada, sem executar o comando de remoção do banco.
 
-O controle de acesso consulta a tabela `permissoes` vinculada ao perfil cadastrado para o usuário. Em bancos criados antes das permissões de solicitações do administrador e edição de perfil da secretaria, execute `MigracaoPermissoes.sql` no phpMyAdmin. Essa migração insere apenas as permissões ausentes e não apaga os dados.
+O controle de acesso consulta a tabela `permissoes` vinculada ao perfil cadastrado para o usuário. Em bancos criados antes das permissões de solicitações do administrador e edição de perfil da secretaria, execute `MigracaoPermissoes.sql` no phpMyAdmin. Essa migração insere apenas as permissões ausentes e não apaga os dados. Para adicionar o status de solicitação `Indeferida` em um banco já existente, execute também `MigracaoStatusSolicitacoes.sql`; ela altera apenas os valores aceitos pela coluna de status.
 
 ## Perfis de acesso
 
