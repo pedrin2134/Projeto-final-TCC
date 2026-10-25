@@ -2,33 +2,29 @@
     const temaSalvo = localStorage.getItem('tema') || 'claro';
     document.documentElement.dataset.tema = temaSalvo;
 
-    function atualizarBotoes(botoes) {
-        const escuro = document.documentElement.dataset.tema === 'escuro';
-        const acao = escuro ? 'Ativar tema claro' : 'Ativar tema escuro';
-        const paginaLogin = document.body.classList.contains('login-page');
-        botoes.forEach(function (botao) {
-            botao.textContent = paginaLogin
-                ? (escuro ? 'MODO CLARO' : 'MODO ESCURO')
-                : (escuro ? '☀' : '☾');
-            botao.setAttribute('aria-label', acao);
-            botao.title = acao;
-            botao.setAttribute('aria-pressed', escuro ? 'true' : 'false');
-        });
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
-        const botoes = document.querySelectorAll('[data-alternar-tema]');
-        if (botoes.length) {
-            atualizarBotoes(botoes);
-            botoes.forEach(function (botao) {
-                botao.addEventListener('click', function () {
-                    const novoTema = document.documentElement.dataset.tema === 'escuro' ? 'claro' : 'escuro';
-                    document.documentElement.dataset.tema = novoTema;
-                    localStorage.setItem('tema', novoTema);
-                    atualizarBotoes(botoes);
-                });
+        const botoesTema = document.querySelectorAll('[data-alternar-tema]');
+
+        function atualizarBotoesTema() {
+            const escuro = document.documentElement.dataset.tema === 'escuro';
+            botoesTema.forEach(function (botao) {
+                botao.textContent = escuro ? '☀' : '☾';
+                botao.setAttribute('aria-label', escuro ? 'Ativar tema claro' : 'Ativar tema escuro');
+                botao.title = escuro ? 'Ativar tema claro' : 'Ativar tema escuro';
+                botao.setAttribute('aria-pressed', escuro ? 'true' : 'false');
             });
         }
+
+        atualizarBotoesTema();
+        botoesTema.forEach(function (botao) {
+            botao.addEventListener('click', function () {
+                const novoTema = document.documentElement.dataset.tema === 'escuro' ? 'claro' : 'escuro';
+                document.documentElement.dataset.tema = novoTema;
+                localStorage.setItem('tema', novoTema);
+                localStorage.removeItem('tema-menu');
+                atualizarBotoesTema();
+            });
+        });
 
         const botaoMenu = document.querySelector('[data-toggle-sidebar]');
         if (!botaoMenu) {

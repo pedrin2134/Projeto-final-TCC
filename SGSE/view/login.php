@@ -71,6 +71,41 @@ if (count($slidesBanner) < 3) {
     }
 }
 
+$imagensInstitucionais = [
+    [
+        'imagem' => '../assets/img/banner-formacao-1.jpg',
+        'alt' => 'Imagem institucional de formação profissional'
+    ],
+    [
+        'imagem' => '../assets/img/banner-formacao-2.jpg',
+        'alt' => 'Imagem institucional de formação profissional',
+        'focoSuperior' => true
+    ],
+    [
+        'imagem' => '../assets/img/banner-formacao-3.webp',
+        'alt' => 'Estudantes celebrando a formatura'
+    ]
+];
+
+foreach ($imagensInstitucionais as $imagemInstitucional) {
+    $caminhoImagem = __DIR__ . '/' . $imagemInstitucional['imagem'];
+    $hashImagem = hash_file('sha256', $caminhoImagem);
+    if ($hashImagem === false || in_array($hashImagem, $hashesBanner, true)) {
+        continue;
+    }
+
+    $hashesBanner[] = $hashImagem;
+    $slidesBanner[] = [
+        'imagem' => $imagemInstitucional['imagem'],
+        'alt' => $imagemInstitucional['alt'],
+        'titulo' => 'Conecte-se ao seu',
+        'destaque' => 'Futuro Profissional.',
+        'texto' => 'Descubra novas possibilidades, escolha sua formação e construa o futuro que você deseja.',
+        'rotulo' => 'FORMAÇÃO PARA O FUTURO',
+        'focoSuperior' => $imagemInstitucional['focoSuperior'] ?? false
+    ];
+}
+
 // Se já estiver logado, redireciona para a página principal
 if (isset($_SESSION['usuario_id'])) {
     header('Location: ../index.php');
@@ -111,7 +146,8 @@ if (isset($_SESSION['usuario_id'])) {
                         <article class="banner-slide<?= $indice === 0 ? ' is-active' : '' ?>"
                                  data-banner-slide
                                  aria-hidden="<?= $indice === 0 ? 'false' : 'true' ?>">
-                            <img src="<?= htmlspecialchars($slide['imagem'], ENT_QUOTES, 'UTF-8') ?>"
+                            <img class="<?= !empty($slide['focoSuperior']) ? 'banner-image-focus-top' : '' ?>"
+                                 src="<?= htmlspecialchars($slide['imagem'], ENT_QUOTES, 'UTF-8') ?>"
                                  alt="<?= htmlspecialchars($slide['alt'], ENT_QUOTES, 'UTF-8') ?>"
                                  <?= $indice === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>
                             <div class="banner-shade"></div>
@@ -120,7 +156,6 @@ if (isset($_SESSION['usuario_id'])) {
                                 <h1><?= htmlspecialchars($slide['titulo'], ENT_QUOTES, 'UTF-8') ?><br><span class="banner-title-highlight"><?= htmlspecialchars($slide['destaque'], ENT_QUOTES, 'UTF-8') ?></span></h1>
                                 <p><?= htmlspecialchars($slide['texto'], ENT_QUOTES, 'UTF-8') ?></p>
                                 <div class="banner-actions">
-                                    <a class="banner-cta" href="cadastrar_usuario.php">INICIAR PRÉ-MATRÍCULA <span aria-hidden="true">→</span></a>
                                     <a class="banner-cta banner-cta-secondary" href="#cursos">EXPLORAR CURSOS</a>
                                 </div>
                             </div>
@@ -250,9 +285,7 @@ if (isset($_SESSION['usuario_id'])) {
                 <h2>Secretaria Atendimento</h2>
                 <p>Segunda a Sexta: 08h às 21h</p>
                 <p>Sábados: 08h às 12h</p>
-                <a class="footer-phone" href="tel:0800592800">
-                    <span aria-hidden="true">☎</span> 0800 592-800
-                </a>
+                <a class="footer-phone" href="tel:0800592800">0800 592-800</a>
             </div>
         </div>
         <div class="login-footer-bottom">

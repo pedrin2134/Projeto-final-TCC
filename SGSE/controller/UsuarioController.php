@@ -73,9 +73,7 @@ class UsuarioController {
         string $cpf,
         string $telefone,
         string $dataNascimento,
-        string $email,
-        string $senha,
-        string $confirmarSenha
+        string $email
     ): string {
         $dao = new UsuarioDAO();
         if (!$dao->buscarSecretariaPorId($id)) {
@@ -96,9 +94,6 @@ class UsuarioController {
         if (!$this->cpfValido($cpf)) {
             return 'cpf_invalido';
         }
-        if ($senha !== '' && $senha !== $confirmarSenha) {
-            return 'senha_invalida';
-        }
         if (!$dao->cadastroSecretariaDisponivel($email, $cpf, $id)) {
             return 'duplicado';
         }
@@ -110,12 +105,7 @@ class UsuarioController {
         $usuario->setTelefone($telefone);
         $usuario->setDataNascimento($dataNascimento);
         $usuario->setEmail($email);
-        $usuario->setSenha($senha === '' ? '' : password_hash($senha, PASSWORD_DEFAULT));
         return $dao->atualizarSecretaria($usuario);
-    }
-
-    public function excluirSecretaria(int $id): string {
-        return (new UsuarioDAO())->excluirSecretaria($id);
     }
 
     public function cadastrar($nome, $cpf, $telefone, $dataNascimento, $email, $senha, $perfil_id) {
@@ -257,31 +247,49 @@ class UsuarioController {
         }
     }
 
-    public function atualizar($id, $nome, $email, $senha, $perfil_id) {
-        $dao = new UsuarioDAO();
-        $usuarioAtual = $dao->buscarPorId($id);
-
+    public function atualizar($id, $nome, $email, $perfil_id) {
         $usuario = new UsuarioDTO();
         $usuario->setId($id);
         $usuario->setNome($nome);
         $usuario->setEmail($email);
-
-        // Se o usuário preencheu uma nova senha, gera novo hash. Caso contrário, mantém a senha atual.
-        if (!empty($senha)) {
-            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-            $usuario->setSenha($senhaHash);
-        } else {
-            $usuario->setSenha($usuarioAtual['senha']);
-        }
-
         $usuario->setPerfilId($perfil_id);
 
-        return $dao->atualizar($usuario);
+        return (new UsuarioDAO())->atualizar($usuario);
     }
 
-    public function excluir(int $id): string {
+    public function alterarSenhaPropria(
+        int $idUsuario,
+        string $senhaAtual,
+        string $senhaNova,
+        string $confirmarSenha
+    ): string {
+        if ($idUsuario <= 0 || (int)($_SESSION['usuario_id'] ?? 0) !== $idUsuario
+            || !$this->podeGerenciarPerfil()) {
+            return 'nao_autorizado';
+        }
+        if ($senhaAtual === '' || $senhaNova === '' || $confirmarSenha === '') {
+            return 'dados_senha_invalidos';
+        }
+        if ($senhaNova !== $confirmarSenha) {
+            return 'senhas_diferentes';
+        }
+        if (mb_strlen($senhaNova, 'UTF-8') < 8 || strlen($senhaNova) > 72) {
+            return 'senha_fraca';
+        }
+
         $dao = new UsuarioDAO();
-        return $dao->excluir($id);
+        $hashAtual = $dao->buscarHashSenha($idUsuario);
+        if ($hashAtual === null || !password_verify($senhaAtual, $hashAtual)) {
+            return 'senha_atual_invalida';
+        }
+
+        $hashNovo = password_hash($senhaNova, PASSWORD_DEFAULT);
+        if (!is_string($hashNovo)) {
+            throw new RuntimeException('Não foi possível proteger a nova senha.');
+        }
+        return $dao->atualizarSenhaPropria($idUsuario, $hashAtual, $hashNovo)
+            ? 'senha_atualizada'
+            : 'erro_senha';
     }
 
     public function desativar(int $id) {
@@ -448,12 +456,12 @@ class UsuarioController {
     }
 
     public function podeAnalisarPreMatriculas(): bool {
-        return (int)($_SESSION['perfil_id'] ?? 0) === 2
+        return in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true)
             && Autorizacao::usuarioTemPermissao('GERENCIAR_PRE_MATRICULAS');
     }
 
     public function podeAvaliarDocumentos(): bool {
-        return (int)($_SESSION['perfil_id'] ?? 0) === 2
+        return in_array((int)($_SESSION['perfil_id'] ?? 0), [1, 2], true)
             && Autorizacao::usuarioTemPermissao('GERENCIAR_DOCUMENTOS');
     }
 
@@ -537,6 +545,18 @@ class UsuarioController {
     public function avaliarDocumento(int $idDocumento, int $idSecretaria, string $status, string $justificativa) {
         $dao = new UsuarioDAO();
         return $dao->avaliarDocumento($idDocumento, $idSecretaria, $status, $justificativa);
+    }
+
+    public function avaliarDocumentosPreMatricula(
+        int $idPreMatricula,
+        int $idSecretaria,
+        array $avaliacoes
+    ): bool {
+        return (new UsuarioDAO())->avaliarDocumentosPreMatricula(
+            $idPreMatricula,
+            $idSecretaria,
+            $avaliacoes
+        );
     }
 
     public function listarTiposSolicitacaoAtivos(): array {
@@ -745,6 +765,27 @@ class UsuarioController {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new UsuarioController();
 
+    if (isset($_POST['btn_alterar_senha_propria'])) {
+        $idUsuario = (int)($_SESSION['usuario_id'] ?? 0);
+        if ($idUsuario <= 0 || !$controller->podeGerenciarPerfil()) {
+            http_response_code(403);
+            exit('Acesso não autorizado.');
+        }
+        try {
+            $resultado = $controller->alterarSenhaPropria(
+                $idUsuario,
+                is_string($_POST['senha_atual'] ?? null) ? $_POST['senha_atual'] : '',
+                is_string($_POST['senha_nova'] ?? null) ? $_POST['senha_nova'] : '',
+                is_string($_POST['confirmar_senha_nova'] ?? null) ? $_POST['confirmar_senha_nova'] : ''
+            );
+        } catch (RuntimeException $e) {
+            error_log('Erro ao alterar a própria senha: ' . $e->getMessage());
+            $resultado = 'erro_senha';
+        }
+        header('Location: ../view/perfil.php?resultado=' . $resultado . '#alterar-senha');
+        exit();
+    }
+
     if (isset($_POST['btn_atualizar_perfil'])) {
         $idUsuario = (int)($_SESSION['usuario_id'] ?? 0);
         if ($idUsuario <= 0 || !$controller->podeGerenciarPerfil()) {
@@ -764,12 +805,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        $resultado = 'erro';
+        $resultado = 'avaliacao';
         try {
             $resultado = $controller->atualizarPerfilProprio(
                 $idUsuario,
                 is_string($_POST['nome'] ?? null) ? trim($_POST['nome']) : '',
-                is_string($_POST['cpf'] ?? null) ? $_POST['cpf'] : '',
+                (string)$perfilAtual['cpf'],
                 is_string($_POST['telefone'] ?? null) ? trim($_POST['telefone']) : '',
                 is_string($_POST['data_nascimento'] ?? null) ? $_POST['data_nascimento'] : '',
                 is_string($_POST['email'] ?? null) ? trim($_POST['email']) : '',
@@ -916,9 +957,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 is_string($_POST['cpf'] ?? null) ? $_POST['cpf'] : '',
                 is_string($_POST['telefone'] ?? null) ? trim($_POST['telefone']) : '',
                 is_string($_POST['data_nascimento'] ?? null) ? $_POST['data_nascimento'] : '',
-                is_string($_POST['email'] ?? null) ? trim($_POST['email']) : '',
-                is_string($_POST['senha'] ?? null) ? $_POST['senha'] : '',
-                is_string($_POST['confirmar_senha'] ?? null) ? $_POST['confirmar_senha'] : ''
+                is_string($_POST['email'] ?? null) ? trim($_POST['email']) : ''
             )
             : 'dados_invalidos';
         header('Location: ../view/admin/secretarias.php?resultado=' . $resultado);
@@ -926,16 +965,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_POST['btn_excluir_secretaria'])) {
-        if (!$controller->podeGerenciarUsuarios()) {
-            http_response_code(403);
-            exit('Acesso não autorizado.');
-        }
-        $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
-        $resultado = $id && $id > 0
-            ? $controller->excluirSecretaria($id)
-            : 'dados_invalidos';
-        header('Location: ../view/admin/secretarias.php?resultado=' . $resultado);
-        exit();
+        http_response_code(405);
+        exit('A exclusão de contas de usuário está desativada. Edite ou desative a conta.');
     }
 
     if (isset($_POST['btn_cadastrar_curso'])) {
@@ -1092,24 +1123,103 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['btn_analisar_pre_matricula'])) {
         $idSecretaria = (int)($_SESSION['usuario_id'] ?? 0);
         $statusPermitidos = ['Aprovado', 'Indeferido', 'Pendente de Documentacao'];
-        $status = $_POST['status'] ?? '';
-        $observacao = trim($_POST['observacao'] ?? '');
+        $status = is_string($_POST['status'] ?? null) ? $_POST['status'] : '';
+        $observacao = is_string($_POST['observacao'] ?? null) ? trim($_POST['observacao']) : '';
+        $idPreMatricula = filter_var($_POST['id_pre_matricula'] ?? null, FILTER_VALIDATE_INT);
 
-        if ($controller->podeAnalisarPreMatriculas() && in_array($status, $statusPermitidos, true)) {
+        if ($controller->podeAnalisarPreMatriculas()
+            && $idPreMatricula
+            && $idPreMatricula > 0
+            && in_array($status, $statusPermitidos, true)) {
             $resultadoAnalise = $controller->analisarPreMatricula(
-                (int)$_POST['id_pre_matricula'],
+                $idPreMatricula,
                 $idSecretaria,
                 $status,
                 $observacao
             );
 
-            if (!$resultadoAnalise && $status === 'Aprovado') {
+            if ($resultadoAnalise === 'documentos') {
                 header('Location: ../view/secretaria/pre_matriculas.php?erro=documentos');
+                exit();
+            }
+            if ($resultadoAnalise === 'erro') {
+                $erro = $status === 'Aprovado' ? 'matricula' : 'analise';
+                header('Location: ../view/secretaria/pre_matriculas.php?erro=' . $erro);
                 exit();
             }
         }
 
         header('Location: ../view/secretaria/pre_matriculas.php');
+        exit();
+    }
+
+    if (isset($_POST['btn_registrar_analise_completa'])) {
+        $idPreMatricula = filter_var($_POST['id_pre_matricula'] ?? null, FILTER_VALIDATE_INT);
+        $idSecretaria = (int)($_SESSION['usuario_id'] ?? 0);
+        $statusPermitidos = ['Aprovado', 'Indeferido', 'Pendente de Documentacao'];
+        $status = is_string($_POST['status'] ?? null) ? $_POST['status'] : '';
+        $observacao = is_string($_POST['observacao'] ?? null) ? trim($_POST['observacao']) : '';
+        $statusDocumentos = is_array($_POST['avaliacoes'] ?? null) ? $_POST['avaliacoes'] : [];
+        $justificativas = is_array($_POST['justificativas'] ?? null) ? $_POST['justificativas'] : [];
+        $avaliacoes = [];
+        $dadosValidos = true;
+
+        foreach ($statusDocumentos as $idDocumento => $statusDocumento) {
+            $idDocumentoValido = filter_var($idDocumento, FILTER_VALIDATE_INT);
+            $justificativa = $justificativas[$idDocumento] ?? '';
+
+            if (!$idDocumentoValido || $idDocumentoValido < 1
+                || !is_string($statusDocumento)
+                || !in_array($statusDocumento, ['Deferido', 'Indeferido'], true)
+                || !is_string($justificativa)
+                || ($statusDocumento === 'Indeferido' && trim($justificativa) === '')) {
+                $dadosValidos = false;
+                break;
+            }
+
+            $avaliacoes[(int)$idDocumentoValido] = [
+                'status' => $statusDocumento,
+                'justificativa' => trim($justificativa)
+            ];
+        }
+
+        $resultado = 'erro';
+        if ($controller->podeAnalisarPreMatriculas()
+            && $controller->podeAvaliarDocumentos()
+            && $idPreMatricula
+            && $idPreMatricula > 0
+            && in_array($status, $statusPermitidos, true)
+            && $dadosValidos
+            && $controller->avaliarDocumentosPreMatricula(
+                $idPreMatricula,
+                $idSecretaria,
+                $avaliacoes
+            )) {
+            $resultadoAnalise = $controller->analisarPreMatricula(
+                $idPreMatricula,
+                $idSecretaria,
+                $status,
+                $observacao
+            );
+            $resultado = $resultadoAnalise === 'ok'
+                ? 'ok'
+                : ($resultadoAnalise === 'documentos'
+                    ? 'documentos'
+                    : ($status === 'Aprovado' ? 'matricula' : 'analise'));
+        }
+
+        $url = '../view/secretaria/pre_matriculas.php';
+        if ($resultado === 'ok') {
+            $url .= '?resultado=ok';
+        } elseif (in_array($resultado, ['documentos', 'matricula', 'analise'], true)) {
+            $url .= '?erro=' . $resultado;
+        } else {
+            $url .= '?erro=avaliacao';
+        }
+        if ($idPreMatricula && $idPreMatricula > 0) {
+            $url .= '#pre-matricula-' . $idPreMatricula;
+        }
+        header('Location: ' . $url);
         exit();
     }
 
@@ -1132,7 +1242,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Avaliação de documento pela secretaria
     if (isset($_POST['btn_avaliar_documento'])) {
         $statusPermitidos = ['Deferido', 'Indeferido'];
-        $status = $_POST['status'] ?? '';
+        $status = is_string($_POST['status'] ?? null) ? $_POST['status'] : '';
+        $idPreMatricula = filter_var($_POST['id_pre_matricula'] ?? null, FILTER_VALIDATE_INT);
         $sucesso = false;
 
         if ($controller->podeAvaliarDocumentos() && in_array($status, $statusPermitidos, true)) {
@@ -1140,11 +1251,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 (int)$_POST['id_documento'],
                 (int)$_SESSION['usuario_id'],
                 $status,
-                trim($_POST['justificativa_recusa'] ?? '')
+                is_string($_POST['justificativa_recusa'] ?? null)
+                    ? trim($_POST['justificativa_recusa'])
+                    : ''
             );
         }
 
-        header('Location: ../view/secretaria/pre_matriculas.php?resultado=' . ($sucesso ? 'ok' : 'erro'));
+        $url = '../view/secretaria/pre_matriculas.php?resultado=' . ($sucesso ? 'ok' : 'erro');
+        if ($idPreMatricula && $idPreMatricula > 0) {
+            $url .= '&abrir=' . $idPreMatricula . '#pre-matricula-' . $idPreMatricula;
+        }
+        header('Location: ' . $url);
         exit();
     }
 
@@ -1225,29 +1342,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(403);
             exit('Acesso não autorizado.');
         }
-        $controller->atualizar($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['senha'], $_POST['perfil_id']);
+        $controller->atualizar(
+            $_POST['id'],
+            $_POST['nome'],
+            $_POST['email'],
+            $_POST['perfil_id']
+        );
         header('Location: ../view/admin/gerenciar_usuarios.php');
         exit();
     }
 
-    // Ação de Excluir
     if (isset($_POST['btn_excluir'])) {
-        if (!$controller->podeGerenciarUsuarios()) {
-            http_response_code(403);
-            exit('Acesso não autorizado.');
-        }
-        $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
-        $resultado = $id && $id > 0
-            ? $controller->excluir($id)
-            : 'dados_invalidos';
-        header('Location: ../view/admin/gerenciar_usuarios.php?resultado=' . $resultado);
-        exit();
+        http_response_code(405);
+        exit('A exclusão de contas de usuário está desativada. Edite ou desative a conta.');
     }
 }
 
 // Processamento de requisições GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['acao'])) {
     $controller = new UsuarioController();
+
+    if ($_GET['acao'] === 'visualizar_documento') {
+        $idDocumento = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
+        $idAluno = (int)($_SESSION['usuario_id'] ?? $_SESSION['inscricao_usuario_id'] ?? 0);
+        if (!$idDocumento || $idDocumento < 1 || $idAluno < 1
+            || !Autorizacao::usuarioTemPermissao('GERENCIAR_DOCUMENTOS', $idAluno)) {
+            http_response_code(403);
+            exit('Acesso não autorizado.');
+        }
+
+        try {
+            $documento = (new UsuarioDAO())->buscarDocumentoAluno($idDocumento, $idAluno);
+        } catch (RuntimeException $e) {
+            http_response_code(500);
+            exit('Não foi possível carregar o documento.');
+        }
+        if (!$documento
+            || !preg_match('#^uploads/documentos/[a-f0-9]{32}\.(pdf|jpg|png)$#', $documento['caminho_arquivo'] ?? '')) {
+            http_response_code(404);
+            exit('Documento não encontrado.');
+        }
+
+        $caminhoArquivo = __DIR__ . '/../' . $documento['caminho_arquivo'];
+        if (!is_file($caminhoArquivo) || !is_readable($caminhoArquivo)) {
+            http_response_code(404);
+            exit('Documento não encontrado.');
+        }
+
+        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($caminhoArquivo);
+        $mimePermitidos = ['application/pdf', 'image/jpeg', 'image/png'];
+        if (!in_array($mime, $mimePermitidos, true)) {
+            http_response_code(415);
+            exit('Tipo de arquivo não permitido.');
+        }
+
+        $extensao = pathinfo($caminhoArquivo, PATHINFO_EXTENSION);
+        header('Content-Type: ' . $mime);
+        header('Content-Length: ' . filesize($caminhoArquivo));
+        header('Content-Disposition: inline; filename="documento-' . $idDocumento . '.' . $extensao . '"');
+        header('X-Content-Type-Options: nosniff');
+        header('Cache-Control: private, no-store');
+        readfile($caminhoArquivo);
+        exit();
+    }
 
     if ($_GET['acao'] === 'baixar_arquivo_solicitacao') {
         $idSolicitacao = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
@@ -1325,7 +1482,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['acao'])) {
             $controller->ativar($id);
         } elseif ($_GET['acao'] === 'excluir') {
             http_response_code(405);
-            exit('A exclusão deve ser solicitada pelo formulário.');
+            exit('A exclusão de contas de usuário está desativada. Edite ou desative a conta.');
         }
 
         header('Location: ../view/admin/gerenciar_usuarios.php');

@@ -151,6 +151,10 @@
     object-position: center;
 }
 
+.banner-slide > img.banner-image-focus-top {
+    object-position: center top;
+}
+
 .banner-shade {
     background:
         linear-gradient(90deg, rgba(5, 9, 22, 0.78) 0%, rgba(5, 9, 22, 0.62) 48%, rgba(5, 9, 22, 0.7) 100%),
@@ -964,20 +968,16 @@ html[data-tema="escuro"] .login-page .login-input-icon {
 }
 
 .login-page .theme-toggle {
-    width: auto;
-    min-width: 132px;
-    height: 34px;
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    padding: 0 12px;
-    border-radius: 999px;
-    font-size: 0.65rem;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    flex: 0 0 40px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 1.15rem;
     font-weight: 850;
-    letter-spacing: 0.025em;
-    white-space: nowrap;
     transform: none;
     transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
 }
@@ -989,8 +989,7 @@ html[data-tema="escuro"] .login-page .login-input-icon {
 }
 
 .login-page .theme-toggle::before {
-    font-size: 0.85rem;
-    line-height: 1;
+    display: none;
 }
 
 html:not([data-tema="escuro"]) .login-page {
@@ -1035,8 +1034,7 @@ html:not([data-tema="escuro"]) .login-page .theme-toggle {
 }
 
 html:not([data-tema="escuro"]) .login-page .theme-toggle::before {
-    color: #263cff;
-    content: '☾';
+    content: none;
 }
 
 html[data-tema="escuro"] .login-page .theme-toggle {
@@ -1046,8 +1044,7 @@ html[data-tema="escuro"] .login-page .theme-toggle {
 }
 
 html[data-tema="escuro"] .login-page .theme-toggle::before {
-    color: #ffbf24;
-    content: '☀';
+    content: none;
 }
 
 html:not([data-tema="escuro"]) .login-page .banner-shade {
@@ -1553,4 +1550,39 @@ html:not([data-tema="escuro"]) .login-footer-bottom {
         grid-template-columns: minmax(0, 1fr);
         gap: 24px;
     }
+}
+
+html:not([data-tema="escuro"]) .login-page .course-tile .course-tile-content {
+    color: #ffffff;
+    background: rgba(8, 29, 53, 0.94);
+    border-color: rgba(255, 255, 255, 0.36);
+}
+
+html:not([data-tema="escuro"]) .login-page .course-tile .course-tile-content > strong {
+    color: #ffffff;
+}
+
+html:not([data-tema="escuro"]) .login-page .course-tile .course-tile-content .course-action,
+html:not([data-tema="escuro"]) .login-page .course-tile .course-tile-content .course-action > span {
+    color: #f2f7ff;
+}
+
+html:not([data-tema="escuro"]) .login-page .course-tile .course-tile-content .course-action {
+    border-color: rgba(255, 255, 255, 0.42);
+}
+
+html[data-tema="escuro"] .login-page .course-tile .course-tile-content {
+    color: #ffffff;
+    background: rgba(8, 18, 36, 0.94);
+    border-color: rgba(174, 184, 204, 0.5);
+}
+
+html[data-tema="escuro"] .login-page .course-tile .course-tile-content > strong,
+html[data-tema="escuro"] .login-page .course-tile .course-tile-content .course-action,
+html[data-tema="escuro"] .login-page .course-tile .course-tile-content .course-action > span {
+    color: #ffffff;
+}
+
+html[data-tema="escuro"] .login-page .course-tile .course-tile-content .course-action {
+    border-color: rgba(255, 255, 255, 0.42);
 }

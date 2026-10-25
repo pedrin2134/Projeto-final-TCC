@@ -36,11 +36,9 @@ if ($idConsulta && $idConsulta > 0) {
 }
 $mensagens = [
     'ok' => ['success', 'Operação realizada com sucesso.'],
-    'ok_arquivos_pendentes' => ['error', 'A secretária e os registros vinculados foram excluídos, mas alguns arquivos não puderam ser removidos. Consulte o log do servidor.'],
     'dados_invalidos' => ['error', 'Confira os campos obrigatórios e os dados informados.'],
     'cpf_invalido' => ['error', 'Informe um CPF válido.'],
     'duplicado' => ['error', 'Já existe uma conta cadastrada com esse CPF ou e-mail.'],
-    'vinculado' => ['error', 'A exclusão foi cancelada porque ainda há um vínculo no banco de dados. Nenhum dado foi apagado; consulte o log do servidor.'],
     'nao_encontrado' => ['error', 'A secretária não foi encontrada. Atualize a lista e tente novamente.'],
     'erro' => ['error', 'Não foi possível concluir a operação. Tente novamente.']
 ];
@@ -56,7 +54,7 @@ include __DIR__ . '/../includes/topo.php';
             <header class="secretary-management-header">
                 <div>
                     <h1>Gerenciar secretárias</h1>
-                    <p>Cadastre, consulte, altere e exclua as contas da secretaria escolar.</p>
+                    <p>Cadastre, consulte e altere as contas da secretaria escolar.</p>
                 </div>
                 <a class="btn admin-primary-button" href="cadastrar_secretaria.php">+ Cadastrar secretária</a>
             </header>
@@ -76,13 +74,6 @@ include __DIR__ . '/../includes/topo.php';
                             <h2>Dados da secretária</h2>
                             <div class="secretary-actions">
                                 <a class="btn" href="editar_secretaria.php?id=<?= (int)$secretariaConsulta['id'] ?>">Alterar</a>
-                                <form action="../../controller/UsuarioController.php" method="POST">
-                                    <input type="hidden" name="id" value="<?= (int)$secretariaConsulta['id'] ?>">
-                                    <button type="submit" name="btn_excluir_secretaria"
-                                            onclick="return confirm('ATENÇÃO: Esta ação apagará permanentemente a secretária e os registros vinculados, incluindo documentos, matrículas, solicitações e declarações. Não pode ser desfeita. Deseja continuar?');">
-                                        Excluir
-                                    </button>
-                                </form>
                                 <a class="btn secretary-secondary-button" href="secretarias.php">Voltar à lista</a>
                             </div>
                         </div>
@@ -115,6 +106,7 @@ include __DIR__ . '/../includes/topo.php';
                 <?php endif; ?>
             <?php endif; ?>
 
+            <?php if (!isset($_GET['ver']) || !$secretariaConsulta): ?>
             <section class="secretary-list card">
                 <div class="secretary-list-heading">
                     <h2>Secretárias cadastradas</h2>
@@ -183,6 +175,7 @@ include __DIR__ . '/../includes/topo.php';
                     </p>
                 <?php endif; ?>
             </section>
+            <?php endif; ?>
         </div>
     </div>
 </div>

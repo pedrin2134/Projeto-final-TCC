@@ -89,7 +89,7 @@ include_once __DIR__ . '/../includes/topo.php';
 
             <section class="admin-shortcuts" aria-label="Acessos rápidos">
                 <a class="admin-shortcut shortcut-users" href="gerenciar_usuarios.php">
-                    <span class="admin-shortcut-icon" aria-hidden="true">♙</span>
+                    <span class="admin-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-1.5a7 7 0 0 1 14 0V21z"/></svg></span>
                     <span><strong>Gerenciar usuários</strong><small>Contas e acessos</small></span>
                     <span class="admin-shortcut-arrow" aria-hidden="true">→</span>
                 </a>
@@ -107,7 +107,7 @@ include_once __DIR__ . '/../includes/topo.php';
 
             <section class="admin-stat-grid" aria-label="Resumo do sistema">
                 <article class="admin-stat-card">
-                    <span class="admin-stat-icon stat-blue" aria-hidden="true">♙</span>
+                    <span class="admin-stat-icon stat-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-1.5a7 7 0 0 1 14 0V21z"/></svg></span>
                     <div><span>Total de usuários</span><strong><?= number_format((int)($resumo['total_usuarios'] ?? 0), 0, ',', '.') ?></strong><small>Contas cadastradas</small></div>
                 </article>
                 <article class="admin-stat-card">
@@ -115,7 +115,7 @@ include_once __DIR__ . '/../includes/topo.php';
                     <div><span>Alunos cadastrados</span><strong><?= number_format((int)($resumo['total_alunos'] ?? 0), 0, ',', '.') ?></strong><small>Perfil aluno</small></div>
                 </article>
                 <article class="admin-stat-card">
-                    <span class="admin-stat-icon stat-blue" aria-hidden="true">✓</span>
+                    <span class="admin-stat-icon stat-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg></span>
                     <div><span>Matrículas ativas</span><strong><?= number_format((int)($resumo['matriculas_ativas'] ?? 0), 0, ',', '.') ?></strong><small>Registros efetivados</small></div>
                 </article>
                 <article class="admin-stat-card">

@@ -28,7 +28,7 @@ $rotulosPagina = [
     'solicitacoes.php' => 'Solicitações de documentos',
     'cursos.php' => 'Gerenciar cursos',
     'pre_matriculas.php' => 'Pré-matrículas',
-    'perfil.php' => 'Meu perfil'
+    'perfil.php' => 'Gerenciamento de Perfil'
 ];
 $rotuloPagina = $rotulosPagina[$paginaAtual] ?? 'Gestão escolar';
 $diasSemana = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
@@ -71,6 +71,9 @@ if (!empty($exibeMenuAdministrativo) && (int)($_SESSION['perfil_id'] ?? 0) === 1
     <?php endif; ?>
     <?php if ($carregarEstilosPreMatricula): ?>
         <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_matricula.css?v=<?= time() ?>">
+    <?php endif; ?>
+    <?php if (in_array('secretary-workflow', $classesCorpo ?: [], true)): ?>
+        <script src="<?= $baseDir ?>assets/js/analise_pre_matricula.js?v=<?= filemtime(__DIR__ . '/../../assets/js/analise_pre_matricula.js') ?>" defer></script>
     <?php endif; ?>
     <?php if (!empty($exibeMenuAdministrativo)): ?>
         <link rel="stylesheet" href="<?= $baseDir ?>assets/css/estilo_tema_sistema.css?v=<?= filemtime(__DIR__ . '/../../assets/css/estilo_tema_sistema.css') ?>">
@@ -125,7 +128,11 @@ if (!empty($exibeMenuAdministrativo) && (int)($_SESSION['perfil_id'] ?? 0) === 1
                                         <li class="admin-notification-item" data-notification-id="<?= htmlspecialchars((string)$notificacao['id'], ENT_QUOTES, 'UTF-8') ?>">
                                             <a href="<?= htmlspecialchars($destinoNotificacao, ENT_QUOTES, 'UTF-8') ?>" class="admin-notification-link">
                                                 <span class="admin-notification-icon <?= $tipoNotificacao ?>" aria-hidden="true">
-                                                    <?= $tipoNotificacao === 'solicitacao' ? '▣' : '♙' ?>
+                                                    <?php if ($tipoNotificacao === 'solicitacao'): ?>
+                                                        <svg viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5M8 13h8M8 17h8"/></svg>
+                                                    <?php else: ?>
+                                                        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-1.5a7 7 0 0 1 14 0V21z"/></svg>
+                                                    <?php endif; ?>
                                                 </span>
                                                 <span class="admin-notification-copy">
                                                     <strong><?= htmlspecialchars((string)$notificacao['titulo'], ENT_QUOTES, 'UTF-8') ?></strong>

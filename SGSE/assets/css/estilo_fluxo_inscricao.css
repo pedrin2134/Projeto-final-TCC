@@ -1387,6 +1387,414 @@ html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-co
     color: #aeb8cc;
 }
 
+.signup-flow-page .signup-workflow-content .application-status-card {
+    padding: 24px;
+    border: 1px solid var(--signup-border);
+    border-left: 4px solid var(--signup-cyan) !important;
+    border-radius: 14px;
+    background: var(--signup-panel);
+    box-shadow: 0 12px 30px var(--signup-shadow);
+}
+
+.signup-flow-page .signup-workflow-content .application-status-card::after {
+    display: none;
+    content: none;
+}
+
+.signup-flow-page .signup-workflow-content .application-status-card.is-correction-requested {
+    border-color: color-mix(in srgb, var(--signup-yellow) 42%, var(--signup-border));
+    border-left-color: var(--signup-yellow) !important;
+}
+
+.signup-flow-page .application-status-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.signup-flow-page .application-status-kicker {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--signup-cyan);
+    font-size: 0.64rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+}
+
+.signup-flow-page .application-status-heading h2 {
+    margin: 0;
+    color: var(--signup-text);
+    font-size: 1.02rem;
+}
+
+.signup-flow-page .application-status-badge {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 28px;
+    padding: 5px 10px;
+    color: #7a5600;
+    background: #fff1c9;
+    border: 1px solid #f2d27d;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.signup-flow-page .application-status-badge.is-analysis {
+    color: #006b85;
+    background: #e2f7fb;
+    border-color: #a4e4ef;
+}
+
+.signup-flow-page .application-status-badge.is-pending {
+    color: #8a5800;
+    background: #fff1c9;
+    border-color: #f2d27d;
+}
+
+.signup-flow-page .application-status-badge.is-rejected {
+    color: #a12d3e;
+    background: #fff0f1;
+    border-color: #f1c5ca;
+}
+
+html[data-tema="escuro"] .signup-flow-page .application-status-badge.is-analysis {
+    color: #9cecf5;
+    background: #123b49;
+    border-color: #226579;
+}
+
+html[data-tema="escuro"] .signup-flow-page .application-status-badge.is-pending {
+    color: #ffe5a3;
+    background: #574817;
+    border-color: #88712d;
+}
+
+html[data-tema="escuro"] .signup-flow-page .application-status-badge.is-rejected {
+    color: #ffd7de;
+    background: #4a1d2a;
+    border-color: #783748;
+}
+
+.signup-flow-page .application-status-message {
+    margin: 14px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.signup-flow-page .application-status-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0 0;
+}
+
+.signup-flow-page .application-status-details > div {
+    min-width: 0;
+    padding: 11px 12px;
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 9px;
+}
+
+.signup-flow-page .application-status-details dt {
+    margin-bottom: 5px;
+    color: var(--signup-muted);
+    font-size: 0.66rem;
+    font-weight: 700;
+}
+
+.signup-flow-page .application-status-details dd {
+    margin: 0;
+    color: var(--signup-text);
+    font-size: 0.78rem;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .application-status-note {
+    margin-top: 12px;
+    padding: 12px 14px;
+    color: var(--signup-text);
+    background: color-mix(in srgb, var(--signup-yellow) 10%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-yellow) 38%, var(--signup-border));
+    border-radius: 9px;
+}
+
+.signup-flow-page .application-status-note strong {
+    color: var(--signup-label);
+    font-size: 0.72rem;
+}
+
+.signup-flow-page .application-status-note p {
+    margin: 5px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.76rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .correction-request-banner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    color: var(--signup-text);
+    background: color-mix(in srgb, var(--signup-yellow) 11%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-yellow) 48%, var(--signup-border));
+    border-radius: 11px;
+    box-shadow: 0 8px 22px var(--signup-shadow);
+}
+
+.signup-flow-page .correction-request-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #151b27;
+    background: var(--signup-yellow);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 950;
+}
+
+.signup-flow-page .correction-request-copy {
+    min-width: 0;
+}
+
+.signup-flow-page .correction-request-copy h2 {
+    margin: 0 0 3px;
+    color: var(--signup-text);
+    font-size: 0.82rem;
+}
+
+.signup-flow-page .correction-request-copy p {
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.7rem;
+    line-height: 1.45;
+}
+
+.signup-flow-page .correction-request-count {
+    grid-column: 2;
+    grid-row: 2;
+    color: #8a5800;
+    font-size: 0.65rem;
+    font-weight: 800;
+}
+
+.signup-flow-page .correction-request-action {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 12px;
+    color: #151b27;
+    background: linear-gradient(100deg, var(--signup-yellow), #ffad08);
+    border-radius: 8px;
+    box-shadow: 0 5px 14px color-mix(in srgb, var(--signup-yellow) 20%, transparent);
+    font-size: 0.68rem;
+    font-weight: 850;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.signup-flow-page .correction-request-action:hover {
+    background: linear-gradient(100deg, var(--signup-yellow-hover), #ffc02a);
+}
+
+.signup-flow-page .correction-request-action:focus-visible {
+    outline: 3px solid var(--signup-cyan-bright);
+    outline-offset: 3px;
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.needs-correction {
+    color: var(--signup-text);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.needs-correction > span {
+    color: #151b27;
+    background: var(--signup-yellow);
+    border-color: var(--signup-yellow);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--signup-yellow) 18%, transparent);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.needs-correction small {
+    color: #9b6900;
+    font-weight: 750;
+}
+
+.signup-flow-page .signup-workflow-content .uploaded-documents-card {
+    width: 100%;
+    padding: 22px 24px;
+    background: var(--signup-panel);
+    border-color: var(--signup-border);
+    box-shadow: 0 12px 30px var(--signup-shadow);
+}
+
+.signup-flow-page .uploaded-documents-card .section-heading {
+    margin-bottom: 14px;
+}
+
+.signup-flow-page .uploaded-documents-card .section-heading h3 {
+    margin: 0 0 4px;
+    color: var(--signup-text);
+    font-size: 0.96rem;
+}
+
+.signup-flow-page .uploaded-documents-card .section-heading p {
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.75rem;
+    line-height: 1.45;
+}
+
+.signup-flow-page .uploaded-documents-list {
+    display: grid;
+    gap: 9px;
+}
+
+.signup-flow-page .uploaded-document-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 13px;
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 9px;
+}
+
+.signup-flow-page .uploaded-document-row.is-rejected {
+    background: color-mix(in srgb, #e14c62 7%, var(--signup-panel-soft));
+    border-color: color-mix(in srgb, #e14c62 36%, var(--signup-border));
+}
+
+.signup-flow-page .uploaded-document-row.is-approved {
+    background: color-mix(in srgb, #14a779 6%, var(--signup-panel-soft));
+    border-color: color-mix(in srgb, #14a779 28%, var(--signup-border));
+}
+
+.signup-flow-page .uploaded-document-row.is-waiting {
+    background: color-mix(in srgb, var(--signup-yellow) 6%, var(--signup-panel-soft));
+}
+
+.signup-flow-page .uploaded-document-info {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.signup-flow-page .uploaded-document-copy {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.signup-flow-page .uploaded-document-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.signup-flow-page .uploaded-document-title > strong {
+    color: var(--signup-text);
+    font-size: 0.76rem;
+}
+
+.signup-flow-page .uploaded-document-info .status-pill {
+    min-height: 20px;
+    padding: 2px 7px;
+    font-size: 0.61rem;
+}
+
+.signup-flow-page .uploaded-document-note {
+    width: 100%;
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.7rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note {
+    color: #ae3144;
+}
+
+.signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note strong {
+    color: #93263a;
+}
+
+.signup-flow-page .uploaded-document-link,
+.signup-flow-page .document-file-uploaded a {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 5px;
+    color: var(--signup-cyan);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.signup-flow-page .uploaded-document-link:hover,
+.signup-flow-page .document-file-uploaded a:hover {
+    text-decoration: underline;
+}
+
+.signup-flow-page .document-file-uploaded a {
+    margin-left: 5px;
+}
+
+.signup-flow-page .signup-workflow-content .document-row.is-rejected-document {
+    background: color-mix(in srgb, #e14c62 7%, var(--signup-panel-soft));
+    border-color: color-mix(in srgb, #e14c62 38%, var(--signup-border));
+}
+
+.signup-flow-page .signup-workflow-content #correcao-documentos {
+    scroll-margin-top: 84px;
+    border-color: color-mix(in srgb, var(--signup-yellow) 48%, var(--signup-border));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--signup-yellow) 9%, transparent), 0 14px 34px var(--signup-shadow);
+}
+
+html[data-tema="escuro"] .signup-flow-page .correction-request-count,
+html[data-tema="escuro"] .signup-workflow-layout .workflow-sidebar .step.needs-correction small {
+    color: #ffe5a3;
+}
+
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-rejected {
+    background: rgba(169, 28, 55, 0.16);
+    border-color: rgba(255, 107, 130, 0.38);
+}
+
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note,
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note strong {
+    color: #ffb7c0;
+}
+
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-approved {
+    background: rgba(16, 60, 52, 0.58);
+    border-color: rgba(28, 112, 93, 0.7);
+}
+
+.signup-flow-page .uploaded-document-link:focus-visible,
+.signup-flow-page .document-file-uploaded a:focus-visible {
+    outline: 3px solid var(--signup-cyan-bright);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
 .signup-flow-page .signup-workflow-layout {
     width: min(1005px, calc(100% - 48px)) !important;
     grid-template-columns: minmax(0, 0.47fr) minmax(0, 1fr);
@@ -1635,22 +2043,6 @@ body.signup-flow-page.cadastro-page > .login-footer {
     transform: translateY(-2px);
 }
 
-.signup-flow-page .signup-workflow-content .workflow-course-option input:checked + .workflow-course-content::after {
-    position: absolute;
-    top: 13px;
-    right: 13px;
-    width: 22px;
-    height: 22px;
-    display: grid;
-    place-items: center;
-    color: #ffffff;
-    background: var(--signup-cyan);
-    border-radius: 50%;
-    content: '✓';
-    font-size: 0.75rem;
-    font-weight: 900;
-}
-
 .signup-flow-page .signup-workflow-content .workflow-course-option input:focus-visible + .workflow-course-content {
     outline: 3px solid color-mix(in srgb, var(--signup-cyan) 55%, transparent);
     outline-offset: 3px;
@@ -1704,6 +2096,37 @@ html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-co
 }
 
 @media (max-width: 520px) {
+    .signup-flow-page .application-status-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .signup-flow-page .application-status-details {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .signup-flow-page .correction-request-banner {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .signup-flow-page .correction-request-count {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .signup-flow-page .correction-request-action {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        width: 100%;
+    }
+
+    .signup-flow-page .uploaded-document-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
     .signup-flow-page .signup-workflow-content .course-card {
         padding: 22px 18px;
     }
@@ -1714,5 +2137,444 @@ html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-co
 
     .signup-flow-page .signup-workflow-content .workflow-course-content {
         min-height: 116px;
+    }
+}
+
+.signup-flow-page.correction-mode {
+    --signup-bg: #080d1b;
+    --signup-panel: #10192d;
+    --signup-panel-soft: #070d1b;
+    --signup-text: #eef4ff;
+    --signup-muted: #aeb8cc;
+    --signup-label: #dce3f2;
+    --signup-border: #273650;
+    --signup-input-border: #34425b;
+    --signup-cyan: #00d9ed;
+    --signup-cyan-bright: #00d9ed;
+    --signup-yellow: #ffb31a;
+    --signup-yellow-hover: #ffc443;
+    --signup-shadow: rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+}
+
+.signup-flow-page.correction-mode .signup-topbar {
+    background: #080d1b;
+    border-color: #1b2944;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content {
+    gap: 14px;
+}
+
+.signup-flow-page.correction-mode .signup-intro .eyebrow {
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.08);
+    border-color: rgba(255, 179, 26, 0.28);
+}
+
+.signup-flow-page.correction-mode .signup-workflow-layout .workflow-sidebar {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    padding: 17px 16px;
+    background: #0b1328;
+    border: 1px solid #392f24;
+    border-radius: 13px;
+}
+
+.signup-flow-page.correction-mode .correction-request-banner {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    margin: 0;
+    padding: 14px 16px;
+    background: linear-gradient(110deg, rgba(116, 75, 14, 0.3), rgba(9, 15, 31, 0.98) 72%);
+    border-color: #805713;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode .correction-request-icon {
+    color: #1b160a;
+    background: #ffb52d;
+    box-shadow: 0 0 0 4px rgba(255, 181, 45, 0.12);
+}
+
+.signup-flow-page.correction-mode .correction-request-copy h2 {
+    color: #ffca54;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.signup-flow-page.correction-mode .correction-request-copy p {
+    color: #f1e6cb;
+    font-size: 0.73rem;
+}
+
+.signup-flow-page.correction-mode .correction-request-date {
+    align-self: start;
+    color: #ffca54;
+    font-size: 0.58rem;
+    white-space: nowrap;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .documents-card {
+    padding: 18px 20px;
+    border-color: #273650;
+    border-radius: 13px;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode #correcao-documentos {
+    scroll-margin-top: 84px;
+    border-color: #273650;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #26334e;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading .section-icon {
+    width: 9px;
+    height: 9px;
+    color: transparent;
+    background: #ffbd28;
+    border: 0;
+    border-radius: 50%;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading h3 {
+    margin: 0 0 3px;
+    color: #eef4ff;
+    font-size: 0.82rem;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading p {
+    margin: 0;
+    color: #aeb8cc;
+    font-size: 0.66rem;
+}
+
+.signup-flow-page.correction-mode .correction-approved-count {
+    padding: 5px 8px;
+    color: #42e0b1;
+    background: rgba(5, 133, 105, 0.14);
+    border: 1px solid rgba(5, 179, 140, 0.28);
+    border-radius: 999px;
+    font-size: 0.58rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 10px;
+    margin-bottom: 8px;
+    padding: 10px 11px;
+    background: #090f20;
+    border: 1px solid #283550;
+    border-radius: 9px;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row.is-preserved-document {
+    min-height: 52px;
+}
+
+.signup-flow-page.correction-mode .correction-document-heading {
+    grid-column: 1;
+    min-width: 0;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row .correction-document-heading p {
+    margin: 0;
+}
+
+.signup-flow-page.correction-mode .correction-document-heading > p:first-child strong {
+    color: #eef4ff;
+    font-size: 0.68rem;
+}
+
+.signup-flow-page.correction-mode .correction-document-heading .correction-document-detail {
+    margin-top: 3px !important;
+    color: #aeb8cc;
+    font-size: 0.59rem;
+    line-height: 1.4;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row > .status-pill {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    color: #40dfb0;
+    background: rgba(5, 133, 105, 0.13);
+    border-color: rgba(5, 179, 140, 0.3);
+    font-size: 0.57rem;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row.is-rejected-document {
+    grid-template-columns: minmax(0, 1fr) auto;
+    background: rgba(111, 71, 13, 0.14);
+    border-color: #805713;
+}
+
+.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-heading > p:first-child strong {
+    color: #ffca54;
+}
+
+.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-detail {
+    color: #e6c67d;
+}
+
+.signup-flow-page.correction-mode .document-row.is-rejected-document > .status-pill {
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.13);
+    border-color: #805713;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone {
+    position: relative;
+    display: flex;
+    min-height: 100px;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 2px;
+    padding: 13px;
+    overflow: hidden;
+    color: #eef4ff;
+    background: #080e1d;
+    border: 1px dashed #936517;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 150ms ease, background 150ms ease;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone:hover,
+.signup-flow-page.correction-mode .document-upload-dropzone.is-dragging,
+.signup-flow-page.correction-mode .document-row.has-selected-file .document-upload-dropzone {
+    background: rgba(255, 179, 26, 0.08);
+    border-color: #ffbd28;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone input[type="file"] {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.signup-flow-page.correction-mode .document-upload-icon {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.12);
+    border: 1px solid rgba(255, 179, 26, 0.32);
+    border-radius: 50%;
+    font-size: 1rem;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone strong {
+    color: #eef4ff;
+    font-size: 0.64rem;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone small {
+    color: #aeb8cc;
+    font-size: 0.55rem;
+}
+
+.signup-flow-page.correction-mode .document-row .document-file-feedback:not([hidden]) {
+    grid-row: 3;
+    margin-top: 0;
+    color: #ffca54;
+    font-size: 0.58rem;
+}
+
+.signup-flow-page.correction-mode .correction-document-preserved {
+    grid-column: 2 / -1;
+    color: #5fd8b1;
+    font-size: 0.55rem;
+}
+
+.signup-flow-page.correction-mode .correction-resend-help {
+    color: #aeb8cc;
+    font-size: 0.62rem;
+    line-height: 1.4;
+}
+
+.signup-flow-page.correction-mode .documents-card .workflow-form-actions {
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px solid #26334e;
+}
+
+.signup-flow-page.correction-mode .documents-card .workflow-form-actions .btn-primary {
+    color: #17130a;
+    background: linear-gradient(100deg, #ffbd24, #ed8c00);
+    box-shadow: 0 6px 16px rgba(235, 142, 0, 0.18);
+    font-size: 0.68rem;
+}
+
+.signup-flow-page.correction-mode .documents-card .workflow-form-actions .btn-primary:hover {
+    background: linear-gradient(100deg, #ffd05a, #ffad08);
+}
+
+.signup-flow-page.correction-mode .signup-workflow-layout .workflow-sidebar .step.needs-correction > span {
+    color: #151b27;
+    background: #ffad08;
+    border-color: #ffad08;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode {
+    --signup-bg: #080d1b;
+    --signup-panel: #10192d;
+    --signup-panel-soft: #070d1b;
+    --signup-text: #eef4ff;
+    --signup-muted: #aeb8cc;
+    --signup-label: #dce3f2;
+    --signup-border: #273650;
+    --signup-input-border: #34425b;
+    --signup-cyan: #00d9ed;
+    --signup-cyan-bright: #00d9ed;
+    --signup-yellow: #ffb31a;
+    --signup-yellow-hover: #ffc443;
+    --signup-shadow: rgba(0, 0, 0, 0.3);
+    color: #eef4ff;
+    background: #080d1b;
+    color-scheme: dark;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-intro h1,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .step,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .step strong {
+    color: #eef4ff;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-workflow-content .documents-card,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-workflow-content .documents-card h3 {
+    color: #eef4ff;
+    background: #10192d;
+    border-color: #273650;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .documents-card .section-heading h3,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .documents-card .section-heading p,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row p,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row p strong {
+    color: #eef4ff;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-workflow-content .document-row {
+    color: #eef4ff;
+    background: #090f20;
+    border-color: #283550;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document {
+    background: rgba(111, 71, 13, 0.14);
+    border-color: #805713;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row .correction-document-heading > p:first-child strong,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-heading > p:first-child strong {
+    color: #ffca54;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row .correction-document-heading .correction-document-detail {
+    color: #aeb8cc;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-heading .correction-document-detail {
+    color: #e6c67d;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row .status-pill {
+    color: #40dfb0;
+    background: rgba(5, 133, 105, 0.13);
+    border-color: rgba(5, 179, 140, 0.3);
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document .status-pill {
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.13);
+    border-color: #805713;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-upload-dropzone input[type="file"] {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .correction-document-preserved,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .correction-resend-help {
+    color: #aeb8cc;
+}
+
+@media (max-width: 760px) {
+    .signup-flow-page.correction-mode .signup-workflow-layout .workflow-sidebar {
+        position: static;
+    }
+
+    .signup-flow-page.correction-mode .correction-request-banner {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .signup-flow-page.correction-mode .correction-request-date {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .signup-flow-page.correction-mode .signup-workflow-content .documents-card {
+        padding: 14px 12px;
+    }
+
+    .signup-flow-page.correction-mode .documents-card .section-heading {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .signup-flow-page.correction-mode .correction-approved-count {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .signup-flow-page.correction-mode .signup-workflow-content .document-row,
+    .signup-flow-page.correction-mode .signup-workflow-content .document-row.is-rejected-document {
+        column-gap: 8px;
+        padding: 9px;
+    }
+
+    .signup-flow-page.correction-mode .documents-card .workflow-form-actions {
+        align-items: stretch;
+        flex-direction: column;
     }
 }

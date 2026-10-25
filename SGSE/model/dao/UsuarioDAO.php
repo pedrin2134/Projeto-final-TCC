@@ -179,10 +179,6 @@ class UsuarioDAO {
                 $usuario->getDataNascimento(),
                 $usuario->getEmail()
             ];
-            if ($usuario->getSenha() !== '') {
-                $sql .= ", u.senha = ?";
-                $params[] = $usuario->getSenha();
-            }
             $sql .= " WHERE u.id_usuario = ? AND u.id_perfil = 2";
             $params[] = $usuario->getId();
             $stmt = Conexao::getConexao()->prepare($sql);
@@ -350,6 +346,33 @@ class UsuarioDAO {
         }
     }
 
+    public function buscarHashSenha(int $idUsuario): ?string {
+        try {
+            $stmt = Conexao::getConexao()->prepare(
+                "SELECT senha FROM usuarios WHERE id_usuario = ? LIMIT 1"
+            );
+            $stmt->execute([$idUsuario]);
+            $senha = $stmt->fetchColumn();
+            return is_string($senha) ? $senha : null;
+        } catch (PDOException $e) {
+            error_log('Erro ao consultar a senha do próprio usuário: ' . $e->getMessage());
+            throw new RuntimeException('Não foi possível validar a senha atual.', 0, $e);
+        }
+    }
+
+    public function atualizarSenhaPropria(int $idUsuario, string $hashAtual, string $hashNovo): bool {
+        try {
+            $stmt = Conexao::getConexao()->prepare(
+                "UPDATE usuarios SET senha = ? WHERE id_usuario = ? AND senha = ?"
+            );
+            $stmt->execute([$hashNovo, $idUsuario, $hashAtual]);
+            return $stmt->rowCount() === 1;
+        } catch (PDOException $e) {
+            error_log('Erro ao atualizar a senha do próprio usuário: ' . $e->getMessage());
+            throw new RuntimeException('Não foi possível atualizar a senha.', 0, $e);
+        }
+    }
+
     public function atualizarPerfilProprio(
         int $idUsuario,
         string $nome,
@@ -416,30 +439,16 @@ class UsuarioDAO {
 
     public function atualizar(UsuarioDTO $u) {
         try {
-            if (!empty($u->getSenha())) {
-                $sql = "UPDATE usuarios u
-                        INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
-                        SET p.nome = ?, u.email = ?, u.senha = ?, u.id_perfil = ?
-                        WHERE u.id_usuario = ?";
-                $params = [
-                    $u->getNome(), 
-                    $u->getEmail(),
-                    $u->getSenha(), 
-                    $u->getPerfilId(),
-                    $u->getId()
-                ];
-            } else {
-                $sql = "UPDATE usuarios u
-                        INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
-                        SET p.nome = ?, u.email = ?, u.id_perfil = ?
-                        WHERE u.id_usuario = ?";
-                $params = [
-                    $u->getNome(), 
-                    $u->getEmail(),
-                    $u->getPerfilId(),
-                    $u->getId()
-                ];
-            }
+            $sql = "UPDATE usuarios u
+                    INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
+                    SET p.nome = ?, u.email = ?, u.id_perfil = ?
+                    WHERE u.id_usuario = ?";
+            $params = [
+                $u->getNome(),
+                $u->getEmail(),
+                $u->getPerfilId(),
+                $u->getId()
+            ];
             $stmt = Conexao::getConexao()->prepare($sql);
             return $stmt->execute($params);
         } catch (PDOException $e) {
@@ -639,7 +648,7 @@ class UsuarioDAO {
     public function buscarPreMatriculaAluno(int $idUsuario) {
         try {
             $sql = "SELECT pm.id_pre_matricula, pm.id_usuario, pm.status, pm.observacao,
-                           pm.data_inscricao, c.nome AS curso_nome,
+                           pm.data_inscricao, pm.data_analise, c.nome AS curso_nome,
                            c.sigla AS curso_sigla
                     FROM pre_matricula pm
                     INNER JOIN cursos c ON c.id_curso = pm.id_curso
@@ -841,7 +850,7 @@ class UsuarioDAO {
     public function listarPreMatriculas() {
         try {
             $sql = "SELECT pm.id_pre_matricula, pm.id_usuario, pm.status, pm.observacao,
-                           pm.data_inscricao, p.nome AS aluno_nome,
+                           pm.data_inscricao, pm.data_analise, p.nome AS aluno_nome,
                            p.cpf AS aluno_cpf, p.telefone AS aluno_telefone,
                            p.data_nascimento AS aluno_data_nascimento,
                            (SELECT de.caminho_arquivo
@@ -854,7 +863,27 @@ class UsuarioDAO {
                            u.email AS aluno_email,
                            u.cargo AS aluno_cargo, u.setor AS aluno_setor,
                            u.status AS aluno_status, c.nome AS curso_nome,
-                           c.sigla AS curso_sigla
+                           c.sigla AS curso_sigla,
+                           (SELECT m.codigo_matricula
+                            FROM matriculas m
+                            WHERE m.id_pre_matricula = pm.id_pre_matricula
+                            ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                            LIMIT 1) AS codigo_matricula,
+                           (SELECT m.periodo_letivo
+                            FROM matriculas m
+                            WHERE m.id_pre_matricula = pm.id_pre_matricula
+                            ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                            LIMIT 1) AS periodo_letivo,
+                           (SELECT m.status
+                            FROM matriculas m
+                            WHERE m.id_pre_matricula = pm.id_pre_matricula
+                            ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                            LIMIT 1) AS status_matricula,
+                           (SELECT m.data_matricula
+                            FROM matriculas m
+                            WHERE m.id_pre_matricula = pm.id_pre_matricula
+                            ORDER BY m.data_matricula DESC, m.id_matricula DESC
+                            LIMIT 1) AS data_matricula
                     FROM pre_matricula pm
                     INNER JOIN usuarios u ON u.id_usuario = pm.id_usuario
                     INNER JOIN pessoas p ON p.id_pessoa = u.id_pessoa
@@ -868,10 +897,38 @@ class UsuarioDAO {
         }
     }
 
-    public function analisarPreMatricula(int $idPreMatricula, int $idSecretaria, string $status, string $observacao) {
+    public function analisarPreMatricula(
+        int $idPreMatricula,
+        int $idSecretaria,
+        string $status,
+        string $observacao
+    ): string {
+        $conexao = Conexao::getConexao();
+
         try {
+            $conexao->beginTransaction();
+
+            $stmtPreMatricula = $conexao->prepare(
+                "SELECT id_usuario, status,
+                        YEAR(CURRENT_DATE) AS ano_letivo,
+                        CONCAT(
+                            YEAR(CURRENT_DATE),
+                            '/',
+                            IF(MONTH(CURRENT_DATE) <= 6, '1', '2')
+                        ) AS periodo_letivo
+                 FROM pre_matricula
+                 WHERE id_pre_matricula = ?
+                 FOR UPDATE"
+            );
+            $stmtPreMatricula->execute([$idPreMatricula]);
+            $preMatricula = $stmtPreMatricula->fetch(PDO::FETCH_ASSOC);
+            if (!$preMatricula) {
+                $conexao->rollBack();
+                return 'erro';
+            }
+
             if ($status === 'Aprovado') {
-                $stmtObrigatorios = Conexao::getConexao()->prepare(
+                $stmtObrigatorios = $conexao->prepare(
                     "SELECT COUNT(td.id_tipo_documento) AS total,
                             SUM(CASE WHEN de.status = 'Deferido'
                                           AND de.caminho_arquivo IS NOT NULL
@@ -887,23 +944,84 @@ class UsuarioDAO {
                 $documentos = $stmtObrigatorios->fetch(PDO::FETCH_ASSOC);
 
                 if ((int)$documentos['total'] !== (int)$documentos['deferidos']) {
-                    return false;
+                    $conexao->rollBack();
+                    return 'documentos';
                 }
+
+                $stmtMatricula = $conexao->prepare(
+                    "SELECT id_matricula
+                     FROM matriculas
+                     WHERE id_pre_matricula = ?
+                     LIMIT 1"
+                );
+                $stmtMatricula->execute([$idPreMatricula]);
+                $matriculaExistente = $stmtMatricula->fetchColumn();
+
+                if ($matriculaExistente === false) {
+                    $stmtAtualizar = $conexao->prepare(
+                        "UPDATE pre_matricula
+                         SET status = 'Aprovado', observacao = ?, data_analise = NOW(),
+                             analisado_por = ?
+                         WHERE id_pre_matricula = ?"
+                    );
+                    $stmtAtualizar->execute([
+                        $observacao !== '' ? $observacao : null,
+                        $idSecretaria,
+                        $idPreMatricula
+                    ]);
+
+                    $codigoMatricula = sprintf(
+                        'MAT-%d-%06d',
+                        (int)$preMatricula['ano_letivo'],
+                        $idPreMatricula
+                    );
+                    $stmtInserirMatricula = $conexao->prepare(
+                        "INSERT INTO matriculas
+                            (id_usuario, id_pre_matricula, codigo_matricula,
+                             tipo_matricula, periodo_letivo, status)
+                         VALUES (?, ?, ?, 'Primeira Matricula', ?, 'Ativo')"
+                    );
+                    $stmtInserirMatricula->execute([
+                        (int)$preMatricula['id_usuario'],
+                        $idPreMatricula,
+                        $codigoMatricula,
+                        $preMatricula['periodo_letivo']
+                    ]);
+                } elseif ($preMatricula['status'] !== 'Aprovado') {
+                    $stmtAtualizar = $conexao->prepare(
+                        "UPDATE pre_matricula
+                         SET status = 'Aprovado', observacao = ?, data_analise = NOW(),
+                             analisado_por = ?
+                         WHERE id_pre_matricula = ?"
+                    );
+                    $stmtAtualizar->execute([
+                        $observacao !== '' ? $observacao : null,
+                        $idSecretaria,
+                        $idPreMatricula
+                    ]);
+                }
+            } else {
+                $stmtAtualizar = $conexao->prepare(
+                    "UPDATE pre_matricula
+                     SET status = ?, observacao = ?, data_analise = NOW(), analisado_por = ?
+                     WHERE id_pre_matricula = ?"
+                );
+                $stmtAtualizar->execute([
+                    $status,
+                    $observacao !== '' ? $observacao : null,
+                    $idSecretaria,
+                    $idPreMatricula
+                ]);
             }
 
-            $sql = "UPDATE pre_matricula
-                    SET status = ?, observacao = ?, data_analise = NOW(), analisado_por = ?
-                    WHERE id_pre_matricula = ?";
-            $stmt = Conexao::getConexao()->prepare($sql);
-            return $stmt->execute([
-                $status,
-                $observacao !== '' ? $observacao : null,
-                $idSecretaria,
-                $idPreMatricula
-            ]);
+            $conexao->commit();
+            return 'ok';
         } catch (PDOException $e) {
-            echo "Erro ao analisar pré-matrícula: " . $e->getMessage();
-            return false;
+            if ($conexao->inTransaction()) {
+                $conexao->rollBack();
+            }
+            error_log('Erro ao analisar pré-matrícula ou efetivar matrícula: ' . $e->getMessage());
+            return 'erro';
         }
     }
 
@@ -943,6 +1061,24 @@ class UsuarioDAO {
         }
     }
 
+    public function buscarDocumentoAluno(int $idDocumento, int $idUsuario): ?array {
+        try {
+            $stmt = Conexao::getConexao()->prepare(
+                "SELECT de.caminho_arquivo, td.nome AS tipo_nome
+                 FROM documentos_enviados de
+                 INNER JOIN tipos_documento td
+                   ON td.id_tipo_documento = de.id_tipo_documento
+                 WHERE de.id_documento = ? AND de.id_usuario_aluno = ?
+                 LIMIT 1"
+            );
+            $stmt->execute([$idDocumento, $idUsuario]);
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        } catch (PDOException $e) {
+            error_log('Erro ao buscar documento do aluno: ' . $e->getMessage());
+            throw new RuntimeException('Não foi possível localizar o documento do aluno.', 0, $e);
+        }
+    }
+
     public function salvarDocumentosAluno(int $idUsuario, array $documentos) {
         $conexao = Conexao::getConexao();
 
@@ -975,6 +1111,14 @@ class UsuarioDAO {
                 $stmt->execute([$idUsuario, (int)$idTipoDocumento, $caminhoArquivo]);
             }
 
+            $stmtReanalise = $conexao->prepare(
+                "UPDATE pre_matricula
+                 SET status = 'Em Analise', observacao = NULL, data_analise = NULL,
+                     analisado_por = NULL
+                 WHERE id_usuario = ? AND status = 'Pendente de Documentacao'"
+            );
+            $stmtReanalise->execute([$idUsuario]);
+
             $conexao->commit();
             return true;
         } catch (PDOException $e) {
@@ -1001,6 +1145,68 @@ class UsuarioDAO {
             ]);
         } catch (PDOException $e) {
             echo "Erro ao avaliar documento: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function avaliarDocumentosPreMatricula(
+        int $idPreMatricula,
+        int $idSecretaria,
+        array $avaliacoes
+    ): bool {
+        $conexao = Conexao::getConexao();
+
+        try {
+            $conexao->beginTransaction();
+            $stmtAluno = $conexao->prepare(
+                "SELECT id_usuario
+                 FROM pre_matricula
+                 WHERE id_pre_matricula = ?
+                 FOR UPDATE"
+            );
+            $stmtAluno->execute([$idPreMatricula]);
+            $idAluno = $stmtAluno->fetchColumn();
+            if (!$idAluno) {
+                $conexao->rollBack();
+                return false;
+            }
+
+            $stmtDocumento = $conexao->prepare(
+                "SELECT id_documento
+                 FROM documentos_enviados
+                 WHERE id_documento = ? AND id_usuario_aluno = ?
+                 FOR UPDATE"
+            );
+            $stmtAtualizar = $conexao->prepare(
+                "UPDATE documentos_enviados
+                 SET status = ?, justificativa_recusa = ?, data_avaliacao = NOW(),
+                     avaliado_por = ?
+                 WHERE id_documento = ? AND id_usuario_aluno = ?"
+            );
+
+            foreach ($avaliacoes as $idDocumento => $avaliacao) {
+                $stmtDocumento->execute([(int)$idDocumento, (int)$idAluno]);
+                if (!$stmtDocumento->fetchColumn()) {
+                    $conexao->rollBack();
+                    return false;
+                }
+
+                $stmtAtualizar->execute([
+                    $avaliacao['status'],
+                    $avaliacao['justificativa'] !== '' ? $avaliacao['justificativa'] : null,
+                    $idSecretaria,
+                    (int)$idDocumento,
+                    (int)$idAluno
+                ]);
+            }
+
+            $conexao->commit();
+            return true;
+        } catch (PDOException $e) {
+            if ($conexao->inTransaction()) {
+                $conexao->rollBack();
+            }
+            error_log('Erro ao avaliar documentos da pré-matrícula: ' . $e->getMessage());
             return false;
         }
     }

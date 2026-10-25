@@ -31,15 +31,6 @@ $usuariosExibidos = array_values(array_filter($usuarios, static function (array 
         || mb_stripos((string)($usuario['email'] ?? ''), $buscaUsuarios, 0, 'UTF-8') !== false;
 }));
 $rotulosPerfil = [1 => 'Administrador', 2 => 'Secretaria', 3 => 'Aluno'];
-$mensagensExclusao = [
-    'ok' => ['success', 'Usuário e registros vinculados excluídos com sucesso.'],
-    'ok_arquivos_pendentes' => ['error', 'Usuário e registros vinculados foram excluídos, mas alguns arquivos não puderam ser removidos. Consulte o log do servidor.'],
-    'vinculado' => ['error', 'A exclusão foi cancelada porque ainda há um vínculo no banco de dados. Nenhum dado foi apagado; consulte o log do servidor.'],
-    'nao_encontrado' => ['error', 'O usuário não foi encontrado. Atualize a lista e tente novamente.'],
-    'dados_invalidos' => ['error', 'Não foi possível excluir: dados inválidos.'],
-    'erro' => ['error', 'Não foi possível excluir o usuário. Tente novamente.']
-];
-$resultadoExclusao = is_string($_GET['resultado'] ?? null) ? $_GET['resultado'] : '';
 
 $exibeMenuAdministrativo = true;
 $classeCorpo = 'admin-users-page';
@@ -53,16 +44,10 @@ include_once __DIR__ . '/../includes/topo.php';
             <header class="admin-page-header">
                 <div>
                     <h1>Gerenciamento de Usuários</h1>
-                    <p>Visualize, crie, edite ou remova usuários do sistema SGSE.</p>
+                    <p>Visualize, crie e edite usuários ou altere o status de acesso.</p>
                 </div>
                 <a href="../cadastrar_usuario.php" class="btn admin-primary-button">+ Novo Usuário</a>
             </header>
-
-            <?php if (isset($mensagensExclusao[$resultadoExclusao])): ?>
-                <p class="secretary-alert <?= $mensagensExclusao[$resultadoExclusao][0] ?>" role="status">
-                    <?= htmlspecialchars($mensagensExclusao[$resultadoExclusao][1], ENT_QUOTES, 'UTF-8') ?>
-                </p>
-            <?php endif; ?>
 
             <section class="admin-list-panel">
                 <form class="admin-list-filters" action="gerenciar_usuarios.php" method="GET" role="search">
@@ -144,12 +129,6 @@ include_once __DIR__ . '/../includes/topo.php';
                                         </a>
                                     <?php endif; ?>
 
-                                    <form action="../../controller/UsuarioController.php" method="POST" class="form-excluir" style="display: inline;">
-                                        <input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
-                                        <button type="submit" name="btn_excluir" class="btn btn-excluir" onclick="return confirm('ATENÇÃO: Esta ação apagará permanentemente o usuário e os registros vinculados, incluindo documentos, matrículas, solicitações e declarações. Não pode ser desfeita. Deseja continuar?');">
-                                            Excluir
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

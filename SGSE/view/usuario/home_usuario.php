@@ -39,7 +39,6 @@ include_once __DIR__ . '/../includes/topo.php';
         <div class="main-content user-home-content">
             <header class="page-header user-home-header">
                 <h1>Área do Usuário</h1>
-                <button type="button" class="theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>
             </header>
 
             <div class="cards-container user-home-cards">

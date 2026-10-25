@@ -40,7 +40,6 @@ include __DIR__ . '/../includes/topo.php';
                     <h1>Solicitar documentos</h1>
                     <p>Envie seu pedido para a secretaria e acompanhe o andamento pelo protocolo.</p>
                 </div>
-                <button type="button" class="theme-toggle" data-alternar-tema aria-label="Alternar tema"></button>
             </header>
 
             <?php if ($erroCarregamento): ?>
@@ -52,49 +51,128 @@ include __DIR__ . '/../includes/topo.php';
             <?php endif; ?>
 
             <section class="service-request-panel">
-                <h2>Novo pedido</h2>
-                <p>Escolha o documento e explique qualquer informação importante para o atendimento.</p>
+                <div class="student-request-heading">
+                    <div>
+                        <span class="student-request-kicker">NOVO PEDIDO</span>
+                        <h2>Solicitar documentos</h2>
+                        <p>Escolha um documento e explique para que você precisa dele.</p>
+                    </div>
+                </div>
                 <?php if ($tiposSolicitacao): ?>
-                    <form class="service-request-form" action="../../controller/UsuarioController.php" method="POST">
-                        <label for="tipo_solicitacao">Tipo de solicitação</label>
-                        <select id="tipo_solicitacao" name="id_tipo_solicitacao" required>
-                            <option value="">Selecione uma opção</option>
+                    <form class="service-request-form student-request-form" action="../../controller/UsuarioController.php" method="POST">
+                        <fieldset class="student-request-types">
+                            <legend>Tipo de documento <span aria-hidden="true">*</span></legend>
+                            <div class="student-request-type-grid">
                             <?php foreach ($tiposSolicitacao as $tipo): ?>
-                                <option value="<?= (int)$tipo['id_tipo_solicitacao'] ?>"><?= htmlspecialchars($tipo['nome'], ENT_QUOTES, 'UTF-8') ?></option>
+                                <label class="student-request-type">
+                                    <input type="radio" name="id_tipo_solicitacao" value="<?= (int)$tipo['id_tipo_solicitacao'] ?>" required>
+                                    <span class="student-request-type-card">
+                                        <strong><?= htmlspecialchars($tipo['nome'], ENT_QUOTES, 'UTF-8') ?></strong>
+                                        <?php if (!empty($tipo['descricao'])): ?>
+                                            <small><?= htmlspecialchars($tipo['descricao'], ENT_QUOTES, 'UTF-8') ?></small>
+                                        <?php else: ?>
+                                            <small>Documento escolar oficial</small>
+                                        <?php endif; ?>
+                                    </span>
+                                </label>
                             <?php endforeach; ?>
-                        </select>
-                        <label for="descricao_solicitacao">Detalhes do pedido</label>
-                        <textarea id="descricao_solicitacao" name="descricao" rows="4" maxlength="2000" required placeholder="Informe, por exemplo, a finalidade do documento ou a turma/curso relacionado."></textarea>
-                        <button type="submit" name="btn_solicitar_documento" class="btn btn-primary">Enviar solicitação</button>
+                            </div>
+                        </fieldset>
+                        <div class="student-request-details">
+                            <div class="student-request-details-heading">
+                                <label for="descricao_solicitacao">Detalhes do pedido / observações</label>
+                                <span><span data-request-character-count>0</span>/2000 caracteres</span>
+                            </div>
+                            <p class="student-request-document-tip" data-request-document-tip role="status" aria-live="polite" hidden></p>
+                            <textarea id="descricao_solicitacao" name="descricao" rows="3" maxlength="2000" required data-request-description placeholder="Explique para que você precisa do documento ou acrescente uma informação importante."></textarea>
+                        </div>
+                        <button type="submit" name="btn_solicitar_documento" class="btn btn-primary student-request-submit">Enviar solicitação <span aria-hidden="true">→</span></button>
                     </form>
                 <?php else: ?>
-                    <p class="service-empty">Não há tipos de solicitação disponíveis no momento.</p>
+                    <p class="service-empty"><?= $erroCarregamento ? 'Não foi possível carregar a lista de documentos.' : 'Não há documentos disponíveis para solicitação no momento.' ?></p>
                 <?php endif; ?>
             </section>
 
             <section class="service-request-list">
-                <h2>Minhas solicitações</h2>
+                <div class="student-requests-list-heading">
+                    <div>
+                        <h2>Minhas solicitações</h2>
+                        <p>Acompanhe o andamento dos documentos que você pediu.</p>
+                    </div>
+                    <span><?= count($solicitacoes) ?> <?= count($solicitacoes) === 1 ? 'solicitação' : 'solicitações' ?></span>
+                </div>
                 <?php if ($solicitacoes): ?>
-                    <?php foreach ($solicitacoes as $solicitacao): ?>
-                        <article class="service-request-card">
-                            <div class="service-request-heading">
-                                <div>
-                                    <span class="service-request-protocol">Protocolo <?= htmlspecialchars($solicitacao['numero_protocolo'], ENT_QUOTES, 'UTF-8') ?></span>
-                                    <h3><?= htmlspecialchars($solicitacao['tipo_nome'], ENT_QUOTES, 'UTF-8') ?></h3>
-                                </div>
-                                <?php $statusSolicitacao = ['Concluida' => 'Concluída', 'Indeferida' => 'Indeferida (Pendência)'][$solicitacao['status']] ?? $solicitacao['status']; ?>
-                                <span class="service-request-status status-<?= strtolower(str_replace(' ', '-', $solicitacao['status'])) ?>"><?= htmlspecialchars($statusSolicitacao, ENT_QUOTES, 'UTF-8') ?></span>
-                            </div>
-                            <p><?= nl2br(htmlspecialchars($solicitacao['descricao'], ENT_QUOTES, 'UTF-8')) ?></p>
-                            <small>Solicitada em <?= htmlspecialchars(date('d/m/Y H:i', strtotime($solicitacao['data_abertura'])), ENT_QUOTES, 'UTF-8') ?></small>
-                            <?php if (!empty($solicitacao['resposta'])): ?>
-                                <div class="service-request-response"><strong>Resposta da secretaria:</strong><p><?= nl2br(htmlspecialchars($solicitacao['resposta'], ENT_QUOTES, 'UTF-8')) ?></p></div>
-                            <?php endif; ?>
-                            <?php if (!empty($solicitacao['arquivo_resposta'])): ?>
-                                <p class="service-request-file"><a href="../../controller/UsuarioController.php?acao=baixar_arquivo_solicitacao&amp;id=<?= (int)$solicitacao['id_solicitacao'] ?>">Baixar documento enviado pela secretaria</a></p>
-                            <?php endif; ?>
-                        </article>
-                    <?php endforeach; ?>
+                    <div class="admin-table-wrap service-requests-table-wrap student-request-history-table-wrap">
+                        <table class="service-requests-table student-request-history-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Protocolo</th>
+                                    <th scope="col">Documento</th>
+                                    <th scope="col">Data de envio</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($solicitacoes as $solicitacao): ?>
+                                    <?php
+                                    $descricaoSolicitacao = (string)$solicitacao['descricao'];
+                                    $descricaoSolicitacao = preg_replace(
+                                        '/^Finalidade:\s*[^\r\n]*(?:\r?\n|$)/u',
+                                        '',
+                                        $descricaoSolicitacao,
+                                        1
+                                    ) ?? $descricaoSolicitacao;
+                                    $statusOriginal = (string)$solicitacao['status'];
+                                    $temArquivoResposta = !empty($solicitacao['arquivo_resposta']);
+                                    $statusSolicitacao = $statusOriginal === 'Concluida' && $temArquivoResposta
+                                        ? 'Pronto para download'
+                                        : ([
+                                            'Aberta' => 'Pendente',
+                                            'Em Atendimento' => 'Em análise',
+                                            'Concluida' => 'Concluída',
+                                            'Indeferida' => 'Indeferida',
+                                            'Cancelada' => 'Cancelada'
+                                        ][$statusOriginal] ?? $statusOriginal);
+                                    $classeStatus = strtolower(str_replace(' ', '-', $statusOriginal));
+                                    $extensaoArquivo = strtolower(pathinfo((string)($solicitacao['arquivo_resposta'] ?? ''), PATHINFO_EXTENSION));
+                                    $anoSolicitacao = date('Y', strtotime($solicitacao['data_abertura']));
+                                    $protocoloExibido = '#' . $anoSolicitacao . '-' . str_pad(
+                                        (string)$solicitacao['id_solicitacao'],
+                                        4,
+                                        '0',
+                                        STR_PAD_LEFT
+                                    );
+                                    ?>
+                                    <tr>
+                                        <td class="service-request-table-protocol"><?= htmlspecialchars($protocoloExibido, ENT_QUOTES, 'UTF-8') ?></td>
+                                        <td class="student-request-history-document">
+                                            <strong><?= htmlspecialchars($solicitacao['tipo_nome'], ENT_QUOTES, 'UTF-8') ?></strong>
+                                            <?php if ($descricaoSolicitacao !== ''): ?>
+                                                <small><?= htmlspecialchars($descricaoSolicitacao, ENT_QUOTES, 'UTF-8') ?></small>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($solicitacao['data_abertura'])), ENT_QUOTES, 'UTF-8') ?></td>
+                                        <td>
+                                            <span class="service-request-status status-<?= htmlspecialchars($classeStatus, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statusSolicitacao, ENT_QUOTES, 'UTF-8') ?></span>
+                                            <?php if (!empty($solicitacao['resposta'])): ?>
+                                                <small class="student-request-history-response"><?= htmlspecialchars($solicitacao['resposta'], ENT_QUOTES, 'UTF-8') ?></small>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="service-request-table-actions">
+                                            <?php if ($temArquivoResposta): ?>
+                                                <a class="student-request-download" href="../../controller/UsuarioController.php?acao=baixar_arquivo_solicitacao&amp;id=<?= (int)$solicitacao['id_solicitacao'] ?>">
+                                                    <span aria-hidden="true">▣</span> Baixar <?= $extensaoArquivo === 'pdf' ? 'PDF' : 'documento' ?>
+                                                </a>
+                                            <?php else: ?>
+                                                <span class="student-request-download-pending">Aguardando</span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
                     <p class="service-empty">Você ainda não enviou solicitações.</p>
                 <?php endif; ?>

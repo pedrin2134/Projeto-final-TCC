@@ -16,6 +16,8 @@ unset($_SESSION['cadastro_formulario']);
     <!-- Importação do JS externo -->
     <script src="../assets/js/usuario.js?v=<?php echo filemtime('../assets/js/usuario.js'); ?>" defer></script>
     <script src="../assets/js/tema.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/tema.js'); ?>" defer></script>
+    <script src="../assets/js/validar-telefone.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/validar-telefone.js'); ?>" defer></script>
+    <script src="../assets/js/mascarar-cpf.js?v=<?php echo filemtime(__DIR__ . '/../assets/js/mascarar-cpf.js'); ?>" defer></script>
 </head>
 <body class="cadastro-page signup-flow-page">
     <header class="site-header cadastro-header">
@@ -70,12 +72,12 @@ unset($_SESSION['cadastro_formulario']);
 
             <div class="input-group field-cpf">
                 <label for="cpf">CPF</label>
-                <input type="text" id="cpf" name="cpf" maxlength="14" placeholder="Digite seu CPF" value="<?= htmlspecialchars($cadastroDados['cpf'] ?? '', ENT_QUOTES, 'UTF-8') ?>" required>
+                <input type="text" id="cpf" name="cpf" maxlength="14" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" value="<?= htmlspecialchars($cadastroDados['cpf'] ?? '', ENT_QUOTES, 'UTF-8') ?>" data-mascarar-cpf required>
             </div>
 
             <div class="input-group field-phone">
                 <label for="telefone">Telefone</label>
-                <input type="tel" id="telefone" name="telefone" maxlength="20" placeholder="(00) 00000-0000" value="<?= htmlspecialchars($cadastroDados['telefone'] ?? '', ENT_QUOTES, 'UTF-8') ?>" required>
+                <input type="tel" id="telefone" name="telefone" maxlength="15" inputmode="numeric" autocomplete="tel" placeholder="(00) 00000-0000" value="<?= htmlspecialchars($cadastroDados['telefone'] ?? '', ENT_QUOTES, 'UTF-8') ?>" data-validar-telefone required>
             </div>
 
             <div class="input-group field-birth">

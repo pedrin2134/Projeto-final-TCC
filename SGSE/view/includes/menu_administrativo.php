@@ -94,8 +94,14 @@ $formatarContadorMenu = static function ($valor): string {
                 <?php endif; ?>
             <?php endif; ?>
 
-            <?php if ($permissoesMenu['usuarios'] || $permissoesMenu['solicitacoes']): ?>
+            <?php if ($permissoesMenu['usuarios'] || $permissoesMenu['solicitacoes'] || $permissoesMenu['pre_matriculas']): ?>
                 <span class="admin-sidebar-label">ATENDIMENTO</span>
+                <?php if ($permissoesMenu['pre_matriculas']): ?>
+                    <a class="<?= $secaoMenu === 'pre_matriculas.php' ? 'active' : '' ?>" href="<?= $baseMenu ?>view/secretaria/pre_matriculas.php" aria-label="Pré-matrículas" title="Pré-matrículas" <?= $secaoMenu === 'pre_matriculas.php' ? 'aria-current="page"' : '' ?>>
+                        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3.5 3 8.5 3 12 0v-5M22 9v6"/></svg>
+                        <span class="admin-sidebar-link-label">Pré-matrículas</span>
+                    </a>
+                <?php endif; ?>
                 <?php if ($permissoesMenu['usuarios']): ?>
                     <a class="<?= $secaoMenu === 'secretarias' ? 'active' : '' ?>" href="<?= $baseMenu ?>view/admin/secretarias.php" aria-label="Secretárias" title="Secretárias" <?= $secaoMenu === 'secretarias' ? 'aria-current="page"' : '' ?>>
                         <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 16c.7-2 5.3-2 6 0M14 10h4M14 14h4"/></svg>

@@ -33,7 +33,6 @@ $mensagens = [
     'dados_invalidos' => 'Confira os campos obrigatórios e os dados informados.',
     'cpf_invalido' => 'Informe um CPF válido.',
     'duplicado' => 'Já existe outra conta cadastrada com esse CPF ou e-mail.',
-    'senha_invalida' => 'As senhas não coincidem.',
     'erro' => 'Não foi possível atualizar a secretária. Tente novamente.'
 ];
 $erro = is_string($_GET['resultado'] ?? null) ? $_GET['resultado'] : '';
@@ -47,7 +46,7 @@ include __DIR__ . '/../includes/topo.php';
             <section class="secretary-form-card card">
                 <header>
                     <h1>Alterar secretária</h1>
-                    <p>Atualize os dados cadastrais. Deixe a senha em branco para mantê-la.</p>
+                    <p>Atualize os dados cadastrais. A senha é alterada pela própria usuária no perfil.</p>
                 </header>
                 <?php if (isset($mensagens[$erro])): ?>
                     <p class="secretary-alert error" role="alert"><?= htmlspecialchars($mensagens[$erro], ENT_QUOTES, 'UTF-8') ?></p>
@@ -69,12 +68,6 @@ include __DIR__ . '/../includes/topo.php';
 
                     <label for="email">E-mail de acesso</label>
                     <input type="email" id="email" name="email" maxlength="100" value="<?= htmlspecialchars($secretaria['email'], ENT_QUOTES, 'UTF-8') ?>" required>
-
-                    <label for="senha">Nova senha (opcional)</label>
-                    <input type="password" id="senha" name="senha" autocomplete="new-password">
-
-                    <label for="confirmar_senha">Confirmar nova senha</label>
-                    <input type="password" id="confirmar_senha" name="confirmar_senha" autocomplete="new-password">
 
                     <p class="secretary-role-note">O perfil permanece definido como <strong>Secretaria</strong>.</p>
                     <div class="secretary-form-actions">

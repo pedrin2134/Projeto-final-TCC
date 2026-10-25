@@ -69,31 +69,59 @@ include __DIR__ . '/includes/topo.php';
                 <h1><span aria-hidden="true">▣</span> Gestão de Cursos Técnicos</h1>
                 <p>Gerencie a oferta de cursos técnicos da instituição.</p>
             </div>
-            <details class="course-editor" <?= $cursoEdicao ? 'open' : '' ?>>
-                <summary class="btn admin-primary-button"><?= $cursoEdicao ? 'Editar curso' : '+ Novo Curso' ?></summary>
-                <section class="course-editor-panel">
-                    <h2><?= $cursoEdicao ? 'Alterar curso' : 'Cadastrar curso' ?></h2>
-                    <form action="../controller/UsuarioController.php" method="POST" enctype="multipart/form-data">
+            <div class="course-editor">
+                <button type="button" class="course-editor-trigger" data-open-course-editor>
+                    <?= $cursoEdicao ? 'Editar curso' : '+ Novo Curso' ?>
+                </button>
+                <dialog class="course-editor-dialog" aria-labelledby="course-editor-title" data-course-editor
+                        <?= $cursoEdicao ? 'data-open-on-load' : '' ?>>
+                    <section class="course-editor-panel">
+                        <header class="course-editor-heading">
+                            <span class="course-editor-icon" aria-hidden="true">▣</span>
+                            <div>
+                                <h2 id="course-editor-title"><?= $cursoEdicao ? 'Alterar Curso' : 'Cadastrar Novo Curso' ?></h2>
+                                <p>Preencha as informações necessárias do curso técnico</p>
+                            </div>
+                            <button type="button" class="course-editor-close" data-close-course-editor aria-label="Fechar">×</button>
+                        </header>
+                        <form action="../controller/UsuarioController.php" method="POST" enctype="multipart/form-data">
                         <?php if ($cursoEdicao): ?>
                             <input type="hidden" name="id_curso" value="<?= (int)$cursoEdicao['id_curso'] ?>">
                         <?php endif; ?>
                         <div class="course-form-grid">
-                            <div class="course-form-field">
+                            <div class="course-form-field course-form-field-wide">
                                 <label for="nome">Nome do curso *</label>
                                 <input type="text" id="nome" name="nome" maxlength="100" required
+                                       placeholder="Ex: Análise e Desenvolvimento de Sistemas"
                                        value="<?= htmlspecialchars($cursoEdicao['nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                             </div>
-                            <div class="course-form-field">
+                            <div class="course-form-field course-form-field-wide">
                                 <label for="sigla">Sigla *</label>
                                 <input type="text" id="sigla" name="sigla" maxlength="10" pattern="[A-Za-z0-9]{2,10}" required
+                                       placeholder="Ex: ADS"
                                        value="<?= htmlspecialchars($cursoEdicao['sigla'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                             </div>
                             <div class="course-form-field course-form-field-wide">
                                 <label for="imagem">Foto do curso (JPG, PNG ou WebP; até 5 MB)</label>
-                                <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp">
+                                <label class="course-image-dropzone" for="imagem" data-course-dropzone>
+                                    <input type="file" id="imagem" name="imagem" accept="image/jpeg,image/png,image/webp" data-course-image>
+                                    <span class="course-image-dropzone-icon" aria-hidden="true">▧</span>
+                                    <strong data-course-image-name>Arraste a capa aqui ou <span>clique para selecionar</span></strong>
+                                    <small>Formatos suportados: JPG, PNG ou WebP · até 5 MB</small>
+                                </label>
+                                <?php if ($cursoEdicao && is_string($cursoEdicao['imagem'] ?? null) && preg_match('#^uploads/cursos/[a-f0-9]{32}\.(jpg|png|webp)$#', $cursoEdicao['imagem']) && is_file(__DIR__ . '/../' . $cursoEdicao['imagem'])): ?>
+                                    <div class="course-image-current">
+                                        <img src="../<?= htmlspecialchars($cursoEdicao['imagem'], ENT_QUOTES, 'UTF-8') ?>"
+                                             alt="Foto atual de <?= htmlspecialchars($cursoEdicao['nome'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <label>
+                                            <input type="checkbox" name="remover_imagem" value="1">
+                                            Remover a foto atual
+                                        </label>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             <?php if ($cursoEdicao): ?>
-                                <div class="course-form-field">
+                                <div class="course-form-field course-form-field-wide">
                                     <label for="status">Status</label>
                                     <select id="status" name="status" required>
                                         <option value="Ativo" <?= $cursoEdicao['status'] === 'Ativo' ? 'selected' : '' ?>>Ativo</option>
@@ -102,25 +130,16 @@ include __DIR__ . '/includes/topo.php';
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <?php if ($cursoEdicao && is_string($cursoEdicao['imagem'] ?? null) && preg_match('#^uploads/cursos/[a-f0-9]{32}\.(jpg|png|webp)$#', $cursoEdicao['imagem']) && is_file(__DIR__ . '/../' . $cursoEdicao['imagem'])): ?>
-                            <div class="course-image-current">
-                                <img src="../<?= htmlspecialchars($cursoEdicao['imagem'], ENT_QUOTES, 'UTF-8') ?>"
-                                     alt="Foto atual de <?= htmlspecialchars($cursoEdicao['nome'], ENT_QUOTES, 'UTF-8') ?>">
-                                <label>
-                                    <input type="checkbox" name="remover_imagem" value="1">
-                                    Remover a foto atual
-                                </label>
-                            </div>
-                        <?php endif; ?>
                         <div class="course-editor-actions">
                             <button type="submit" name="<?= $cursoEdicao ? 'btn_atualizar_curso' : 'btn_cadastrar_curso' ?>" class="btn">
                                 <?= $cursoEdicao ? 'Salvar alterações' : 'Cadastrar curso' ?>
                             </button>
-                            <a class="btn course-cancel-button" href="cursos.php">Cancelar</a>
+                            <button type="button" class="btn course-cancel-button" data-close-course-editor>Cancelar</button>
                         </div>
                     </form>
-                </section>
-            </details>
+                    </section>
+                </dialog>
+            </div>
         </header>
 
         <?php if (isset($mensagens[$resultado])): ?>
@@ -213,5 +232,6 @@ include __DIR__ . '/includes/topo.php';
     </div>
 </div>
 </main>
+<script src="../assets/js/course-editor.js?v=<?= filemtime(__DIR__ . '/../assets/js/course-editor.js') ?>" defer></script>
 </body>
 </html>

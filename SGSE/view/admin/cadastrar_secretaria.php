@@ -38,10 +38,11 @@ include __DIR__ . '/../includes/topo.php';
                 <input type="text" id="nome" name="nome" maxlength="100" autocomplete="name" required>
 
                 <label for="cpf">CPF</label>
-                <input type="text" id="cpf" name="cpf" maxlength="14" inputmode="numeric" placeholder="000.000.000-00" required>
+                <input type="text" id="cpf" name="cpf" maxlength="14" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" data-mascarar-cpf required>
 
                 <label for="telefone">Telefone</label>
-                <input type="tel" id="telefone" name="telefone" maxlength="20" autocomplete="tel" placeholder="(00) 00000-0000" required>
+                <input type="tel" id="telefone" name="telefone" maxlength="15" autocomplete="tel" inputmode="numeric" placeholder="(00) 00000-0000" aria-describedby="telefone-ajuda" data-validar-telefone required>
+                <small id="telefone-ajuda">Informe um telefone com DDD: 10 números para fixo ou 11 para celular.</small>
 
                 <label for="data_nascimento">Data de nascimento</label>
                 <input type="date" id="data_nascimento" name="data_nascimento" max="<?= date('Y-m-d') ?>" required>
@@ -65,5 +66,7 @@ include __DIR__ . '/../includes/topo.php';
     </div>
 </div>
 </main>
+<script src="../../assets/js/validar-telefone.js?v=<?= filemtime(__DIR__ . '/../../assets/js/validar-telefone.js') ?>" defer></script>
+<script src="../../assets/js/mascarar-cpf.js?v=<?= filemtime(__DIR__ . '/../../assets/js/mascarar-cpf.js') ?>" defer></script>
 </body>
 </html>

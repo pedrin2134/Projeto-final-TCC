@@ -101,3 +101,37 @@ document.querySelectorAll('[data-request-file]').forEach((fileInput) => {
         }
     });
 });
+
+const studentRequestForm = document.querySelector('.student-request-form');
+if (studentRequestForm) {
+    const description = studentRequestForm.querySelector('[data-request-description]');
+    const characterCount = studentRequestForm.querySelector('[data-request-character-count]');
+    const documentTip = studentRequestForm.querySelector('[data-request-document-tip]');
+
+    const updateDocumentTip = () => {
+        const selectedType = studentRequestForm.querySelector('input[name="id_tipo_solicitacao"]:checked');
+        if (!(documentTip instanceof HTMLElement)) {
+            return;
+        }
+
+        if (!(selectedType instanceof HTMLInputElement)) {
+            documentTip.hidden = true;
+            documentTip.textContent = '';
+            return;
+        }
+
+        const typeCard = selectedType.closest('.student-request-type');
+        const typeName = typeCard?.querySelector('.student-request-type-card > strong')?.textContent?.trim();
+        const typeDetails = typeCard?.querySelector('.student-request-type-card > small')?.textContent?.trim();
+        documentTip.textContent = `Pedido de ${typeName || 'documento escolar'}: ${typeDetails || 'Documento escolar oficial'}. Explique abaixo para que você precisa deste documento.`;
+        documentTip.hidden = false;
+    };
+
+    studentRequestForm.querySelectorAll('input[name="id_tipo_solicitacao"]').forEach((typeInput) => {
+        typeInput.addEventListener('change', updateDocumentTip);
+    });
+
+    description.addEventListener('input', () => {
+        characterCount.textContent = String(description.value.length);
+    });
+}

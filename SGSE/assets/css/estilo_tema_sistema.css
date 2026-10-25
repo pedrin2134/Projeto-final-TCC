@@ -69,13 +69,47 @@ body.manager-body .top-bar .top-bar-btn:hover {
     background: #ffae08;
 }
 
-body.manager-body :is(.theme-toggle, .workflow-theme-toggle) {
+body.manager-body.admin-user-edit-page .admin-user-edit-title {
+    margin-bottom: 8px;
+    color: var(--tema-texto);
+}
+
+body.manager-body.admin-user-edit-page .admin-user-edit-note {
+    margin-bottom: 12px;
+    color: var(--tema-texto-secundario);
+    text-align: center;
+}
+
+body.manager-body.admin-user-edit-page .admin-user-edit-form {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px;
+    color: var(--tema-texto);
+    background: var(--tema-superficie);
+    border: 1px solid var(--tema-borda);
+    box-shadow: var(--tema-sombra);
+}
+
+body.manager-body.admin-user-edit-page .admin-user-edit-form label {
+    color: var(--tema-texto);
+    font-weight: 650;
+}
+
+body.manager-body.admin-user-edit-page .admin-user-edit-form input,
+body.manager-body.admin-user-edit-page .admin-user-edit-form select {
+    color: var(--tema-texto);
+    background-color: var(--tema-campo);
+    border-color: var(--tema-campo-borda);
+}
+
+body.manager-body .theme-toggle {
     color: var(--tema-link);
     background: var(--tema-superficie-secundaria);
     border-color: var(--tema-borda);
 }
 
-body.manager-body :is(.theme-toggle, .workflow-theme-toggle):hover {
+body.manager-body .theme-toggle:hover {
     color: #ffffff;
     background: #0876b9;
 }
@@ -248,6 +282,12 @@ body.manager-body .conteudo-principal :is(.admin-status-badge.is-inactive, .stat
     background-color: #fff3ce;
 }
 
+body.manager-body .conteudo-principal .applicant-review-card .applicant-summary-status.status-em-analise {
+    color: #07598a;
+    background-color: #dff2ff;
+    border-color: #b8def5;
+}
+
 body.manager-body .conteudo-principal :is(.status-pill.status-indeferido, .service-request-status.status-cancelada) {
     color: #9c2546;
     background-color: #ffe2ea;
@@ -291,6 +331,12 @@ html[data-tema="escuro"] body.manager-body .conteudo-principal :is(.admin-status
     background-color: #574817;
 }
 
+html[data-tema="escuro"] body.manager-body .conteudo-principal .applicant-review-card .applicant-summary-status.status-em-analise {
+    color: #c6eaff;
+    background-color: #17466a;
+    border-color: #2b678f;
+}
+
 html[data-tema="escuro"] body.manager-body .conteudo-principal :is(.status-pill.status-indeferido, .service-request-status.status-cancelada) {
     color: #ffd0dc;
     background-color: #642d3d;
@@ -314,6 +360,58 @@ html[data-tema="escuro"] body.manager-body .conteudo-principal .service-request-
 html[data-tema="escuro"] body.manager-body .conteudo-principal .service-request-dialog-actions .service-request-complete {
     color: #ffffff;
     background-color: #087e5c;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-quick-replies legend,
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-dialog-field label,
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-preview strong {
+    color: #ffffff !important;
+    font-size: 0.78rem;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-dialog-form {
+    color: #ffffff;
+    background: transparent;
+    box-shadow: none;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-quick-replies,
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-dialog-field {
+    color: #ffffff;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-quick-replies button {
+    color: #ffffff !important;
+    background-color: #173c60 !important;
+    border-color: #74b6e4 !important;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-quick-replies button:hover,
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-quick-replies button:focus-visible {
+    color: #ffffff;
+    background-color: #24577f !important;
+    border-color: #a1d5fa !important;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-dialog-field small,
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-preview p {
+    color: #e0eafa !important;
+    font-size: 0.7rem;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-dialog-field textarea::placeholder {
+    color: #d4dfed !important;
+    opacity: 1;
+}
+
+html[data-tema="escuro"] body.manager-body.service-requests-page .service-request-dialog-field input[type="file"]::file-selector-button {
+    color: #172033;
+    background-color: #e3edf8;
+    border: 1px solid #a8bfd5;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 body.manager-body .admin-sidebar {
@@ -343,7 +441,7 @@ body.manager-body .admin-sidebar .admin-sidebar-nav a.active {
 }
 
 body.manager-body .admin-sidebar .admin-sidebar-nav a.active > span {
-    color: #172033;
+    color: #aab8ff;
 }
 
 body.manager-body .admin-sidebar .admin-sidebar-user,
@@ -866,6 +964,19 @@ body.manager-body .admin-notification-icon.pre-matricula {
     background: #dcf5ed;
 }
 
+body.manager-body .admin-notification-icon svg,
+body.manager-body .admin-stat-icon svg,
+body.manager-body .admin-shortcut-icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
 body.manager-body .admin-notification-copy {
     min-width: 0;
     display: grid;
@@ -948,50 +1059,104 @@ body.manager-body.admin-courses-page .course-editor {
     flex: 0 0 auto;
 }
 
-body.manager-body.admin-courses-page .course-editor > summary {
+body.manager-body.admin-courses-page .course-editor-trigger {
     min-height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     margin: 0;
     padding: 9px 14px;
+    border: 0;
     color: #ffffff;
     background: #5146e5;
     border-radius: 9px;
     cursor: pointer;
+    font: inherit;
     font-size: 0.78rem;
     font-weight: 750;
-    list-style: none;
     white-space: nowrap;
 }
 
-body.manager-body.admin-courses-page .course-editor > summary::-webkit-details-marker {
-    display: none;
-}
-
-body.manager-body.admin-courses-page .course-editor > summary:hover {
+body.manager-body.admin-courses-page .course-editor-trigger:hover {
     background: #4338ca;
 }
 
-body.manager-body.admin-courses-page .course-editor-panel {
-    position: absolute;
-    z-index: 5;
-    top: calc(100% + 10px);
-    right: 0;
-    width: min(460px, calc(100vw - 32px));
-    padding: 20px;
+body.manager-body.admin-courses-page .course-editor-dialog {
+    width: min(540px, calc(100vw - 32px));
+    max-width: none;
+    max-height: min(90vh, 720px);
+    margin: auto;
+    padding: 0;
+    overflow: auto;
     color: var(--tema-texto);
-    background: var(--tema-superficie);
-    border: 1px solid var(--tema-borda);
-    border-radius: 12px;
-    box-shadow: 0 18px 48px rgba(10, 20, 40, 0.2);
+    background: #0c142b;
+    border: 1px solid #293858;
+    border-radius: 16px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
 }
 
-body.manager-body.admin-courses-page .course-editor-panel h2 {
-    margin: 0 0 16px;
-    color: var(--tema-texto);
-    font-size: 1rem;
+body.manager-body.admin-courses-page .course-editor-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(5px);
+}
+
+body.manager-body.admin-courses-page .course-editor-panel {
+    padding: 22px 24px 20px;
+    color: #eef4ff;
+    background: #0c142b;
+}
+
+body.manager-body.admin-courses-page .course-editor-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #293858;
+}
+
+body.manager-body.admin-courses-page .course-editor-icon {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    flex: 0 0 28px;
+    place-items: center;
+    color: #8b83ff;
+    background: #171e40;
+    border-radius: 8px;
+}
+
+body.manager-body.admin-courses-page .course-editor-heading > div {
+    min-width: 0;
+    flex: 1;
+}
+
+body.manager-body.admin-courses-page .course-editor-heading h2 {
+    margin: 0 0 3px;
+    color: #f5f7ff;
+    font-size: 0.98rem;
     text-align: left;
+}
+
+body.manager-body.admin-courses-page .course-editor-heading p {
+    margin: 0;
+    color: #aeb8cc;
+    font-size: 0.7rem;
+}
+
+body.manager-body.admin-courses-page .course-editor-close {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    flex: 0 0 28px;
+    place-items: center;
+    padding: 0;
+    color: #aeb8cc;
+    background: #17213a;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 
 body.manager-body.admin-courses-page .course-editor-panel form {
@@ -1007,8 +1172,12 @@ body.manager-body.admin-courses-page .course-editor-panel form {
 
 body.manager-body.admin-courses-page .course-form-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+}
+
+body.manager-body.admin-courses-page .course-form-field-wide {
+    grid-column: 1 / -1;
 }
 
 body.manager-body.admin-courses-page .course-form-field {
@@ -1016,10 +1185,10 @@ body.manager-body.admin-courses-page .course-form-field {
     gap: 6px;
 }
 
-body.manager-body.admin-courses-page .course-form-field label,
+body.manager-body.admin-courses-page .course-form-field > label:not(.course-image-dropzone),
 body.manager-body.admin-courses-page .course-image-current label {
     margin: 0;
-    color: var(--tema-texto);
+    color: #c7d0e3;
     font-size: 0.75rem;
     font-weight: 700;
 }
@@ -1030,16 +1199,77 @@ body.manager-body.admin-courses-page .course-form-field select {
     min-height: 38px;
     margin: 0;
     padding: 8px 10px;
-    color: var(--tema-texto);
-    background: var(--tema-campo);
-    border: 1px solid var(--tema-campo-borda);
-    border-radius: 8px;
+    color: #eef4ff;
+    background: #080e20;
+    border: 1px solid #35425e;
+    border-radius: 10px;
     font-size: 0.78rem;
 }
 
-body.manager-body.admin-courses-page .course-form-field input[type="file"] {
-    height: auto;
-    padding: 7px;
+body.manager-body.admin-courses-page .course-form-field input::placeholder {
+    color: #727f99;
+    opacity: 1;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone {
+    min-height: 100px;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 6px;
+    padding: 14px;
+    color: #c7d0e3;
+    background: #080e20;
+    border: 1px dashed #46516b;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone.is-dragging {
+    background: #171e40;
+    border-color: #8b83ff;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone > input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone:focus-within {
+    outline: 2px solid #8b83ff;
+    outline-offset: 2px;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone-icon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    color: #a49eff;
+    background: #171e40;
+    border-radius: 50%;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone strong {
+    color: #c7d0e3;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone strong span {
+    color: #a49eff;
+    text-decoration: underline;
+}
+
+body.manager-body.admin-courses-page .course-image-dropzone small {
+    color: #8995ad;
+    font-size: 0.63rem;
 }
 
 body.manager-body.admin-courses-page .course-image-current {
@@ -1049,10 +1279,33 @@ body.manager-body.admin-courses-page .course-image-current {
     margin: 0;
 }
 
+body.manager-body.admin-courses-page .course-image-current img {
+    width: 56px;
+    height: 42px;
+    object-fit: cover;
+    border: 1px solid #35425e;
+    border-radius: 6px;
+}
+
+body.manager-body.admin-courses-page .course-image-current label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+body.manager-body.admin-courses-page .course-image-current input[type="checkbox"] {
+    width: auto;
+    min-height: 0;
+    accent-color: #6c63ff;
+}
+
 body.manager-body.admin-courses-page .course-editor-actions {
     display: flex;
+    justify-content: flex-end;
     flex-wrap: wrap;
     gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #293858;
 }
 
 body.manager-body.admin-courses-page .course-editor-actions .btn {
@@ -1070,8 +1323,8 @@ body.manager-body.admin-courses-page .course-editor-actions .btn {
 }
 
 body.manager-body.admin-courses-page .course-editor-actions .course-cancel-button {
-    color: var(--tema-texto);
-    background: var(--tema-superficie-secundaria);
+    color: #c7d0e3;
+    background: #1a2540;
 }
 
 body.manager-body.admin-courses-page .course-admin-summary {
@@ -1198,7 +1451,7 @@ body.manager-body.admin-courses-page .course-admin-card {
 
 body.manager-body.admin-courses-page .course-admin-photo {
     position: relative;
-    height: 158px;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     background: var(--tema-superficie-secundaria);
 }
@@ -1207,7 +1460,7 @@ body.manager-body.admin-courses-page .course-admin-photo > img {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 body.manager-body.admin-courses-page .course-admin-photo-placeholder {
@@ -1320,9 +1573,12 @@ body.manager-body.admin-courses-page .course-admin-empty {
         align-self: flex-start;
     }
 
+    body.manager-body.admin-courses-page .course-editor-dialog {
+        max-height: 92vh;
+    }
+
     body.manager-body.admin-courses-page .course-editor-panel {
-        right: auto;
-        left: 0;
+        padding: 18px;
     }
 
     body.manager-body.admin-courses-page .course-admin-toolbar form {
@@ -1340,6 +1596,27 @@ body.manager-body.admin-courses-page .course-admin-empty {
 }
 
 @media (max-width: 520px) {
+    body.manager-body.admin-courses-page .course-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body.manager-body.admin-courses-page .course-form-field-wide {
+        grid-column: auto;
+    }
+
+    body.manager-body.admin-courses-page .course-editor-panel {
+        padding: 16px;
+    }
+
+    body.manager-body.admin-courses-page .course-editor-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.manager-body.admin-courses-page .course-editor-actions .btn {
+        width: 100%;
+    }
+
     body.manager-body.admin-courses-page .course-admin-summary {
         gap: 8px;
     }
