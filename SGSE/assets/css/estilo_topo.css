@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.top-bar {
+    width: 100%;
+    background-color: #1e293b;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.top-bar-container {
+    width: 100%;
+    padding: 0 30px;
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.top-bar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.top-bar-logo {
+    height: 35px;
+    width: auto;
+}
+
+.top-bar-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #f8fafc;
+    text-decoration: none;
+}
+
+/* Área central dos Botões */
+.top-bar-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Estilo visível dos Botões */
+.top-bar-btn {
+    background-color: #3b82f6;
+    color: #ffffff !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.top-bar-btn:hover {
+    background-color: #2563eb;
+}
+
+.top-bar-btn-admin {
+    background-color: #6366f1;
+}
+
+.top-bar-btn-admin:hover {
+    background-color: #4f46e5;
+}
+
+.top-bar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.top-bar-user strong {
+    color: #ffffff;
+}
+
+.btn-logout {
+    background-color: #ef4444;
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-logout:hover {
+    background-color: #dc2626;
+}
