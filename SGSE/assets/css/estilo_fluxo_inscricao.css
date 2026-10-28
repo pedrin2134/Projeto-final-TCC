@@ -1,0 +1,2580 @@
+.signup-flow-page {
+    --signup-bg: #f4f7fb;
+    --signup-panel: #ffffff;
+    --signup-panel-soft: #f5f8fc;
+    --signup-text: #172033;
+    --signup-muted: #64748b;
+    --signup-label: #344256;
+    --signup-border: #dce5ef;
+    --signup-input-border: #bdd8e6;
+    --signup-cyan: #008fac;
+    --signup-cyan-bright: #00b9d2;
+    --signup-yellow: #ffbf24;
+    --signup-yellow-hover: #ffd45f;
+    --signup-shadow: rgba(23, 39, 59, 0.1);
+    min-height: 100vh;
+    color: var(--signup-text);
+    background: var(--signup-bg);
+    color-scheme: light;
+}
+
+html[data-tema="escuro"] .signup-flow-page {
+    --signup-bg: #080d1b;
+    --signup-panel: #10192d;
+    --signup-panel-soft: #070d1b;
+    --signup-text: #eef4ff;
+    --signup-muted: #aeb8cc;
+    --signup-label: #dce3f2;
+    --signup-border: #273650;
+    --signup-input-border: rgba(0, 224, 244, 0.28);
+    --signup-cyan: #00e0ef;
+    --signup-cyan-bright: #00e0ef;
+    --signup-yellow: #ffc52e;
+    --signup-yellow-hover: #ffd45f;
+    --signup-shadow: rgba(0, 0, 0, 0.28);
+    color-scheme: dark;
+}
+
+.signup-flow-page .site-header,
+.signup-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+    width: 100%;
+    min-height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin: 0;
+    padding: 0 clamp(18px, 4vw, 56px);
+    background: var(--signup-panel);
+    border-bottom: 1px solid var(--signup-border);
+    box-shadow: 0 4px 18px var(--signup-shadow);
+}
+
+.signup-flow-page .brand {
+    flex-shrink: 0;
+    gap: 10px;
+    color: var(--signup-text);
+    font-size: 0.92rem;
+    font-weight: 850;
+}
+
+.signup-flow-page .brand img {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    padding: 3px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.signup-flow-page .brand small {
+    color: var(--signup-cyan);
+    font-size: 0.58rem;
+    letter-spacing: 0.055em;
+}
+
+.signup-flow-page .back-link {
+    margin-left: auto;
+    color: var(--signup-muted);
+    font-size: 0.78rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.signup-flow-page .back-link:hover {
+    color: var(--signup-cyan);
+}
+
+.signup-flow-page .back-link-short {
+    display: none;
+}
+
+.signup-flow-page .theme-toggle {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: var(--signup-cyan);
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 50%;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+html[data-tema="escuro"] .signup-flow-page .theme-toggle {
+    color: #ffbf24;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .theme-toggle {
+    color: #008fac;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .theme-toggle {
+    color: #ffbf24;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .theme-toggle {
+    color: #008fac;
+    background: #f5f8fc;
+    border-color: #dce5ef;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .theme-toggle {
+    color: #ffbf24;
+    background: #10192d;
+    border-color: #273650;
+}
+
+.signup-flow-page .theme-toggle:hover {
+    color: var(--signup-cyan);
+    background: var(--signup-panel);
+    transform: none;
+}
+
+.signup-flow-page .theme-toggle:focus-visible {
+    outline: 3px solid var(--signup-cyan-bright);
+    outline-offset: 3px;
+}
+
+.signup-flow-page .register-layout {
+    width: min(1000px, calc(100% - 48px));
+    grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(36px, 5vw, 68px);
+    align-items: start;
+    padding: 34px 0 48px;
+}
+
+.signup-flow-page .register-intro {
+    padding-top: 4px;
+}
+
+.signup-flow-page .eyebrow,
+.signup-flow-page .card-kicker {
+    color: var(--signup-cyan);
+}
+
+.signup-flow-page .register-intro .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 5px 11px;
+    color: var(--signup-cyan);
+    background: color-mix(in srgb, var(--signup-cyan) 9%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-cyan) 24%, transparent);
+    border-radius: 999px;
+    font-size: 0.68rem;
+}
+
+.signup-flow-page .register-intro .eyebrow::before {
+    width: 7px;
+    height: 7px;
+    background: var(--signup-cyan-bright);
+    border-radius: 50%;
+    content: '';
+}
+
+.signup-flow-page .register-intro h1 {
+    margin-bottom: 12px;
+    color: var(--signup-text);
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-size: clamp(2rem, 2.55vw, 2.25rem);
+    font-weight: 850;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+}
+
+.signup-flow-page .register-intro h1 strong {
+    color: var(--signup-cyan);
+    font-weight: 850;
+}
+
+.signup-flow-page .register-intro > p:not(.eyebrow) {
+    max-width: 340px;
+    color: var(--signup-muted);
+    font-size: 0.85rem;
+    line-height: 1.55;
+}
+
+.signup-flow-page .steps {
+    gap: 17px;
+    margin-top: 24px;
+    padding-top: 6px;
+    border-top: 1px solid var(--signup-border);
+}
+
+.signup-flow-page .step {
+    gap: 12px;
+    color: var(--signup-muted);
+}
+
+.signup-flow-page .step > span {
+    width: 30px;
+    height: 30px;
+    color: var(--signup-muted);
+    border-color: var(--signup-border);
+}
+
+.signup-flow-page .step.active,
+.signup-flow-page .step.complete {
+    color: var(--signup-text);
+}
+
+.signup-flow-page .step.active > span {
+    color: #ffffff;
+    background: var(--signup-cyan);
+    border-color: var(--signup-cyan);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--signup-cyan) 16%, transparent);
+}
+
+.signup-flow-page .step.complete > span {
+    color: #ffffff;
+    background: #08a881;
+    border-color: #08a881;
+}
+
+.signup-flow-page .step strong {
+    font-size: 0.78rem;
+}
+
+.signup-flow-page .step small {
+    color: var(--signup-muted);
+    font-size: 0.67rem;
+}
+
+.signup-flow-page .register-card,
+.signup-flow-page.workflow-page .card {
+    width: 100%;
+    padding: 24px 26px;
+    color: var(--signup-text);
+    background: var(--signup-panel);
+    border: 1px solid var(--signup-border);
+    border-radius: 14px;
+    box-shadow: 0 18px 46px var(--signup-shadow);
+}
+
+.signup-flow-page .register-card {
+    position: relative;
+}
+
+.signup-flow-page .register-card::before,
+.signup-flow-page.workflow-page .card::before {
+    position: absolute;
+    top: -1px;
+    right: 14px;
+    left: 14px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--signup-cyan-bright), #1684ff 70%, var(--signup-yellow));
+    border-radius: 0 0 4px 4px;
+    content: '';
+}
+
+.signup-flow-page .register-card .card-kicker {
+    margin-bottom: 5px;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.07em;
+}
+
+.signup-flow-page .register-card h2,
+.signup-flow-page.workflow-page .card h2,
+.signup-flow-page.workflow-page .card h3 {
+    color: var(--signup-text);
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-weight: 850;
+}
+
+.signup-flow-page .register-card h2 {
+    margin-bottom: 4px;
+    font-size: 1.5rem;
+}
+
+.signup-flow-page .register-card .card-intro {
+    margin-bottom: 18px;
+    color: var(--signup-muted);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.signup-flow-page .register-form {
+    column-gap: 12px;
+}
+
+.signup-flow-page .register-form .input-group {
+    margin-bottom: 12px;
+}
+
+.signup-flow-page .register-form .input-group label {
+    margin-bottom: 5px;
+    color: var(--signup-label);
+    font-size: 0.69rem;
+    font-weight: 750;
+}
+
+.signup-flow-page .register-form input:not([type="checkbox"]),
+.signup-flow-page .register-form select,
+.signup-flow-page .register-form textarea {
+    color: var(--signup-text);
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-input-border);
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 0.76rem;
+}
+
+.signup-flow-page .register-form input:not([type="checkbox"]),
+.signup-flow-page .register-form select {
+    height: 39px;
+    padding: 0 11px;
+}
+
+.signup-flow-page .register-form input::placeholder {
+    color: var(--signup-muted);
+}
+
+.signup-flow-page .register-form input:not([type="checkbox"]):focus,
+.signup-flow-page .register-form select:focus,
+.signup-flow-page .register-form textarea:focus {
+    border-color: var(--signup-cyan-bright);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--signup-cyan-bright) 15%, transparent);
+}
+
+.signup-flow-page .register-form .field-name,
+.signup-flow-page .register-form .field-email,
+.signup-flow-page .register-form .field-birth,
+.signup-flow-page .register-form .privacy-box,
+.signup-flow-page .register-form .consent-box,
+.signup-flow-page .register-form .register-actions {
+    grid-column: 1 / -1;
+}
+
+.signup-flow-page .register-form .privacy-box {
+    margin-bottom: 8px;
+}
+
+.signup-flow-page .register-form .privacy-box textarea {
+    height: 78px;
+    min-height: 78px;
+    padding: 9px 11px;
+    color: var(--signup-muted);
+    line-height: 1.45;
+    resize: vertical;
+}
+
+.signup-flow-page .register-form .consent-box {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+}
+
+.signup-flow-page .register-form .consent-box input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 15px;
+    margin: 0;
+    accent-color: var(--signup-cyan);
+}
+
+.signup-flow-page .register-form .consent-box label {
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.69rem;
+    font-weight: 500;
+}
+
+.signup-flow-page .register-actions {
+    margin-top: 3px;
+}
+
+.signup-flow-page .register-actions .btn-primary,
+.signup-flow-page.workflow-page .card .btn-primary {
+    width: 100%;
+    min-height: 42px;
+    padding: 11px 16px;
+    color: #101625;
+    background: linear-gradient(100deg, var(--signup-yellow), #ffad08);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 7px 20px color-mix(in srgb, var(--signup-yellow) 22%, transparent);
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.signup-flow-page .register-actions .btn-primary:hover,
+.signup-flow-page.workflow-page .card .btn-primary:hover {
+    color: #101625;
+    background: linear-gradient(100deg, var(--signup-yellow-hover), #ffc02a);
+}
+
+.signup-flow-page .signup-error {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    color: #8f2635;
+    background: #fff0f1;
+    border: 1px solid #f1c5ca;
+    border-radius: 8px;
+    font-size: 0.78rem;
+}
+
+html[data-tema="escuro"] .signup-flow-page .signup-error {
+    color: #ffd7de;
+    background: rgba(169, 28, 55, 0.25);
+    border-color: rgba(255, 107, 130, 0.44);
+}
+
+.signup-flow-page .login-footer {
+    color: var(--signup-muted);
+    background: var(--signup-panel);
+    border-top: 1px solid var(--signup-border);
+}
+
+.signup-flow-page.workflow-page {
+    color: var(--signup-text);
+    background: var(--signup-bg);
+}
+
+.signup-topbar .brand {
+    display: inline-flex;
+    align-items: center;
+    color: var(--signup-text);
+    text-decoration: none;
+}
+
+.signup-topbar .brand img {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    padding: 3px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.signup-topbar .brand small {
+    color: var(--signup-cyan);
+    font-size: 0.58rem;
+    letter-spacing: 0.055em;
+}
+
+.signup-flow-page .signup-workflow-layout {
+    width: min(1050px, calc(100% - 48px));
+    max-width: none !important;
+    display: grid;
+    grid-template-columns: minmax(245px, 0.68fr) minmax(0, 1.32fr);
+    column-gap: clamp(34px, 5vw, 62px);
+    align-items: start;
+    margin: 0 auto;
+    padding: 32px 0 52px !important;
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 17px;
+    margin-top: 2px;
+}
+
+.signup-flow-page .signup-intro {
+    margin-bottom: 6px;
+}
+
+.signup-flow-page .signup-intro .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 10px;
+    padding: 5px 11px;
+    color: var(--signup-cyan);
+    background: color-mix(in srgb, var(--signup-cyan) 9%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-cyan) 24%, transparent);
+    border-radius: 999px;
+    font-size: 0.67rem;
+    font-weight: 850;
+}
+
+.signup-flow-page .signup-intro .eyebrow::before {
+    width: 7px;
+    height: 7px;
+    background: var(--signup-cyan-bright);
+    border-radius: 50%;
+    content: '';
+}
+
+.signup-flow-page .signup-intro h1 {
+    margin: 0 0 9px;
+    color: var(--signup-text);
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-size: clamp(2rem, 2.55vw, 2.25rem);
+    font-weight: 850;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+}
+
+.signup-flow-page .signup-intro > p:last-child {
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.83rem;
+    line-height: 1.55;
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step {
+    gap: 12px;
+    color: var(--signup-muted);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step > span {
+    width: 30px;
+    height: 30px;
+    color: var(--signup-muted);
+    background: transparent;
+    border-color: var(--signup-border);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.active,
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.complete {
+    color: var(--signup-text);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.active > span {
+    color: #ffffff;
+    background: var(--signup-cyan);
+    border-color: var(--signup-cyan);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--signup-cyan) 16%, transparent);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.complete > span {
+    color: #ffffff;
+    background: #08a881;
+    border-color: #08a881;
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step small {
+    color: var(--signup-muted);
+}
+
+.signup-flow-page .signup-workflow-content {
+    min-width: 0;
+}
+
+.signup-flow-page.workflow-page .card {
+    position: relative;
+    margin-bottom: 16px !important;
+    padding: 24px 26px;
+    border-radius: 14px;
+}
+
+.signup-flow-page.workflow-page .card h2,
+.signup-flow-page.workflow-page .card h3,
+.signup-flow-page.workflow-page .section-heading h3,
+.signup-flow-page.workflow-page .course-card label {
+    color: var(--signup-text);
+}
+
+.signup-flow-page.workflow-page .card p,
+.signup-flow-page.workflow-page .section-heading p {
+    color: var(--signup-muted);
+}
+
+.signup-flow-page.workflow-page .section-heading {
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.signup-flow-page.workflow-page .section-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    color: var(--signup-cyan);
+    background: color-mix(in srgb, var(--signup-cyan) 10%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-cyan) 36%, transparent);
+    font-size: 0.69rem;
+}
+
+.signup-flow-page.workflow-page .document-row {
+    margin-bottom: 12px;
+    padding: 14px 13px;
+    background: var(--signup-panel-soft);
+    border: 1px dashed var(--signup-border);
+    border-radius: 9px;
+}
+
+.signup-flow-page.workflow-page .document-row:last-of-type {
+    margin-bottom: 8px;
+}
+
+.signup-flow-page.workflow-page .document-row p,
+.signup-flow-page.workflow-page .document-row p strong {
+    color: var(--signup-text);
+}
+
+.signup-flow-page.workflow-page .document-row .document-help {
+    color: var(--signup-muted);
+    font-size: 0.71rem;
+}
+
+.signup-flow-page.workflow-page .document-row input[type="file"] {
+    margin-top: 6px;
+    padding: 7px;
+    color: var(--signup-muted);
+    background: var(--signup-panel);
+    border: 1px solid var(--signup-border);
+    border-radius: 6px;
+    font-size: 0.72rem;
+}
+
+.signup-flow-page.workflow-page .document-row input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 6px 10px;
+    color: var(--signup-text);
+    background: var(--signup-panel);
+    border: 1px solid var(--signup-border);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup-flow-page.workflow-page .document-row input[type="file"]::file-selector-button:hover {
+    border-color: var(--signup-cyan);
+}
+
+.signup-flow-page.workflow-page .course-card select,
+.signup-flow-page.workflow-page .review-row select,
+.signup-flow-page.workflow-page .review-note,
+.signup-flow-page.workflow-page .review-row textarea,
+.signup-flow-page.workflow-page .workflow-course-content {
+    color: var(--signup-text);
+    background: var(--signup-panel-soft);
+    border-color: var(--signup-border);
+    border-radius: 7px;
+}
+
+.signup-flow-page.workflow-page .workflow-course-content strong,
+.signup-flow-page.workflow-page .course-card label {
+    color: var(--signup-text);
+}
+
+.signup-flow-page.workflow-page .workflow-course-content small,
+.signup-flow-page.workflow-page .workflow-course-option input:checked + .workflow-course-content em {
+    color: var(--signup-cyan);
+}
+
+.signup-flow-page.workflow-page .workflow-course-content em {
+    color: var(--signup-muted);
+}
+
+.signup-flow-page.workflow-page .workflow-course-option:hover .workflow-course-content,
+.signup-flow-page.workflow-page .workflow-course-option input:checked + .workflow-course-content {
+    background: color-mix(in srgb, var(--signup-cyan) 8%, var(--signup-panel));
+    border-color: var(--signup-cyan);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--signup-cyan) 12%, transparent);
+}
+
+.signup-flow-page.workflow-page .status-card {
+    border-left-color: var(--signup-cyan) !important;
+}
+
+.signup-flow-page.workflow-page .status-card::after {
+    color: var(--signup-cyan);
+}
+
+.signup-flow-page.workflow-page .workflow-feedback-success {
+    color: #08734f;
+    background: #dff8ed;
+}
+
+.signup-flow-page.workflow-page .workflow-feedback-error {
+    color: #a12d3e;
+    background: #fff0f1;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .workflow-feedback-success {
+    color: #a2f2d3;
+    background: #103c34;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .workflow-feedback-error {
+    color: #ffd7de;
+    background: #4a1d2a;
+}
+
+.signup-flow-page .signup-workflow-content > p:last-child {
+    margin: 0 0 0 2px;
+}
+
+.signup-flow-page .signup-workflow-content > p:last-child a {
+    color: var(--signup-muted);
+    font-size: 0.75rem;
+}
+
+.signup-flow-page .signup-workflow-content > p:last-child a:hover {
+    color: var(--signup-cyan);
+}
+
+@media (max-width: 820px) {
+    .signup-flow-page .register-layout,
+    .signup-flow-page .signup-workflow-layout {
+        width: min(680px, calc(100% - 36px));
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        padding-top: 26px;
+    }
+
+    .signup-flow-page .register-intro {
+        padding-top: 0;
+    }
+
+    .signup-flow-page .steps {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 9px;
+        margin-top: 17px;
+        padding-top: 14px;
+    }
+
+    .signup-flow-page .steps .step {
+        display: block;
+        text-align: center;
+    }
+
+    .signup-flow-page .steps .step > span {
+        margin: 0 auto 6px;
+    }
+
+    .signup-flow-page .steps .step strong {
+        font-size: 0.67rem;
+    }
+
+    .signup-flow-page .steps .step small {
+        display: none;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 9px;
+        margin: 0;
+    }
+
+    .signup-flow-page .signup-intro {
+        grid-column: 1 / -1;
+        margin-bottom: 7px;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar .step {
+        display: block;
+        text-align: center;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar .step > span {
+        margin: 0 auto 6px;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar .step strong {
+        font-size: 0.66rem;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar .step small {
+        display: none;
+    }
+}
+
+@media (max-width: 520px) {
+    .signup-flow-page .site-header,
+    .signup-topbar {
+        min-height: 60px;
+        gap: 10px;
+        padding: 0 12px;
+    }
+
+    .signup-flow-page .brand img,
+    .signup-topbar .brand img {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+    }
+
+    .signup-flow-page .brand,
+    .signup-topbar .brand {
+        gap: 7px;
+        font-size: 0.78rem;
+    }
+
+    .signup-flow-page .brand small,
+    .signup-topbar .brand small {
+        font-size: 0.47rem;
+    }
+
+    .signup-flow-page .back-link {
+        white-space: nowrap;
+    }
+
+    .signup-flow-page .back-link-full {
+        display: none;
+    }
+
+    .signup-flow-page .back-link-short {
+        display: inline;
+        font-size: 0.68rem;
+    }
+
+    .signup-flow-page .theme-toggle {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+    }
+
+    .signup-flow-page .register-layout,
+    .signup-flow-page .signup-workflow-layout {
+        width: calc(100% - 24px);
+        gap: 16px;
+        padding-top: 20px;
+    }
+
+    .signup-flow-page .register-intro h1,
+    .signup-flow-page .signup-intro h1 {
+        font-size: 1.9rem;
+    }
+
+    .signup-flow-page .register-card,
+    .signup-flow-page.workflow-page .card {
+        padding: 20px 17px;
+        border-radius: 12px;
+    }
+
+    .signup-flow-page .register-form {
+        column-gap: 9px;
+    }
+
+    .signup-flow-page .register-form .input-group label {
+        font-size: 0.66rem;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar {
+        gap: 4px;
+    }
+
+    .signup-flow-page .signup-workflow-layout .workflow-sidebar .step strong {
+        font-size: 0.6rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .signup-flow-page *,
+    .signup-flow-page *::before,
+    .signup-flow-page *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page {
+    color: #172033;
+    background: #f4f7fb;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .site-header {
+    background: #ffffff;
+    border-bottom-color: #dce5ef;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .brand,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-intro h1,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-card h2 {
+    color: #172033;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .brand small,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .eyebrow,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .card-kicker,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-intro h1 strong {
+    color: #008fac;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .back-link,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-intro > p:not(.eyebrow),
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .card-intro,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .step small,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form .consent-box label {
+    color: #64748b;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-card {
+    background: #ffffff;
+    border-color: #dce5ef;
+    box-shadow: 0 18px 46px rgba(23, 39, 59, 0.1);
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form .input-group label {
+    color: #344256;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form input:not([type="checkbox"]),
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form select,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form textarea {
+    color: #172033;
+    background: #f5f8fc;
+    border-color: #bdd8e6;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form input::placeholder {
+    color: #64748b;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form input:not([type="checkbox"]):focus,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form select:focus,
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-form textarea:focus {
+    border-color: #00b9d2;
+    box-shadow: 0 0 0 3px rgba(0, 185, 210, 0.15);
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-actions .btn-primary {
+    color: #101625;
+    background: linear-gradient(100deg, #ffbf24, #ffad08);
+    border-radius: 8px;
+    box-shadow: 0 7px 20px rgba(255, 191, 36, 0.22);
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.cadastro-page .register-actions .btn-primary:hover {
+    color: #101625;
+    background: linear-gradient(100deg, #ffd45f, #ffc02a);
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page {
+    color: #eef4ff;
+    background: #080d1b;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .site-header,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-card {
+    background: #10192d;
+    border-color: #273650;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .brand,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-intro h1,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-card h2 {
+    color: #eef4ff;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .brand small,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .eyebrow,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .card-kicker,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-intro h1 strong {
+    color: #00e0ef;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .back-link,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-intro > p:not(.eyebrow),
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .card-intro,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .step small,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form .consent-box label {
+    color: #aeb8cc;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form .input-group label {
+    color: #dce3f2;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form input:not([type="checkbox"]),
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form select,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form textarea {
+    color: #eef4ff;
+    background: #070d1b;
+    border-color: rgba(0, 224, 244, 0.28);
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form input::placeholder {
+    color: #8490a7;
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form input:not([type="checkbox"]):focus,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form select:focus,
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-form textarea:focus {
+    border-color: #00e0ef;
+    box-shadow: 0 0 0 3px rgba(0, 224, 239, 0.14);
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-actions .btn-primary {
+    color: #101625;
+    background: linear-gradient(100deg, #ffc52e, #ffad08);
+    box-shadow: 0 7px 20px rgba(255, 197, 46, 0.18);
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .register-actions .btn-primary:hover {
+    color: #101625;
+    background: linear-gradient(100deg, #ffd45f, #ffc02a);
+}
+
+html[data-tema="escuro"] .signup-flow-page.cadastro-page .login-footer {
+    color: #aeb8cc;
+    background: #070b16;
+    border-color: #273650;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .workflow-header,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .workflow-header {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .card,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .documents-card {
+    color: #172033;
+    background: #ffffff;
+    border-color: #dce5ef;
+    box-shadow: 0 18px 46px rgba(23, 39, 59, 0.1);
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .card h2,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .card h3,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .section-heading h3,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .course-card label {
+    color: #172033;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .card p,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .section-heading p {
+    color: #64748b;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .document-row {
+    color: #172033;
+    background: #f5f8fc;
+    border-color: #dce5ef;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .document-row p,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .document-row p strong {
+    color: #172033;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .document-row .document-help {
+    color: #64748b;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .document-row input[type="file"],
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .course-card select,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .workflow-course-content {
+    color: #172033;
+    background: #ffffff;
+    border-color: #dce5ef;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .document-row input[type="file"]::file-selector-button {
+    color: #172033;
+    background: #f5f8fc;
+    border-color: #dce5ef;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .workflow-course-content strong {
+    color: #172033;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .card,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .documents-card {
+    color: #eef4ff;
+    background: #10192d;
+    border-color: #273650;
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .card h2,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .card h3,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .section-heading h3,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .course-card label {
+    color: #eef4ff;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .card p,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .section-heading p {
+    color: #aeb8cc;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .document-row {
+    color: #eef4ff;
+    background: #070d1b;
+    border-color: #273650;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .document-row p,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .document-row p strong {
+    color: #eef4ff;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .document-row .document-help {
+    color: #aeb8cc;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .document-row input[type="file"],
+html[data-tema="escuro"] .signup-flow-page.workflow-page .course-card select,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .workflow-course-content {
+    color: #eef4ff;
+    background: #070d1b;
+    border-color: #273650;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .document-row input[type="file"]::file-selector-button {
+    color: #eef4ff;
+    background: #10192d;
+    border-color: #273650;
+}
+
+html[data-tema="escuro"] .signup-flow-page.workflow-page .workflow-course-content strong {
+    color: #eef4ff;
+}
+
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .course-card .btn-primary,
+html:not([data-tema="escuro"]) .signup-flow-page.workflow-page .documents-card .btn-primary,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .course-card .btn-primary,
+html[data-tema="escuro"] .signup-flow-page.workflow-page .documents-card .btn-primary {
+    color: #101625;
+    background: linear-gradient(100deg, #ffc52e, #ffad08);
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.workflow-page {
+    --signup-bg: #f4f7fb;
+    --signup-panel: #ffffff;
+    --signup-panel-soft: #f5f8fc;
+    --signup-text: #172033;
+    --signup-muted: #64748b;
+    --signup-label: #344256;
+    --signup-border: #dce5ef;
+    --signup-input-border: #bdd8e6;
+    --signup-cyan: #008fac;
+    --signup-cyan-bright: #00b9d2;
+    --signup-yellow: #ffbf24;
+    --signup-yellow-hover: #ffd45f;
+    --signup-shadow: rgba(23, 39, 59, 0.1);
+    color: #172033;
+    background: #f4f7fb;
+    color-scheme: light;
+}
+
+html[data-tema="escuro"] body.signup-flow-page.workflow-page {
+    --signup-bg: #080d1b;
+    --signup-panel: #10192d;
+    --signup-panel-soft: #070d1b;
+    --signup-text: #eef4ff;
+    --signup-muted: #aeb8cc;
+    --signup-label: #dce3f2;
+    --signup-border: #273650;
+    --signup-input-border: rgba(0, 224, 244, 0.28);
+    --signup-cyan: #00e0ef;
+    --signup-cyan-bright: #00e0ef;
+    --signup-yellow: #ffc52e;
+    --signup-yellow-hover: #ffd45f;
+    --signup-shadow: rgba(0, 0, 0, 0.28);
+    color: #eef4ff;
+    background: #080d1b;
+    color-scheme: dark;
+}
+
+.signup-flow-page .signup-workflow-layout {
+    width: min(1050px, calc(100% - 48px)) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    padding: 32px 0 52px !important;
+}
+
+.signup-flow-page .signup-workflow-content,
+.signup-flow-page .signup-workflow-content .documents-card {
+    min-width: 0;
+    color: var(--signup-text);
+}
+
+.signup-flow-page .signup-workflow-content .documents-card {
+    width: 100%;
+    background: var(--signup-panel);
+    border-color: var(--signup-border);
+    box-shadow: 0 18px 46px var(--signup-shadow);
+}
+
+.signup-flow-page .signup-workflow-content .document-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 14px;
+    margin: 0 0 12px;
+    padding: 14px;
+    color: var(--signup-text);
+    background: var(--signup-panel-soft);
+    border: 1px dashed var(--signup-border);
+    border-radius: 9px;
+    transition: border-color 160ms ease, background 160ms ease;
+}
+
+.signup-flow-page .signup-workflow-content .document-row.has-selected-file {
+    background: color-mix(in srgb, var(--signup-cyan) 6%, var(--signup-panel-soft));
+    border-color: var(--signup-cyan);
+}
+
+.signup-flow-page .signup-workflow-content .document-row > p:first-child {
+    grid-column: 1;
+    margin: 0;
+    color: var(--signup-text);
+    font-size: 0.79rem;
+}
+
+.signup-flow-page .signup-workflow-content .document-row > .document-status {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.68rem;
+    white-space: nowrap;
+}
+
+.signup-flow-page .signup-workflow-content .document-row > p:not(:first-child, .document-status, .document-help, .document-file-uploaded, .document-file-feedback) {
+    grid-column: 1 / -1;
+    margin: 8px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.73rem;
+}
+
+.signup-flow-page .signup-workflow-content .document-row .document-help,
+.signup-flow-page .signup-workflow-content .document-row .document-file-uploaded,
+.signup-flow-page .signup-workflow-content .document-row .document-file-feedback {
+    grid-column: 1 / -1;
+    margin: 7px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.7rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .signup-workflow-content .document-row .document-file-uploaded {
+    padding: 7px 9px;
+    color: var(--signup-cyan);
+    background: color-mix(in srgb, var(--signup-cyan) 8%, var(--signup-panel));
+    border-radius: 6px;
+}
+
+.signup-flow-page .signup-workflow-content .document-row .document-file-uploaded strong {
+    color: var(--signup-text);
+}
+
+.signup-flow-page .signup-workflow-content .document-row .document-file-feedback:not([hidden]) {
+    padding: 8px 10px;
+    color: var(--signup-cyan);
+    background: color-mix(in srgb, var(--signup-cyan) 9%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-cyan) 25%, transparent);
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.signup-flow-page .signup-workflow-content .document-row input[type="file"] {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    margin: 7px 0 0;
+    padding: 7px;
+    color: var(--signup-muted);
+    background: var(--signup-panel);
+    border: 1px solid var(--signup-border);
+    border-radius: 7px;
+    font-size: 0.72rem;
+}
+
+.signup-flow-page .signup-workflow-content .document-row input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 6px 10px;
+    color: var(--signup-text);
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup-flow-page .signup-workflow-content .document-row input[type="file"]::file-selector-button:hover {
+    border-color: var(--signup-cyan);
+}
+
+.signup-flow-page .signup-workflow-content .status-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 3px 9px;
+    color: #8b5b00;
+    background: #fff1c9;
+    border: 1px solid #f2d27d;
+    border-radius: 6px;
+    font-size: 0.64rem;
+    font-weight: 800;
+}
+
+.signup-flow-page .signup-workflow-content .status-pill.status-anexado,
+.signup-flow-page .signup-workflow-content .status-pill.status-aprovado,
+.signup-flow-page .signup-workflow-content .status-pill.status-deferido {
+    color: #08734f;
+    background: #dff8ed;
+    border-color: #abe5ce;
+}
+
+.signup-flow-page .signup-workflow-content .status-pill.status-indeferido {
+    color: #a12d3e;
+    background: #fff0f1;
+    border-color: #f1c5ca;
+}
+
+html[data-tema="escuro"] .signup-flow-page .signup-workflow-content .status-pill {
+    color: #ffe5a3;
+    background: #574817;
+    border-color: #88712d;
+}
+
+html[data-tema="escuro"] .signup-flow-page .signup-workflow-content .status-pill.status-anexado,
+html[data-tema="escuro"] .signup-flow-page .signup-workflow-content .status-pill.status-aprovado,
+html[data-tema="escuro"] .signup-flow-page .signup-workflow-content .status-pill.status-deferido {
+    color: #a2f2d3;
+    background: #103c34;
+    border-color: #1c705d;
+}
+
+html[data-tema="escuro"] .signup-flow-page .signup-workflow-content .status-pill.status-indeferido {
+    color: #ffd7de;
+    background: #4a1d2a;
+    border-color: #783748;
+}
+
+@media (max-width: 820px) {
+    .signup-flow-page .signup-workflow-layout {
+        width: min(680px, calc(100% - 36px)) !important;
+        padding-top: 26px !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .signup-flow-page .signup-workflow-layout {
+        width: calc(100% - 24px) !important;
+        padding-top: 20px !important;
+    }
+
+    .signup-flow-page .signup-workflow-content .document-row {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 12px;
+    }
+
+    .signup-flow-page .signup-workflow-content .document-row > .document-status {
+        grid-column: 1;
+        grid-row: auto;
+        margin-top: 7px;
+    }
+}
+
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .document-row {
+    color: #eef4ff;
+    background: #070d1b !important;
+    border-color: #273650;
+}
+
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .document-row.has-selected-file {
+    background: color-mix(in srgb, #00e0ef 6%, #070d1b) !important;
+}
+
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .document-row > p,
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .document-row > p strong {
+    color: #eef4ff;
+}
+
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .document-row > .document-status {
+    color: #aeb8cc;
+}
+
+.signup-flow-page .signup-workflow-content .application-status-card {
+    padding: 24px;
+    border: 1px solid var(--signup-border);
+    border-left: 4px solid var(--signup-cyan) !important;
+    border-radius: 14px;
+    background: var(--signup-panel);
+    box-shadow: 0 12px 30px var(--signup-shadow);
+}
+
+.signup-flow-page .signup-workflow-content .application-status-card::after {
+    display: none;
+    content: none;
+}
+
+.signup-flow-page .signup-workflow-content .application-status-card.is-correction-requested {
+    border-color: color-mix(in srgb, var(--signup-yellow) 42%, var(--signup-border));
+    border-left-color: var(--signup-yellow) !important;
+}
+
+.signup-flow-page .application-status-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.signup-flow-page .application-status-kicker {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--signup-cyan);
+    font-size: 0.64rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+}
+
+.signup-flow-page .application-status-heading h2 {
+    margin: 0;
+    color: var(--signup-text);
+    font-size: 1.02rem;
+}
+
+.signup-flow-page .application-status-badge {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 28px;
+    padding: 5px 10px;
+    color: #7a5600;
+    background: #fff1c9;
+    border: 1px solid #f2d27d;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.signup-flow-page .application-status-badge.is-analysis {
+    color: #006b85;
+    background: #e2f7fb;
+    border-color: #a4e4ef;
+}
+
+.signup-flow-page .application-status-badge.is-pending {
+    color: #8a5800;
+    background: #fff1c9;
+    border-color: #f2d27d;
+}
+
+.signup-flow-page .application-status-badge.is-rejected {
+    color: #a12d3e;
+    background: #fff0f1;
+    border-color: #f1c5ca;
+}
+
+html[data-tema="escuro"] .signup-flow-page .application-status-badge.is-analysis {
+    color: #9cecf5;
+    background: #123b49;
+    border-color: #226579;
+}
+
+html[data-tema="escuro"] .signup-flow-page .application-status-badge.is-pending {
+    color: #ffe5a3;
+    background: #574817;
+    border-color: #88712d;
+}
+
+html[data-tema="escuro"] .signup-flow-page .application-status-badge.is-rejected {
+    color: #ffd7de;
+    background: #4a1d2a;
+    border-color: #783748;
+}
+
+.signup-flow-page .application-status-message {
+    margin: 14px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.signup-flow-page .application-status-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 18px 0 0;
+}
+
+.signup-flow-page .application-status-details > div {
+    min-width: 0;
+    padding: 11px 12px;
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 9px;
+}
+
+.signup-flow-page .application-status-details dt {
+    margin-bottom: 5px;
+    color: var(--signup-muted);
+    font-size: 0.66rem;
+    font-weight: 700;
+}
+
+.signup-flow-page .application-status-details dd {
+    margin: 0;
+    color: var(--signup-text);
+    font-size: 0.78rem;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .application-status-note {
+    margin-top: 12px;
+    padding: 12px 14px;
+    color: var(--signup-text);
+    background: color-mix(in srgb, var(--signup-yellow) 10%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-yellow) 38%, var(--signup-border));
+    border-radius: 9px;
+}
+
+.signup-flow-page .application-status-note strong {
+    color: var(--signup-label);
+    font-size: 0.72rem;
+}
+
+.signup-flow-page .application-status-note p {
+    margin: 5px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.76rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .correction-request-banner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    color: var(--signup-text);
+    background: color-mix(in srgb, var(--signup-yellow) 11%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-yellow) 48%, var(--signup-border));
+    border-radius: 11px;
+    box-shadow: 0 8px 22px var(--signup-shadow);
+}
+
+.signup-flow-page .correction-request-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #151b27;
+    background: var(--signup-yellow);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 950;
+}
+
+.signup-flow-page .correction-request-copy {
+    min-width: 0;
+}
+
+.signup-flow-page .correction-request-copy h2 {
+    margin: 0 0 3px;
+    color: var(--signup-text);
+    font-size: 0.82rem;
+}
+
+.signup-flow-page .correction-request-copy p {
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.7rem;
+    line-height: 1.45;
+}
+
+.signup-flow-page .correction-request-count {
+    grid-column: 2;
+    grid-row: 2;
+    color: #8a5800;
+    font-size: 0.65rem;
+    font-weight: 800;
+}
+
+.signup-flow-page .correction-request-action {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px 12px;
+    color: #151b27;
+    background: linear-gradient(100deg, var(--signup-yellow), #ffad08);
+    border-radius: 8px;
+    box-shadow: 0 5px 14px color-mix(in srgb, var(--signup-yellow) 20%, transparent);
+    font-size: 0.68rem;
+    font-weight: 850;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.signup-flow-page .correction-request-action:hover {
+    background: linear-gradient(100deg, var(--signup-yellow-hover), #ffc02a);
+}
+
+.signup-flow-page .correction-request-action:focus-visible {
+    outline: 3px solid var(--signup-cyan-bright);
+    outline-offset: 3px;
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.needs-correction {
+    color: var(--signup-text);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.needs-correction > span {
+    color: #151b27;
+    background: var(--signup-yellow);
+    border-color: var(--signup-yellow);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--signup-yellow) 18%, transparent);
+}
+
+.signup-flow-page .signup-workflow-layout .workflow-sidebar .step.needs-correction small {
+    color: #9b6900;
+    font-weight: 750;
+}
+
+.signup-flow-page .signup-workflow-content .uploaded-documents-card {
+    width: 100%;
+    padding: 22px 24px;
+    background: var(--signup-panel);
+    border-color: var(--signup-border);
+    box-shadow: 0 12px 30px var(--signup-shadow);
+}
+
+.signup-flow-page .uploaded-documents-card .section-heading {
+    margin-bottom: 14px;
+}
+
+.signup-flow-page .uploaded-documents-card .section-heading h3 {
+    margin: 0 0 4px;
+    color: var(--signup-text);
+    font-size: 0.96rem;
+}
+
+.signup-flow-page .uploaded-documents-card .section-heading p {
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.75rem;
+    line-height: 1.45;
+}
+
+.signup-flow-page .uploaded-documents-list {
+    display: grid;
+    gap: 9px;
+}
+
+.signup-flow-page .uploaded-document-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 13px;
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 9px;
+}
+
+.signup-flow-page .uploaded-document-row.is-rejected {
+    background: color-mix(in srgb, #e14c62 7%, var(--signup-panel-soft));
+    border-color: color-mix(in srgb, #e14c62 36%, var(--signup-border));
+}
+
+.signup-flow-page .uploaded-document-row.is-approved {
+    background: color-mix(in srgb, #14a779 6%, var(--signup-panel-soft));
+    border-color: color-mix(in srgb, #14a779 28%, var(--signup-border));
+}
+
+.signup-flow-page .uploaded-document-row.is-waiting {
+    background: color-mix(in srgb, var(--signup-yellow) 6%, var(--signup-panel-soft));
+}
+
+.signup-flow-page .uploaded-document-info {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.signup-flow-page .uploaded-document-copy {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.signup-flow-page .uploaded-document-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.signup-flow-page .uploaded-document-title > strong {
+    color: var(--signup-text);
+    font-size: 0.76rem;
+}
+
+.signup-flow-page .uploaded-document-info .status-pill {
+    min-height: 20px;
+    padding: 2px 7px;
+    font-size: 0.61rem;
+}
+
+.signup-flow-page .uploaded-document-note {
+    width: 100%;
+    margin: 0;
+    color: var(--signup-muted);
+    font-size: 0.7rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note {
+    color: #ae3144;
+}
+
+.signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note strong {
+    color: #93263a;
+}
+
+.signup-flow-page .uploaded-document-link,
+.signup-flow-page .document-file-uploaded a {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 5px;
+    color: var(--signup-cyan);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.signup-flow-page .uploaded-document-link:hover,
+.signup-flow-page .document-file-uploaded a:hover {
+    text-decoration: underline;
+}
+
+.signup-flow-page .document-file-uploaded a {
+    margin-left: 5px;
+}
+
+.signup-flow-page .signup-workflow-content .document-row.is-rejected-document {
+    background: color-mix(in srgb, #e14c62 7%, var(--signup-panel-soft));
+    border-color: color-mix(in srgb, #e14c62 38%, var(--signup-border));
+}
+
+.signup-flow-page .signup-workflow-content #correcao-documentos {
+    scroll-margin-top: 84px;
+    border-color: color-mix(in srgb, var(--signup-yellow) 48%, var(--signup-border));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--signup-yellow) 9%, transparent), 0 14px 34px var(--signup-shadow);
+}
+
+html[data-tema="escuro"] .signup-flow-page .correction-request-count,
+html[data-tema="escuro"] .signup-workflow-layout .workflow-sidebar .step.needs-correction small {
+    color: #ffe5a3;
+}
+
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-rejected {
+    background: rgba(169, 28, 55, 0.16);
+    border-color: rgba(255, 107, 130, 0.38);
+}
+
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note,
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-rejected .uploaded-document-note strong {
+    color: #ffb7c0;
+}
+
+html[data-tema="escuro"] .signup-flow-page .uploaded-document-row.is-approved {
+    background: rgba(16, 60, 52, 0.58);
+    border-color: rgba(28, 112, 93, 0.7);
+}
+
+.signup-flow-page .uploaded-document-link:focus-visible,
+.signup-flow-page .document-file-uploaded a:focus-visible {
+    outline: 3px solid var(--signup-cyan-bright);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+.signup-flow-page .signup-workflow-layout {
+    width: min(1005px, calc(100% - 48px)) !important;
+    grid-template-columns: minmax(0, 0.47fr) minmax(0, 1fr);
+    column-gap: 40px;
+}
+
+.signup-flow-page .workflow-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--signup-border);
+}
+
+.signup-flow-page [data-personal-data-stage][hidden],
+.signup-flow-page [data-documents-stage][hidden] {
+    display: none !important;
+}
+
+.signup-flow-page .workflow-back-button {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 13px;
+    color: var(--signup-text);
+    background: var(--signup-panel);
+    border: 1px solid var(--signup-border);
+    border-radius: 7px;
+    font-size: 0.72rem;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.signup-flow-page .workflow-back-button:hover {
+    color: var(--signup-cyan);
+    border-color: var(--signup-cyan);
+}
+
+.signup-flow-page .signup-workflow-content .personal-data-list {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+}
+
+.signup-flow-page .personal-data-list > div {
+    padding: 11px 12px;
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 8px;
+}
+
+.signup-flow-page .personal-data-list dt {
+    margin-bottom: 4px;
+    color: var(--signup-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.signup-flow-page .personal-data-list dd {
+    margin: 0;
+    color: var(--signup-text);
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .signup-workflow-content .personal-data-note {
+    margin: 12px 0 0;
+    color: var(--signup-muted);
+    font-size: 0.7rem;
+}
+
+.signup-flow-page .workflow-back-button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.signup-flow-page .signup-intro h1 {
+    text-align: left;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-content strong {
+    color: var(--signup-text);
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+body.signup-flow-page.cadastro-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: 100vh;
+}
+
+body.signup-flow-page.cadastro-page > .register-layout {
+    flex: 1 0 auto;
+}
+
+body.signup-flow-page.cadastro-page > .login-footer {
+    width: 100%;
+    flex: 0 0 auto;
+    margin-top: auto;
+}
+
+@media (max-width: 820px) {
+    .signup-flow-page .signup-workflow-layout {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+    }
+}
+
+@media (max-width: 520px) {
+    .signup-flow-page .workflow-form-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+}
+
+.signup-flow-page .signup-workflow-layout {
+    width: min(1100px, calc(100% - 48px)) !important;
+    grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+    column-gap: 44px;
+}
+
+.signup-flow-page .signup-workflow-content .course-card {
+    padding: 30px 32px;
+    border-radius: 16px;
+}
+
+.signup-flow-page .signup-workflow-content .course-card .section-heading {
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 26px;
+}
+
+.signup-flow-page .signup-workflow-content .course-card .section-icon {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    color: #ffffff;
+    background: linear-gradient(145deg, var(--signup-cyan), #167bff);
+    border-radius: 12px;
+    font-size: 0.76rem;
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--signup-cyan) 22%, transparent);
+}
+
+.signup-flow-page .signup-workflow-content .course-card .section-heading h3 {
+    margin: 1px 0 6px !important;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-size: 1.12rem;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+}
+
+.signup-flow-page .signup-workflow-content .course-card .section-heading p {
+    max-width: 540px;
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-grid {
+    gap: 14px;
+    margin: 0 0 22px;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-option {
+    min-width: 0;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-content {
+    position: relative;
+    min-height: 132px;
+    gap: 12px;
+    padding: 17px 18px;
+    color: var(--signup-text);
+    background: var(--signup-panel-soft);
+    border: 1px solid var(--signup-border);
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-content small {
+    width: fit-content;
+    padding: 4px 8px;
+    color: var(--signup-cyan);
+    background: color-mix(in srgb, var(--signup-cyan) 10%, var(--signup-panel));
+    border: 1px solid color-mix(in srgb, var(--signup-cyan) 24%, transparent);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-photo,
+.signup-flow-page .signup-workflow-content .workflow-course-photo-placeholder {
+    width: 100%;
+    height: 124px;
+    flex: 0 0 124px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-photo {
+    object-fit: cover;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-photo-placeholder {
+    display: grid;
+    place-items: center;
+    color: var(--signup-muted);
+    background: color-mix(in srgb, var(--signup-cyan) 10%, var(--signup-panel));
+    font-size: 1.8rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-content strong {
+    display: block;
+    max-width: calc(100% - 12px);
+    color: var(--signup-text);
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-size: 0.94rem;
+    font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-content em {
+    color: var(--signup-muted);
+    font-size: 0.72rem;
+    font-weight: 650;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-option:hover .workflow-course-content,
+.signup-flow-page .signup-workflow-content .workflow-course-option input:checked + .workflow-course-content {
+    color: var(--signup-text);
+    background: color-mix(in srgb, var(--signup-cyan) 9%, var(--signup-panel));
+    border-color: var(--signup-cyan);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--signup-cyan) 13%, transparent);
+    transform: translateY(-2px);
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-option input:focus-visible + .workflow-course-content {
+    outline: 3px solid color-mix(in srgb, var(--signup-cyan) 55%, transparent);
+    outline-offset: 3px;
+}
+
+.signup-flow-page .signup-workflow-content .workflow-course-option input:checked + .workflow-course-content em {
+    color: var(--signup-cyan);
+    font-weight: 800;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.workflow-page .signup-workflow-content .workflow-course-option:hover .workflow-course-content,
+html:not([data-tema="escuro"]) body.signup-flow-page.workflow-page .signup-workflow-content .workflow-course-option input:checked + .workflow-course-content {
+    background: color-mix(in srgb, #008fac 9%, #ffffff);
+    border-color: #008fac;
+    box-shadow: 0 8px 20px rgba(0, 143, 172, 0.13);
+}
+
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .workflow-course-option:hover .workflow-course-content,
+html[data-tema="escuro"] body.signup-flow-page.workflow-page .signup-workflow-content .workflow-course-option input:checked + .workflow-course-content {
+    background: color-mix(in srgb, #00e0ef 9%, #10192d);
+    border-color: #00e0ef;
+    box-shadow: 0 8px 20px rgba(0, 224, 239, 0.13);
+}
+
+.signup-flow-page .signup-workflow-content .course-card form > .btn-primary {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 0;
+    padding: 12px 18px;
+    color: #101625;
+    background: linear-gradient(100deg, var(--signup-yellow), #ffad08);
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--signup-yellow) 20%, transparent);
+    font-size: 0.82rem;
+    font-weight: 850;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.signup-flow-page .signup-workflow-content .course-card form > .btn-primary:hover {
+    background: linear-gradient(100deg, var(--signup-yellow-hover), #ffc02a);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--signup-yellow) 28%, transparent);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 820px) {
+    .signup-flow-page .signup-workflow-layout {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+    }
+}
+
+@media (max-width: 520px) {
+    .signup-flow-page .application-status-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .signup-flow-page .application-status-details {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .signup-flow-page .correction-request-banner {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .signup-flow-page .correction-request-count {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .signup-flow-page .correction-request-action {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        width: 100%;
+    }
+
+    .signup-flow-page .uploaded-document-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .signup-flow-page .signup-workflow-content .course-card {
+        padding: 22px 18px;
+    }
+
+    .signup-flow-page .signup-workflow-content .workflow-course-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .signup-flow-page .signup-workflow-content .workflow-course-content {
+        min-height: 116px;
+    }
+}
+
+.signup-flow-page.correction-mode {
+    --signup-bg: #080d1b;
+    --signup-panel: #10192d;
+    --signup-panel-soft: #070d1b;
+    --signup-text: #eef4ff;
+    --signup-muted: #aeb8cc;
+    --signup-label: #dce3f2;
+    --signup-border: #273650;
+    --signup-input-border: #34425b;
+    --signup-cyan: #00d9ed;
+    --signup-cyan-bright: #00d9ed;
+    --signup-yellow: #ffb31a;
+    --signup-yellow-hover: #ffc443;
+    --signup-shadow: rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+}
+
+.signup-flow-page.correction-mode .signup-topbar {
+    background: #080d1b;
+    border-color: #1b2944;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content {
+    gap: 14px;
+}
+
+.signup-flow-page.correction-mode .signup-intro .eyebrow {
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.08);
+    border-color: rgba(255, 179, 26, 0.28);
+}
+
+.signup-flow-page.correction-mode .signup-workflow-layout .workflow-sidebar {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    padding: 17px 16px;
+    background: #0b1328;
+    border: 1px solid #392f24;
+    border-radius: 13px;
+}
+
+.signup-flow-page.correction-mode .correction-request-banner {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    margin: 0;
+    padding: 14px 16px;
+    background: linear-gradient(110deg, rgba(116, 75, 14, 0.3), rgba(9, 15, 31, 0.98) 72%);
+    border-color: #805713;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode .correction-request-icon {
+    color: #1b160a;
+    background: #ffb52d;
+    box-shadow: 0 0 0 4px rgba(255, 181, 45, 0.12);
+}
+
+.signup-flow-page.correction-mode .correction-request-copy h2 {
+    color: #ffca54;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.signup-flow-page.correction-mode .correction-request-copy p {
+    color: #f1e6cb;
+    font-size: 0.73rem;
+}
+
+.signup-flow-page.correction-mode .correction-request-date {
+    align-self: start;
+    color: #ffca54;
+    font-size: 0.58rem;
+    white-space: nowrap;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .documents-card {
+    padding: 18px 20px;
+    border-color: #273650;
+    border-radius: 13px;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode #correcao-documentos {
+    scroll-margin-top: 84px;
+    border-color: #273650;
+    box-shadow: none;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #26334e;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading .section-icon {
+    width: 9px;
+    height: 9px;
+    color: transparent;
+    background: #ffbd28;
+    border: 0;
+    border-radius: 50%;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading h3 {
+    margin: 0 0 3px;
+    color: #eef4ff;
+    font-size: 0.82rem;
+}
+
+.signup-flow-page.correction-mode .documents-card .section-heading p {
+    margin: 0;
+    color: #aeb8cc;
+    font-size: 0.66rem;
+}
+
+.signup-flow-page.correction-mode .correction-approved-count {
+    padding: 5px 8px;
+    color: #42e0b1;
+    background: rgba(5, 133, 105, 0.14);
+    border: 1px solid rgba(5, 179, 140, 0.28);
+    border-radius: 999px;
+    font-size: 0.58rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 10px;
+    margin-bottom: 8px;
+    padding: 10px 11px;
+    background: #090f20;
+    border: 1px solid #283550;
+    border-radius: 9px;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row.is-preserved-document {
+    min-height: 52px;
+}
+
+.signup-flow-page.correction-mode .correction-document-heading {
+    grid-column: 1;
+    min-width: 0;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row .correction-document-heading p {
+    margin: 0;
+}
+
+.signup-flow-page.correction-mode .correction-document-heading > p:first-child strong {
+    color: #eef4ff;
+    font-size: 0.68rem;
+}
+
+.signup-flow-page.correction-mode .correction-document-heading .correction-document-detail {
+    margin-top: 3px !important;
+    color: #aeb8cc;
+    font-size: 0.59rem;
+    line-height: 1.4;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row > .status-pill {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    color: #40dfb0;
+    background: rgba(5, 133, 105, 0.13);
+    border-color: rgba(5, 179, 140, 0.3);
+    font-size: 0.57rem;
+}
+
+.signup-flow-page.correction-mode .signup-workflow-content .document-row.is-rejected-document {
+    grid-template-columns: minmax(0, 1fr) auto;
+    background: rgba(111, 71, 13, 0.14);
+    border-color: #805713;
+}
+
+.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-heading > p:first-child strong {
+    color: #ffca54;
+}
+
+.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-detail {
+    color: #e6c67d;
+}
+
+.signup-flow-page.correction-mode .document-row.is-rejected-document > .status-pill {
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.13);
+    border-color: #805713;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone {
+    position: relative;
+    display: flex;
+    min-height: 100px;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 2px;
+    padding: 13px;
+    overflow: hidden;
+    color: #eef4ff;
+    background: #080e1d;
+    border: 1px dashed #936517;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 150ms ease, background 150ms ease;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone:hover,
+.signup-flow-page.correction-mode .document-upload-dropzone.is-dragging,
+.signup-flow-page.correction-mode .document-row.has-selected-file .document-upload-dropzone {
+    background: rgba(255, 179, 26, 0.08);
+    border-color: #ffbd28;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone input[type="file"] {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.signup-flow-page.correction-mode .document-upload-icon {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.12);
+    border: 1px solid rgba(255, 179, 26, 0.32);
+    border-radius: 50%;
+    font-size: 1rem;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone strong {
+    color: #eef4ff;
+    font-size: 0.64rem;
+}
+
+.signup-flow-page.correction-mode .document-upload-dropzone small {
+    color: #aeb8cc;
+    font-size: 0.55rem;
+}
+
+.signup-flow-page.correction-mode .document-row .document-file-feedback:not([hidden]) {
+    grid-row: 3;
+    margin-top: 0;
+    color: #ffca54;
+    font-size: 0.58rem;
+}
+
+.signup-flow-page.correction-mode .correction-document-preserved {
+    grid-column: 2 / -1;
+    color: #5fd8b1;
+    font-size: 0.55rem;
+}
+
+.signup-flow-page.correction-mode .correction-resend-help {
+    color: #aeb8cc;
+    font-size: 0.62rem;
+    line-height: 1.4;
+}
+
+.signup-flow-page.correction-mode .documents-card .workflow-form-actions {
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px solid #26334e;
+}
+
+.signup-flow-page.correction-mode .documents-card .workflow-form-actions .btn-primary {
+    color: #17130a;
+    background: linear-gradient(100deg, #ffbd24, #ed8c00);
+    box-shadow: 0 6px 16px rgba(235, 142, 0, 0.18);
+    font-size: 0.68rem;
+}
+
+.signup-flow-page.correction-mode .documents-card .workflow-form-actions .btn-primary:hover {
+    background: linear-gradient(100deg, #ffd05a, #ffad08);
+}
+
+.signup-flow-page.correction-mode .signup-workflow-layout .workflow-sidebar .step.needs-correction > span {
+    color: #151b27;
+    background: #ffad08;
+    border-color: #ffad08;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode {
+    --signup-bg: #080d1b;
+    --signup-panel: #10192d;
+    --signup-panel-soft: #070d1b;
+    --signup-text: #eef4ff;
+    --signup-muted: #aeb8cc;
+    --signup-label: #dce3f2;
+    --signup-border: #273650;
+    --signup-input-border: #34425b;
+    --signup-cyan: #00d9ed;
+    --signup-cyan-bright: #00d9ed;
+    --signup-yellow: #ffb31a;
+    --signup-yellow-hover: #ffc443;
+    --signup-shadow: rgba(0, 0, 0, 0.3);
+    color: #eef4ff;
+    background: #080d1b;
+    color-scheme: dark;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-intro h1,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .step,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .step strong {
+    color: #eef4ff;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-workflow-content .documents-card,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-workflow-content .documents-card h3 {
+    color: #eef4ff;
+    background: #10192d;
+    border-color: #273650;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .documents-card .section-heading h3,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .documents-card .section-heading p,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row p,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row p strong {
+    color: #eef4ff;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .signup-workflow-content .document-row {
+    color: #eef4ff;
+    background: #090f20;
+    border-color: #283550;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document {
+    background: rgba(111, 71, 13, 0.14);
+    border-color: #805713;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row .correction-document-heading > p:first-child strong,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-heading > p:first-child strong {
+    color: #ffca54;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row .correction-document-heading .correction-document-detail {
+    color: #aeb8cc;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document .correction-document-heading .correction-document-detail {
+    color: #e6c67d;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row .status-pill {
+    color: #40dfb0;
+    background: rgba(5, 133, 105, 0.13);
+    border-color: rgba(5, 179, 140, 0.3);
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-row.is-rejected-document .status-pill {
+    color: #ffca54;
+    background: rgba(255, 179, 26, 0.13);
+    border-color: #805713;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .document-upload-dropzone input[type="file"] {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .correction-document-preserved,
+html:not([data-tema="escuro"]) body.signup-flow-page.correction-mode .correction-resend-help {
+    color: #aeb8cc;
+}
+
+@media (max-width: 760px) {
+    .signup-flow-page.correction-mode .signup-workflow-layout .workflow-sidebar {
+        position: static;
+    }
+
+    .signup-flow-page.correction-mode .correction-request-banner {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .signup-flow-page.correction-mode .correction-request-date {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .signup-flow-page.correction-mode .signup-workflow-content .documents-card {
+        padding: 14px 12px;
+    }
+
+    .signup-flow-page.correction-mode .documents-card .section-heading {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .signup-flow-page.correction-mode .correction-approved-count {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .signup-flow-page.correction-mode .signup-workflow-content .document-row,
+    .signup-flow-page.correction-mode .signup-workflow-content .document-row.is-rejected-document {
+        column-gap: 8px;
+        padding: 9px;
+    }
+
+    .signup-flow-page.correction-mode .documents-card .workflow-form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
